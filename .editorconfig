@@ -1,0 +1,21 @@
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+tab_width = 4
+insert_final_newline = true
+
+[*.{kt,kts}]
+max_line_length = 120
+ktlint_standard_function-naming = disabled
+ktlint_standard_multiline-expression-wrapping = disabled # disable newline on expression
+ktlint_standard_string-template-indent = disabled # requirement for multiline-expression-wrapping
+ktlint_standard_function-expression-body = disabled # allow single line functions
+ktlint_standard_class-signature = disabled # allow manual parameters placement
+ktlint_standard_comment-wrapping = disabled # allow block oneline comments
+ktlint_standard_condition-wrapping = disabled
+ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 9
+ktlint_chain_method_rule_force_multiline_when_chain_operator_count_greater_or_equal_than = 9
+ktlint_function_signature_body_expression_wrapping = default
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
