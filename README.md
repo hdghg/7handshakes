@@ -8,7 +8,7 @@ by keeping record of our positive actions, and sharing these records with the pe
 we interact with. For example, imagine yourself helping a stranger with food,
 then that stranger helps some another stranger with a place to sleep, and then
 that another stranger helps you with clothes. Normally it could happen that nobody
-of the three actors think that their actions were unrelated. But seven handshakes'
+of the three actors think that their actions were related. But seven handshakes'
 goal is to make this connection visible.
 
 # Which problems does this app aim to solve
