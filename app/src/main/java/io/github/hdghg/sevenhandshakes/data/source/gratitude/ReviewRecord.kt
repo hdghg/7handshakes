@@ -4,13 +4,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 // Create unique index on uuid+signerPublicKeyId
-@Entity(tableName = "gratitude")
-data class GratitudeRecord(
+@Entity(tableName = "review")
+data class ReviewRecord(
     @PrimaryKey val id: Int,
     val uuid: String, // UUIDv7
     val signerPublicKeyId: Int,
     val text: String,
-    val rate: Byte,
+    val gratitude: Byte,
     /**
      * signed uuid + signerPublicKeyId + rate + text
      */
@@ -20,10 +20,10 @@ data class GratitudeRecord(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GratitudeRecord
+        other as ReviewRecord
 
         if (signerPublicKeyId != other.signerPublicKeyId) return false
-        if (rate != other.rate) return false
+        if (gratitude != other.gratitude) return false
         if (id != other.id) return false
         if (uuid != other.uuid) return false
         if (text != other.text) return false
@@ -34,7 +34,7 @@ data class GratitudeRecord(
 
     override fun hashCode(): Int {
         var result = signerPublicKeyId
-        result = 31 * result + rate
+        result = 31 * result + gratitude
         result = 31 * result + id.hashCode()
         result = 31 * result + uuid.hashCode()
         result = 31 * result + text.hashCode()

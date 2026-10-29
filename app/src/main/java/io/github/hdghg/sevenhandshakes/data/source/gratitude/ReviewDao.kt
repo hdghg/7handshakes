@@ -6,10 +6,10 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface GratitudeDao {
-    @Query("SELECT * FROM gratitude")
-    fun observeAll(): Flow<List<GratitudeRecord>>
+interface ReviewDao {
+    @Query("SELECT * FROM review")
+    fun observeAll(): Flow<List<ReviewRecord>>
 
     @Upsert
-    suspend fun upsert(gratitude: GratitudeRecord)
+    suspend fun upsert(gratitude: ReviewRecord)
 }

@@ -1,6 +1,6 @@
 package io.github.hdghg.sevenhandshakes.data
 
-class Gratitude(
+class Review(
     val id: Int,
     val uuid: String, // UUIDv7
     val text: String,

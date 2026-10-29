@@ -8,10 +8,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.hdghg.sevenhandshakes.data.DefaultGratitudeRepository
-import io.github.hdghg.sevenhandshakes.data.GratitudeRepository
-import io.github.hdghg.sevenhandshakes.data.source.gratitude.GratitudeDao
-import io.github.hdghg.sevenhandshakes.data.source.gratitude.GratitudeDatabase
+import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
+import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
+import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
 import javax.inject.Singleton
 
 @Module
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindGratitudeRepository(repository: DefaultGratitudeRepository): GratitudeRepository
+    abstract fun bindGratitudeRepository(repository: DefaultReviewRepository): ReviewRepository
 }
 
 @Module
@@ -29,13 +29,13 @@ object DatabaseModule {
     @Provides
     fun provideDataBase(
         @ApplicationContext context: Context,
-    ): GratitudeDatabase = Room
+    ): ReviewDatabase = Room
         .databaseBuilder(
             context.applicationContext,
-            GratitudeDatabase::class.java,
+            ReviewDatabase::class.java,
             "Gratitudes.db",
         ).build()
 
     @Provides
-    fun provideGratitudesDao(database: GratitudeDatabase): GratitudeDao = database.gratitudeDao()
+    fun provideGratitudesDao(database: ReviewDatabase): ReviewDao = database.reviewDao()
 }
