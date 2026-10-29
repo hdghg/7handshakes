@@ -7,6 +7,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- Download the QR scanner module at install time instead of on first use -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui" />
         <activity
             android:name="io.github.hdghg.sevenhandshakes.MainActivity"
             android:windowSoftInputMode="adjustResize"

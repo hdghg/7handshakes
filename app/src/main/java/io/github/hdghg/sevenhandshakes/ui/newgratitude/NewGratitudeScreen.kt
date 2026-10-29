@@ -25,13 +25,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.ui.NewGratitudeTopAppBar
+import io.github.hdghg.sevenhandshakes.util.QrScanner
+import kotlinx.coroutines.launch
 
 @Composable
 fun NewGratitudeScreen(
@@ -47,6 +51,15 @@ fun NewGratitudeScreen(
         topBar = { NewGratitudeTopAppBar(onBack = onBack, onComplete = onComplete) },
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val context = LocalContext.current
+        val scope = rememberCoroutineScope()
+        val scanQr: () -> Unit = {
+            QrScanner.scanQr(
+                context = context,
+                onSuccess = viewModel::updateReceiver,
+                onFail = { e -> scope.launch { snackbarHostState.showSnackbar("QR scan failed: ${e.message}") } },
+            )
+        }
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = modifier.padding(paddingValues),
@@ -143,21 +156,11 @@ fun NewGratitudeScreen(
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(
-                    onClick = { },
+                    onClick = scanQr,
                 ) {
                     Text("Scan QR")
                 }
             }
-            Button(
-                onClick = viewModel::complete,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-            ) {
-                Text("Complete")
-            }
-            Text("Edit Complete: " + uiState.editComplete)
             LaunchedEffect(uiState.editComplete) {
                 if (uiState.editComplete) {
                     onComplete()

@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
+    implementation(libs.play.services.code.scanner)
     implementation(libs.androidx.test.espresso.idling.resources)
 
     implementation(libs.room.runtime)
