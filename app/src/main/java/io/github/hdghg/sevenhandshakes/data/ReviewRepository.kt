@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReviewRepository {
     fun getGratitudesStream(): Flow<List<ReviewRecord>>
+
+    suspend fun placeNewReview(reviewText: String, gratitude: Byte)
 }

@@ -11,5 +11,5 @@ interface ReviewDao {
     fun observeAll(): Flow<List<ReviewRecord>>
 
     @Upsert
-    suspend fun upsert(gratitude: ReviewRecord)
+    suspend fun upsert(record: ReviewRecord)
 }
