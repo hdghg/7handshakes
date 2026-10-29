@@ -9,9 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.hdghg.sevenhandshakes.data.DefaultGratitudeRepository
-import io.github.hdghg.sevenhandshakes.data.DefaultTaskRepository
 import io.github.hdghg.sevenhandshakes.data.GratitudeRepository
-import io.github.hdghg.sevenhandshakes.data.TaskRepository
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.GratitudeDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.GratitudeDatabase
 import javax.inject.Singleton
@@ -19,10 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-    @Singleton
-    @Binds
-    abstract fun bindTaskRepository(repository: DefaultTaskRepository): TaskRepository
-
     @Singleton
     @Binds
     abstract fun bindGratitudeRepository(repository: DefaultGratitudeRepository): GratitudeRepository
