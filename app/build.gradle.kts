@@ -59,6 +59,7 @@ android {
     packaging {
         excludes += "META-INF/AL2.0"
         excludes += "META-INF/LGPL2.1"
+        excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
@@ -73,6 +74,7 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
+    implementation(libs.bouncycastle.bcprov)
     implementation(libs.play.services.code.scanner)
     implementation(libs.androidx.test.espresso.idling.resources)
 
