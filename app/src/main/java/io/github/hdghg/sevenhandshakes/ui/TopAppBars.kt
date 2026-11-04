@@ -21,19 +21,6 @@ import io.github.hdghg.sevenhandshakes.MainTheme
 import io.github.hdghg.sevenhandshakes.R
 
 @Composable
-fun StatisticsTopAppBar(openDrawer: () -> Unit) {
-    TopAppBar(
-        title = { Text(text = stringResource(id = R.string.statistics_title)) },
-        navigationIcon = {
-            IconButton(onClick = openDrawer) {
-                Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
-            }
-        },
-        modifier = Modifier.fillMaxWidth(),
-    )
-}
-
-@Composable
 fun FeedTopAppBar(openDrawer: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.feed_title)) },
@@ -75,16 +62,6 @@ fun NewGratitudeTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
         },
         modifier = Modifier.fillMaxWidth(),
     )
-}
-
-@Preview
-@Composable
-private fun StatisticsTopAppBarPreview() {
-    MainTheme {
-        Surface {
-            StatisticsTopAppBar { }
-        }
-    }
 }
 
 @Preview

@@ -24,17 +24,12 @@
     <string name="empty_task_message">Tasks cannot be empty</string>
     <string name="successfully_saved_task_message">Task saved</string>
     <string name="list_title">Task List</string>
-    <string name="statistics_title">Statistics</string>
     <string name="feed_title">My Gratitudes</string>
     <string name="new_gratitude">New Gratitude</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_empty">You have no contacts.</string>
     <string name="contact_unnamed">Unnamed contact</string>
     <string name="contact_favorite">Favorite</string>
-    <string name="statistics_no_tasks">You have no tasks.</string>
-    <string name="statistics_active_tasks">Active tasks: %.1f%%</string>
-    <string name="statistics_completed_tasks">Completed tasks: %.1f%%</string>
-    <string name="statistics_error">Error loading statistics.</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
 

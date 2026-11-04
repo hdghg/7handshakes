@@ -3,12 +3,8 @@ package io.github.hdghg.sevenhandshakes
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TASK_ID_ARG
-import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TITLE_ARG
-import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.USER_MESSAGE_ARG
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_EDIT_TASK_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_GRATITUDE_SCREEN
-import io.github.hdghg.sevenhandshakes.MyScreens.STATISTICS_SCREEN
-import io.github.hdghg.sevenhandshakes.MyScreens.TASKS_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.TASK_DETAIL_SCREEN
 
 /**
@@ -16,7 +12,6 @@ import io.github.hdghg.sevenhandshakes.MyScreens.TASK_DETAIL_SCREEN
  */
 private object MyScreens {
     const val TASKS_SCREEN = "tasks"
-    const val STATISTICS_SCREEN = "statistics"
     const val FEED_SCREEN = "feed"
     const val TASK_DETAIL_SCREEN = "task"
     const val ADD_EDIT_TASK_SCREEN = "addEditTask"
@@ -37,7 +32,6 @@ object MyAppDestinationsArgs {
  * Destinations used in the [MainActivity]
  */
 object MyAppDestinations {
-    const val STATISTICS_ROUTE = STATISTICS_SCREEN
     const val FEED_ROUTE = MyScreens.FEED_SCREEN
     const val ADD_GRATITUDE_ROUTE = MyScreens.ADD_GRATITUDE_SCREEN
     const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
@@ -47,8 +41,8 @@ object MyAppDestinations {
  * Models the navigation actions in the app.
  */
 class MyAppNavigationActions(private val navController: NavHostController) {
-    fun navigateToStatistics() {
-        navController.navigate(MyAppDestinations.STATISTICS_ROUTE) {
+    fun navigateToContacts() {
+        navController.navigate(MyAppDestinations.CONTACTS_ROUTE) {
             // Pop up to the start destination of the graph to
             // avoid building up a large stack of destinations
             // on the back stack as users select items
@@ -59,16 +53,6 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             // reselecting the same item
             launchSingleTop = true
             // Restore state when reselecting a previously selected item
-            restoreState = true
-        }
-    }
-
-    fun navigateToContacts() {
-        navController.navigate(MyAppDestinations.CONTACTS_ROUTE) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
             restoreState = true
         }
     }

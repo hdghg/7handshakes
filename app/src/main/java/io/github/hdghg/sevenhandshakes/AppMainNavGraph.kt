@@ -17,7 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
-import io.github.hdghg.sevenhandshakes.ui.statistics.StatisticsScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -43,11 +42,6 @@ fun AppMainNavGraph(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        composable(MyAppDestinations.STATISTICS_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
-                StatisticsScreen(openDrawer = { coroutineScope.launch { drawerState.open() } })
-            }
-        }
         composable(MyAppDestinations.FEED_ROUTE) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 FeedScreen(

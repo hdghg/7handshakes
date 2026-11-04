@@ -47,7 +47,6 @@ fun AppModalDrawer(
         drawerContent = {
             AppDrawer(
                 currentRoute = currentRoute,
-                navigateToStatistics = { navigationActions.navigateToStatistics() },
                 navigateToExample = { navigationActions.navigateToFeed(fromDrawer = true) },
                 navigateToContacts = { navigationActions.navigateToContacts() },
                 closeDrawer = { coroutineScope.launch { drawerState.close() } },
@@ -61,7 +60,6 @@ fun AppModalDrawer(
 @Composable
 private fun AppDrawer(
     currentRoute: String,
-    navigateToStatistics: () -> Unit,
     navigateToExample: () -> Unit,
     navigateToContacts: () -> Unit,
     closeDrawer: () -> Unit,
@@ -70,14 +68,6 @@ private fun AppDrawer(
     Surface(color = MaterialTheme.colorScheme.background) {
         Column(modifier = modifier.fillMaxSize()) {
             DrawerHeader()
-            DrawerButton(
-                label = stringResource(id = R.string.statistics_title),
-                isSelected = currentRoute == MyAppDestinations.STATISTICS_ROUTE,
-                action = {
-                    navigateToStatistics()
-                    closeDrawer()
-                },
-            )
             DrawerButton(
                 label = stringResource(id = R.string.feed_title),
                 isSelected = currentRoute == MyAppDestinations.FEED_ROUTE,
