@@ -48,7 +48,7 @@ fun NewGratitudeScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { NewGratitudeTopAppBar(onBack = onBack, onComplete = onComplete) },
+        topBar = { NewGratitudeTopAppBar(onBack = onBack, onComplete = viewModel::complete) },
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val context = LocalContext.current

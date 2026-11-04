@@ -1,11 +1,14 @@
 package io.github.hdghg.sevenhandshakes.ui.newgratitude
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class NewGratitudeUiState(
@@ -20,7 +23,9 @@ data class NewGratitudeUiState(
 @HiltViewModel
 class NewGratitudeViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor(
+        private val reviewRepository: ReviewRepository,
+    ) : ViewModel() {
         private val _uiState = MutableStateFlow(NewGratitudeUiState())
 
         val uiState: StateFlow<NewGratitudeUiState> = _uiState.asStateFlow()
@@ -60,10 +65,17 @@ class NewGratitudeViewModel
         }
 
         fun complete() {
-            _uiState.update {
-                it.copy(
-                    editComplete = true,
+            val state = _uiState.value
+            viewModelScope.launch {
+                reviewRepository.placeNewReview(
+                    reviewText = state.text,
+                    gratitude = state.stars.toByte(),
                 )
+                _uiState.update {
+                    it.copy(
+                        editComplete = true,
+                    )
+                }
             }
         }
 
