@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class NewGratitudeUiState(
@@ -66,11 +67,17 @@ class NewGratitudeViewModel
 
         fun complete() {
             val state = _uiState.value
+            Timber.d("Completing new gratitude, stars=%d", state.stars)
             viewModelScope.launch {
-                reviewRepository.placeNewReview(
-                    reviewText = state.text,
-                    gratitude = state.stars.toByte(),
-                )
+                try {
+                    reviewRepository.placeNewReview(
+                        reviewText = state.text,
+                        gratitude = state.stars.toByte(),
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to place review")
+                    throw e
+                }
                 _uiState.update {
                     it.copy(
                         editComplete = true,

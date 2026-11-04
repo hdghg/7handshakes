@@ -7,10 +7,12 @@ import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
 import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.signers.Ed25519Signer
+import timber.log.Timber
 import java.security.SecureRandom
 import java.util.UUID
 import javax.inject.Inject
@@ -24,9 +26,11 @@ class DefaultReviewRepository
         @param:DefaultDispatcher private val dispatcher: CoroutineDispatcher,
         @param:ApplicationScope private val scope: CoroutineScope,
     ) : ReviewRepository {
-        override fun getGratitudesStream(): Flow<List<ReviewRecord>> = reviewDao.observeAll()
+        override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
+            reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
         override suspend fun placeNewReview(reviewText: String, gratitude: Byte) {
+            Timber.d("Placing review: %d chars, gratitude=%d", reviewText.length, gratitude)
             val keyPairGenerator = Ed25519KeyPairGenerator()
             keyPairGenerator.init(Ed25519KeyGenerationParameters(SecureRandom()))
             val keyPair = keyPairGenerator.generateKeyPair()
@@ -47,6 +51,7 @@ class DefaultReviewRepository
                 signature = signature,
             )
 
-            reviewDao.upsert(r)
+            reviewDao.insert(r)
+            Timber.d("Review %s saved, signature %d bytes", r.uuid, signature.size)
         }
     }

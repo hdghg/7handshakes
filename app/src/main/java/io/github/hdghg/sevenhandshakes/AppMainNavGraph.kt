@@ -4,6 +4,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,6 +20,7 @@ import io.github.hdghg.sevenhandshakes.ui.statistics.StatisticsScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun AppMainNavGraph(
@@ -33,6 +35,7 @@ fun AppMainNavGraph(
 ) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
+    LaunchedEffect(currentRoute) { Timber.d("Screen: %s", currentRoute) }
 
     NavHost(
         navController = navController,
