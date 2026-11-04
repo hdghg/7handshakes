@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 // Create unique index on uuid+signerPublicKeyId
 @Entity(tableName = "review")
 data class ReviewRecord(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val uuid: String, // UUIDv7
     val signerPublicKeyId: Int,
     val text: String,
