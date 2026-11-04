@@ -47,6 +47,24 @@ fun ContactsTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
+fun NewContactTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.new_contact)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        actions = {
+            IconButton(onClick = onComplete) {
+                Icon(Icons.Filled.Check, stringResource(id = R.string.menu_save_contact))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun NewGratitudeTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.new_gratitude)) },

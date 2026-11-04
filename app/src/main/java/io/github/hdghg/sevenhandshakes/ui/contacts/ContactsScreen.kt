@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -35,6 +37,7 @@ import io.github.hdghg.sevenhandshakes.ui.ContactsTopAppBar
 @Composable
 fun ContactsScreen(
     openDrawer: () -> Unit,
+    newContact: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ContactsViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -44,6 +47,7 @@ fun ContactsScreen(
         contacts = uiState.items,
         isLoading = uiState.isLoading,
         openDrawer = openDrawer,
+        newContact = newContact,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -54,6 +58,7 @@ private fun ContactsContent(
     contacts: List<ContactRecord>,
     isLoading: Boolean,
     openDrawer: () -> Unit,
+    newContact: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -61,6 +66,11 @@ private fun ContactsContent(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = { ContactsTopAppBar(openDrawer) },
+        floatingActionButton = {
+            SmallFloatingActionButton(onClick = newContact) {
+                Icon(Icons.Filled.Add, stringResource(id = R.string.new_contact))
+            }
+        },
     ) { paddingValues ->
         if (contacts.isEmpty() && !isLoading) {
             Text(
@@ -134,6 +144,7 @@ fun ContactsScreenPreview() {
             ),
             isLoading = false,
             openDrawer = {},
+            newContact = {},
         )
     }
 }

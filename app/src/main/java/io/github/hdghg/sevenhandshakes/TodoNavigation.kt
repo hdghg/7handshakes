@@ -17,6 +17,7 @@ private object MyScreens {
     const val ADD_EDIT_TASK_SCREEN = "addEditTask"
     const val ADD_GRATITUDE_SCREEN = "addGratitude"
     const val CONTACTS_SCREEN = "contacts"
+    const val ADD_CONTACT_SCREEN = "addContact"
 }
 
 /**
@@ -35,6 +36,7 @@ object MyAppDestinations {
     const val FEED_ROUTE = MyScreens.FEED_SCREEN
     const val ADD_GRATITUDE_ROUTE = MyScreens.ADD_GRATITUDE_SCREEN
     const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
+    const val ADD_CONTACT_ROUTE = MyScreens.ADD_CONTACT_SCREEN
 }
 
 /**
@@ -55,6 +57,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             // Restore state when reselecting a previously selected item
             restoreState = true
         }
+    }
+
+    fun navigateToAddContact() {
+        navController.navigate(MyAppDestinations.ADD_CONTACT_ROUTE)
     }
 
     fun navigateToFeed(fromDrawer: Boolean) {
