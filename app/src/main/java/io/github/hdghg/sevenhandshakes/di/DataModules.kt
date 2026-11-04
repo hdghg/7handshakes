@@ -8,8 +8,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.hdghg.sevenhandshakes.data.ContactRepository
+import io.github.hdghg.sevenhandshakes.data.DefaultContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
 import javax.inject.Singleton
@@ -20,6 +23,10 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindGratitudeRepository(repository: DefaultReviewRepository): ReviewRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindContactRepository(repository: DefaultContactRepository): ContactRepository
 }
 
 @Module
@@ -34,8 +41,12 @@ object DatabaseModule {
             context.applicationContext,
             ReviewDatabase::class.java,
             "Gratitudes.db",
-        ).build()
+        ).addMigrations(ReviewDatabase.MIGRATION_1_2)
+        .build()
 
     @Provides
     fun provideGratitudesDao(database: ReviewDatabase): ReviewDao = database.reviewDao()
+
+    @Provides
+    fun provideContactDao(database: ReviewDatabase): ContactDao = database.contactDao()
 }

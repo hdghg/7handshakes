@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
 import io.github.hdghg.sevenhandshakes.ui.statistics.StatisticsScreen
@@ -53,6 +54,11 @@ fun AppMainNavGraph(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newGratitude = { navActions.navigateToAddGratitude() },
                 )
+            }
+        }
+        composable(MyAppDestinations.CONTACTS_ROUTE) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ContactsScreen(openDrawer = { coroutineScope.launch { drawerState.open() } })
             }
         }
         composable(MyAppDestinations.ADD_GRATITUDE_ROUTE) {

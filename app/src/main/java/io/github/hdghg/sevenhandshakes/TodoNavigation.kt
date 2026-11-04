@@ -21,6 +21,7 @@ private object MyScreens {
     const val TASK_DETAIL_SCREEN = "task"
     const val ADD_EDIT_TASK_SCREEN = "addEditTask"
     const val ADD_GRATITUDE_SCREEN = "addGratitude"
+    const val CONTACTS_SCREEN = "contacts"
 }
 
 /**
@@ -39,6 +40,7 @@ object MyAppDestinations {
     const val STATISTICS_ROUTE = STATISTICS_SCREEN
     const val FEED_ROUTE = MyScreens.FEED_SCREEN
     const val ADD_GRATITUDE_ROUTE = MyScreens.ADD_GRATITUDE_SCREEN
+    const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
 }
 
 /**
@@ -57,6 +59,16 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             // reselecting the same item
             launchSingleTop = true
             // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+    }
+
+    fun navigateToContacts() {
+        navController.navigate(MyAppDestinations.CONTACTS_ROUTE) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
             restoreState = true
         }
     }
