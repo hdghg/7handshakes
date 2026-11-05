@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Todo</string>
+    <string name="app_name">7 handshakes</string>
     <string name="add_task">New Task</string>
     <string name="edit_task">Edit Task</string>
     <string name="task_details">Task Details</string>

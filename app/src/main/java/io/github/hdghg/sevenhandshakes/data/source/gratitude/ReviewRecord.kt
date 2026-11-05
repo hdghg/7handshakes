@@ -3,16 +3,17 @@ package io.github.hdghg.sevenhandshakes.data.source.gratitude
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// Create unique index on uuid+signerPublicKeyId
+// Create unique index on uuid+sourceContactId
 @Entity(tableName = "review")
 data class ReviewRecord(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val uuid: String, // UUIDv7
-    val signerPublicKeyId: Int,
+    val sourceContactId: Int,
+    val targetContactId: Int,
     val text: String,
     val gratitude: Byte,
     /**
-     * signed uuid + signerPublicKeyId + rate + text
+     * signed uuid + sourceContactId + rate + text
      */
     val signature: ByteArray,
 ) {
@@ -22,7 +23,8 @@ data class ReviewRecord(
 
         other as ReviewRecord
 
-        if (signerPublicKeyId != other.signerPublicKeyId) return false
+        if (sourceContactId != other.sourceContactId) return false
+        if (targetContactId != other.targetContactId) return false
         if (gratitude != other.gratitude) return false
         if (id != other.id) return false
         if (uuid != other.uuid) return false
@@ -33,7 +35,8 @@ data class ReviewRecord(
     }
 
     override fun hashCode(): Int {
-        var result = signerPublicKeyId
+        var result = sourceContactId
+        result = 31 * result + targetContactId
         result = 31 * result + gratitude
         result = 31 * result + id.hashCode()
         result = 31 * result + uuid.hashCode()

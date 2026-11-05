@@ -50,7 +50,8 @@ class DefaultReviewRepository
             val r = ReviewRecord(
                 id = 0,
                 uuid = UUID.randomUUID().toString(),
-                signerPublicKeyId = 111,
+                sourceContactId = 111,
+                targetContactId = contactId,
                 text = reviewText,
                 gratitude = gratitude,
                 signature = signature,
