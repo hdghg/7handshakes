@@ -17,7 +17,10 @@ interface ContactDao {
     @Upsert
     suspend fun upsert(record: ContactRecord)
 
-    /** Fails with SQLiteConstraintException if a contact with the same publicKey already exists. */
+    /**
+     * Returns the new row id.
+     * Fails with SQLiteConstraintException if a contact with the same publicKey already exists.
+     */
     @Insert
-    suspend fun insert(record: ContactRecord)
+    suspend fun insert(record: ContactRecord): Long
 }

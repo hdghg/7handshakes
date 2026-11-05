@@ -26,6 +26,8 @@
     <string name="list_title">Task List</string>
     <string name="feed_title">My Gratitudes</string>
     <string name="new_gratitude">New Gratitude</string>
+    <string name="new_gratitude_empty_receiver">Receiver cannot be empty</string>
+    <string name="new_gratitude_cannot_create_contact">Contact could not be created</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_empty">You have no contacts.</string>
     <string name="contact_unnamed">Unnamed contact</string>

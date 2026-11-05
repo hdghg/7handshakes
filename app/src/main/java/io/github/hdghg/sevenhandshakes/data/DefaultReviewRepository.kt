@@ -29,8 +29,13 @@ class DefaultReviewRepository
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
-        override suspend fun placeNewReview(reviewText: String, gratitude: Byte) {
-            Timber.d("Placing review: %d chars, gratitude=%d", reviewText.length, gratitude)
+        override suspend fun placeNewReview(reviewText: String, gratitude: Byte, contactId: Int) {
+            Timber.d(
+                "Placing review: %d chars, gratitude=%d, contactId=%d",
+                reviewText.length,
+                gratitude,
+                contactId,
+            )
             val keyPairGenerator = Ed25519KeyPairGenerator()
             keyPairGenerator.init(Ed25519KeyGenerationParameters(SecureRandom()))
             val keyPair = keyPairGenerator.generateKeyPair()

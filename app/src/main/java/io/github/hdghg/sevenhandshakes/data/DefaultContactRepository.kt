@@ -32,4 +32,22 @@ class DefaultContactRepository
             }
             Timber.d("Contact saved, favorite=%b, ignored=%b", isFavorite, isIgnored)
         }
+
+        override suspend fun getOrCreateContactId(publicKey: String): InsertResult {
+            contactDao.getByPublicKey(publicKey)?.let { return InsertResult.Success(it.id) }
+            val record = ContactRecord(publicKey = publicKey, name = null, isFavorite = false, isIgnored = false)
+            return try {
+                val id = contactDao.insert(record)
+                Timber.d("Created contact %d", id)
+                InsertResult.Success(id.toInt())
+            } catch (e: SQLiteConstraintException) {
+                // Another caller inserted the same key between the lookup and the insert.
+                val anotherAttempt = contactDao.getByPublicKey(publicKey)
+                if (anotherAttempt != null) {
+                    InsertResult.Success(anotherAttempt.id)
+                } else {
+                    InsertResult.Error(e)
+                }
+            }
+        }
     }
