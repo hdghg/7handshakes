@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.play.services.code.scanner)
     implementation(libs.androidx.test.espresso.idling.resources)
 
+    implementation(libs.androidx.dataStore.preferences)
+
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)

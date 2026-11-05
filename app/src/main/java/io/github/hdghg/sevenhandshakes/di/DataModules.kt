@@ -1,6 +1,10 @@
 package io.github.hdghg.sevenhandshakes.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import dagger.Binds
 import dagger.Module
@@ -12,8 +16,10 @@ import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
+import io.github.hdghg.sevenhandshakes.data.DefaultSelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
@@ -34,6 +40,23 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindIdentityRepository(repository: DefaultIdentityRepository): IdentityRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindSelectedIdentityRepository(repository: DefaultSelectedIdentityRepository): SelectedIdentityRepository
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DataStoreModule {
+    // Only one DataStore instance may exist per file, hence the singleton.
+    @Singleton
+    @Provides
+    fun providePreferencesDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> = PreferenceDataStoreFactory.create {
+        context.applicationContext.preferencesDataStoreFile("settings")
+    }
 }
 
 @Module

@@ -17,7 +17,7 @@
     <string name="menu_delete_task">Delete task</string>
     <string name="menu_complete_gratitude">Complete</string>
     <string name="menu_more">More</string>
-    <string name="navigation_view_header_title">Todo</string>
+    <string name="navigation_view_header_title">Nav drawer title</string>
     <string name="title_hint">Title</string>
     <string name="description_hint">Enter your task here.</string>
     <string name="cd_save_task">Save task</string>
@@ -37,6 +37,9 @@
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>
     <string name="add_identity">Add Identity</string>
+    <string name="identities_selected">Selected Identity</string>
+    <string name="identities_others">Other Identities</string>
+    <string name="identity_select">Select</string>
     <string name="identity_private_key">Private key</string>
     <string name="identity_private_key_invalid">Not a valid Ed25519 private key</string>
     <string name="identity_private_key_encrypted">Passphrase-protected keys are not supported. Remove the passphrase first: ssh-keygen -p -f &lt;key file&gt;</string>

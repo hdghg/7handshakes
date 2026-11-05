@@ -18,6 +18,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,10 +46,12 @@ fun IdentitiesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     IdentitiesContent(
-        identities = uiState.items,
+        selected = uiState.selected,
+        others = uiState.others,
         isLoading = uiState.isLoading,
         openDrawer = openDrawer,
         addIdentity = addIdentity,
+        selectIdentity = viewModel::selectIdentity,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -56,10 +59,12 @@ fun IdentitiesScreen(
 
 @Composable
 private fun IdentitiesContent(
-    identities: List<IdentityWithContact>,
+    selected: IdentityWithContact?,
+    others: List<IdentityWithContact>,
     isLoading: Boolean,
     openDrawer: () -> Unit,
     addIdentity: () -> Unit,
+    selectIdentity: (Int) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -73,7 +78,7 @@ private fun IdentitiesContent(
             }
         },
     ) { paddingValues ->
-        if (identities.isEmpty() && !isLoading) {
+        if (selected == null && !isLoading) {
             Text(
                 text = stringResource(id = R.string.identities_empty),
                 modifier = Modifier
@@ -82,8 +87,25 @@ private fun IdentitiesContent(
             )
         } else {
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                items(identities, key = { it.identity.id }) { item ->
-                    IdentityItem(item)
+                if (selected != null) {
+                    item(key = "selected_header") {
+                        SectionHeader(stringResource(id = R.string.identities_selected))
+                    }
+                    item(key = selected.identity.id) {
+                        IdentityItem(selected)
+                    }
+                }
+                if (others.isNotEmpty()) {
+                    item(key = "others_header") {
+                        SectionHeader(stringResource(id = R.string.identities_others))
+                    }
+                    items(others, key = { it.identity.id }) { item ->
+                        IdentityItem(item) {
+                            TextButton(onClick = { selectIdentity(item.identity.id) }) {
+                                Text(stringResource(id = R.string.identity_select))
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -94,7 +116,10 @@ private fun IdentitiesContent(
  * Shows the linked contact's name and public key. The private key is never displayed.
  */
 @Composable
-private fun IdentityItem(item: IdentityWithContact) {
+private fun IdentityItem(
+    item: IdentityWithContact,
+    action: @Composable () -> Unit = {},
+) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -119,7 +144,21 @@ private fun IdentityItem(item: IdentityWithContact) {
                 overflow = TextOverflow.Ellipsis,
             )
         }
+        action()
     }
+}
+
+@Composable
+private fun SectionHeader(text: String) {
+    val margin = dimensionResource(id = R.dimen.horizontal_margin)
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = margin, end = margin, top = margin, bottom = margin / 4),
+    )
 }
 
 @Preview
@@ -127,11 +166,11 @@ private fun IdentityItem(item: IdentityWithContact) {
 fun IdentitiesScreenPreview() {
     Surface {
         IdentitiesContent(
-            identities = listOf(
-                IdentityWithContact(
-                    identity = IdentityRecord(id = 1, privateKey = "priv1", contactId = 1),
-                    contact = ContactRecord(id = 1, publicKey = "MCowBQYDK2VwAyEAabc", name = "Me", isFavorite = false, isIgnored = false),
-                ),
+            selected = IdentityWithContact(
+                identity = IdentityRecord(id = 1, privateKey = "priv1", contactId = 1),
+                contact = ContactRecord(id = 1, publicKey = "MCowBQYDK2VwAyEAabc", name = "Me", isFavorite = false, isIgnored = false),
+            ),
+            others = listOf(
                 IdentityWithContact(
                     identity = IdentityRecord(id = 2, privateKey = "priv2", contactId = 2),
                     contact = ContactRecord(id = 2, publicKey = "MCowBQYDK2VwAyEAdef", name = null, isFavorite = false, isIgnored = false),
@@ -140,6 +179,7 @@ fun IdentitiesScreenPreview() {
             isLoading = false,
             openDrawer = {},
             addIdentity = {},
+            selectIdentity = {},
         )
     }
 }
