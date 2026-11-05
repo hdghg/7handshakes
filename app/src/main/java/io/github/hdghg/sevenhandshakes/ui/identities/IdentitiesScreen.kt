@@ -9,9 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -36,6 +38,7 @@ import io.github.hdghg.sevenhandshakes.ui.IdentitiesTopAppBar
 @Composable
 fun IdentitiesScreen(
     openDrawer: () -> Unit,
+    addIdentity: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: IdentitiesViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -45,6 +48,7 @@ fun IdentitiesScreen(
         identities = uiState.items,
         isLoading = uiState.isLoading,
         openDrawer = openDrawer,
+        addIdentity = addIdentity,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -55,6 +59,7 @@ private fun IdentitiesContent(
     identities: List<IdentityWithContact>,
     isLoading: Boolean,
     openDrawer: () -> Unit,
+    addIdentity: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -62,6 +67,11 @@ private fun IdentitiesContent(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = { IdentitiesTopAppBar(openDrawer) },
+        floatingActionButton = {
+            SmallFloatingActionButton(onClick = addIdentity) {
+                Icon(Icons.Filled.Add, stringResource(id = R.string.add_identity))
+            }
+        },
     ) { paddingValues ->
         if (identities.isEmpty() && !isLoading) {
             Text(
@@ -129,6 +139,7 @@ fun IdentitiesScreenPreview() {
             ),
             isLoading = false,
             openDrawer = {},
+            addIdentity = {},
         )
     }
 }

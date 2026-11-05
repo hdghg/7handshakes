@@ -18,6 +18,9 @@ class DefaultContactRepository
         override fun getContactsStream(): Flow<List<ContactRecord>> =
             contactDao.observeAll().onEach { Timber.d("Loaded %d contacts from DB", it.size) }
 
+        override suspend fun getContactByPublicKey(publicKey: String): ContactRecord? =
+            contactDao.getByPublicKey(publicKey)
+
         override suspend fun addContact(publicKey: String, name: String?, isFavorite: Boolean, isIgnored: Boolean) {
             val record = ContactRecord(
                 publicKey = publicKey,

@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface ContactRepository {
     fun getContactsStream(): Flow<List<ContactRecord>>
 
+    /** Returns the contact with [publicKey], or null if there is none. */
+    suspend fun getContactByPublicKey(publicKey: String): ContactRecord?
+
     /**
      * Saves a new contact.
      * @throws DuplicateContactException if a contact with the same public key already exists.

@@ -19,6 +19,7 @@ private object MyScreens {
     const val CONTACTS_SCREEN = "contacts"
     const val ADD_CONTACT_SCREEN = "addContact"
     const val IDENTITIES_SCREEN = "identities"
+    const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
 }
 
 /**
@@ -39,6 +40,7 @@ object MyAppDestinations {
     const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
     const val ADD_CONTACT_ROUTE = MyScreens.ADD_CONTACT_SCREEN
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
+    const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
 }
 
 /**
@@ -69,6 +71,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    fun navigateToAddEditIdentity() {
+        navController.navigate(MyAppDestinations.ADD_EDIT_IDENTITY_ROUTE)
     }
 
     fun navigateToAddContact() {

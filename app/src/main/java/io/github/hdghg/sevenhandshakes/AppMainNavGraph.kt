@@ -20,6 +20,7 @@ import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
+import io.github.hdghg.sevenhandshakes.ui.addeditidentity.AddEditIdentityScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -64,6 +65,14 @@ fun AppMainNavGraph(
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 IdentitiesScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
+                    addIdentity = { navActions.navigateToAddEditIdentity() },
+                )
+            }
+        }
+        composable(MyAppDestinations.ADD_EDIT_IDENTITY_ROUTE) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                AddEditIdentityScreen(
+                    onBack = { navController.popBackStack() },
                 )
             }
         }

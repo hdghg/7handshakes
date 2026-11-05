@@ -60,6 +60,19 @@ fun IdentitiesTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
+fun AddEditIdentityTopAppBar(onBack: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.add_identity)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun NewContactTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.new_contact)) },

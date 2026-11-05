@@ -36,6 +36,13 @@
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>
+    <string name="add_identity">Add Identity</string>
+    <string name="identity_private_key">Private key</string>
+    <string name="identity_private_key_invalid">Not a valid Ed25519 private key</string>
+    <string name="identity_generate">Generate</string>
+    <string name="identity_public_key">Public key</string>
+    <string name="identity_name">Name</string>
+    <string name="identity_name_required">Name is required</string>
     <string name="menu_save_contact">Save contact</string>
     <string name="new_contact_public_key">Public key:</string>
     <string name="new_contact_name">Name (optional):</string>
