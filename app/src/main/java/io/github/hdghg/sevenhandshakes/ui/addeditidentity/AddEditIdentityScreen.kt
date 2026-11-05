@@ -12,10 +12,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,32 +33,52 @@ import io.github.hdghg.sevenhandshakes.ui.AddEditIdentityTopAppBar
 @Composable
 fun AddEditIdentityScreen(
     onBack: () -> Unit,
+    onComplete: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddEditIdentityViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AddEditIdentityContent(
         uiState = uiState,
         onBack = onBack,
+        onSave = viewModel::complete,
         onPrivateKeyChange = viewModel::updatePrivateKey,
         onGenerate = viewModel::generatePrivateKey,
         onNameChange = viewModel::updateName,
         modifier = modifier,
+        snackbarHostState = snackbarHostState,
     )
+
+    uiState.userMessage?.let { messageId ->
+        val message = stringResource(id = messageId)
+        LaunchedEffect(messageId, message) {
+            snackbarHostState.showSnackbar(message)
+            viewModel.userMessageShown()
+        }
+    }
+    LaunchedEffect(uiState.editComplete) {
+        if (uiState.editComplete) {
+            onComplete()
+        }
+    }
 }
 
 @Composable
 private fun AddEditIdentityContent(
     uiState: AddEditIdentityUiState,
     onBack: () -> Unit,
+    onSave: () -> Unit,
     onPrivateKeyChange: (String) -> Unit,
     onGenerate: () -> Unit,
     onNameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { AddEditIdentityTopAppBar(onBack = onBack) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = { AddEditIdentityTopAppBar(onBack = onBack, onComplete = onSave) },
     ) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.Start,
@@ -73,12 +97,17 @@ private fun AddEditIdentityContent(
                     onValueChange = onPrivateKeyChange,
                     label = { Text(stringResource(id = R.string.identity_private_key)) },
                     isError = uiState.isPrivateKeyError,
-                    supportingText = if (uiState.isPrivateKeyError) {
-                        { Text(stringResource(id = R.string.identity_private_key_invalid)) }
-                    } else {
-                        null
+                    supportingText = when {
+                        uiState.isPrivateKeyEncrypted -> {
+                            { Text(stringResource(id = R.string.identity_private_key_encrypted)) }
+                        }
+                        uiState.isPrivateKeyError -> {
+                            { Text(stringResource(id = R.string.identity_private_key_invalid)) }
+                        }
+                        else -> null
                     },
-                    singleLine = true,
+                    // Multi-line so pasted PEM / OpenSSH keys stay readable.
+                    maxLines = 4,
                     modifier = Modifier.weight(1f),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
@@ -125,6 +154,7 @@ fun AddEditIdentityScreenPreview() {
                 name = "",
             ),
             onBack = {},
+            onSave = {},
             onPrivateKeyChange = {},
             onGenerate = {},
             onNameChange = {},

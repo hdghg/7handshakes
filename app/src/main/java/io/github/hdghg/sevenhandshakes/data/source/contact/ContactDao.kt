@@ -17,6 +17,9 @@ interface ContactDao {
     @Upsert
     suspend fun upsert(record: ContactRecord)
 
+    @Query("UPDATE contact SET name = :name WHERE id = :id")
+    suspend fun updateName(id: Int, name: String?)
+
     /**
      * Returns the new row id.
      * Fails with SQLiteConstraintException if a contact with the same publicKey already exists.

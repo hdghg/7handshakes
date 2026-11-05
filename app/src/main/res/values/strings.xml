@@ -39,10 +39,14 @@
     <string name="add_identity">Add Identity</string>
     <string name="identity_private_key">Private key</string>
     <string name="identity_private_key_invalid">Not a valid Ed25519 private key</string>
+    <string name="identity_private_key_encrypted">Passphrase-protected keys are not supported. Remove the passphrase first: ssh-keygen -p -f &lt;key file&gt;</string>
     <string name="identity_generate">Generate</string>
     <string name="identity_public_key">Public key</string>
     <string name="identity_name">Name</string>
     <string name="identity_name_required">Name is required</string>
+    <string name="menu_save_identity">Save identity</string>
+    <string name="identity_cannot_save">Enter a valid private key and a name</string>
+    <string name="identity_duplicate">This identity already exists</string>
     <string name="menu_save_contact">Save contact</string>
     <string name="new_contact_public_key">Public key:</string>
     <string name="new_contact_name">Name (optional):</string>

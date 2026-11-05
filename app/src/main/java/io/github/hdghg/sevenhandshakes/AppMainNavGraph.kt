@@ -73,6 +73,7 @@ fun AppMainNavGraph(
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 AddEditIdentityScreen(
                     onBack = { navController.popBackStack() },
+                    onComplete = { navController.popBackStack() },
                 )
             }
         }

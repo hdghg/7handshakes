@@ -12,9 +12,8 @@ interface ContactRepository {
 
     /**
      * Saves a new contact.
-     * @throws DuplicateContactException if a contact with the same public key already exists.
      */
-    suspend fun addContact(publicKey: String, name: String?, isFavorite: Boolean, isIgnored: Boolean)
+    suspend fun addContact(publicKey: String, name: String?, isFavorite: Boolean, isIgnored: Boolean): AddContactResult
 
     /**
      * Returns the id of the contact with [publicKey], creating an unnamed contact first if none exists.
@@ -28,4 +27,9 @@ sealed interface InsertResult {
     class Error(val e: SQLiteConstraintException) : InsertResult
 }
 
-class DuplicateContactException(publicKey: String) : Exception("Contact with public key $publicKey already exists")
+sealed interface AddContactResult {
+    data class Success(val id: Int) : AddContactResult
+
+    /** A contact with the same public key already exists. Nothing was saved. */
+    data object Duplicate : AddContactResult
+}

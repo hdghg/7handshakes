@@ -12,6 +12,9 @@ interface IdentityDao {
     @Query("SELECT * FROM identity ORDER BY id ASC")
     fun observeAllWithContact(): Flow<List<IdentityWithContact>>
 
+    @Query("SELECT EXISTS(SELECT 1 FROM identity WHERE privateKey = :privateKey)")
+    suspend fun existsByPrivateKey(privateKey: String): Boolean
+
     /**
      * Returns the new row id.
      * Fails with SQLiteConstraintException if the private key already exists or the contact does not.

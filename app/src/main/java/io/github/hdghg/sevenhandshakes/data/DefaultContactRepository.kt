@@ -21,19 +21,27 @@ class DefaultContactRepository
         override suspend fun getContactByPublicKey(publicKey: String): ContactRecord? =
             contactDao.getByPublicKey(publicKey)
 
-        override suspend fun addContact(publicKey: String, name: String?, isFavorite: Boolean, isIgnored: Boolean) {
+        override suspend fun addContact(
+            publicKey: String,
+            name: String?,
+            isFavorite: Boolean,
+            isIgnored: Boolean,
+        ): AddContactResult {
             val record = ContactRecord(
                 publicKey = publicKey,
                 name = name,
                 isFavorite = isFavorite,
                 isIgnored = isIgnored,
             )
-            try {
-                contactDao.insert(record)
+            // publicKey is the only unique column, so a constraint failure means a duplicate.
+            val id = try {
+                contactDao.insert(record).toInt()
             } catch (e: SQLiteConstraintException) {
-                throw DuplicateContactException(publicKey).apply { initCause(e) }
+                Timber.w(e, "Contact already exists")
+                return AddContactResult.Duplicate
             }
             Timber.d("Contact saved, favorite=%b, ignored=%b", isFavorite, isIgnored)
+            return AddContactResult.Success(id)
         }
 
         override suspend fun getOrCreateContactId(publicKey: String): InsertResult {

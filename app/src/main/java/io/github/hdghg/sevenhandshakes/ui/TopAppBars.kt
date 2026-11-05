@@ -60,12 +60,17 @@ fun IdentitiesTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
-fun AddEditIdentityTopAppBar(onBack: () -> Unit) {
+fun AddEditIdentityTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.add_identity)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        actions = {
+            IconButton(onClick = onComplete) {
+                Icon(Icons.Filled.Check, stringResource(id = R.string.menu_save_identity))
             }
         },
         modifier = Modifier.fillMaxWidth(),

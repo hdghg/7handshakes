@@ -4,14 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.data.AddContactResult
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
-import io.github.hdghg.sevenhandshakes.data.DuplicateContactException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class NewContactUiState(
@@ -71,18 +70,17 @@ class NewContactViewModel
             }
             _uiState.update { it.copy(isSaving = true) }
             viewModelScope.launch {
-                try {
-                    contactRepository.addContact(
-                        publicKey = publicKey,
-                        name = state.name.trim().ifEmpty { null },
-                        isFavorite = state.isFavorite,
-                        isIgnored = state.isIgnored,
-                    )
-                    _uiState.update { it.copy(isSaving = false, editComplete = true) }
-                } catch (e: DuplicateContactException) {
-                    Timber.w(e, "Contact already exists")
-                    _uiState.update {
-                        it.copy(isSaving = false, userMessage = R.string.new_contact_duplicate)
+                val result = contactRepository.addContact(
+                    publicKey = publicKey,
+                    name = state.name.trim().ifEmpty { null },
+                    isFavorite = state.isFavorite,
+                    isIgnored = state.isIgnored,
+                )
+                _uiState.update {
+                    when (result) {
+                        is AddContactResult.Success -> it.copy(isSaving = false, editComplete = true)
+                        AddContactResult.Duplicate ->
+                            it.copy(isSaving = false, userMessage = R.string.new_contact_duplicate)
                     }
                 }
             }
