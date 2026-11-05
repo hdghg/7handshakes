@@ -47,6 +47,19 @@ fun ContactsTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
+fun IdentitiesTopAppBar(openDrawer: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.identities_title)) },
+        navigationIcon = {
+            IconButton(onClick = openDrawer) {
+                Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun NewContactTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.new_contact)) },

@@ -33,6 +33,9 @@
     <string name="contact_unnamed">Unnamed contact</string>
     <string name="contact_favorite">Favorite</string>
     <string name="new_contact">New Contact</string>
+    <string name="identities_title">Identities</string>
+    <string name="identities_empty">You have no identities.</string>
+    <string name="identity_unnamed">Unnamed identity</string>
     <string name="menu_save_contact">Save contact</string>
     <string name="new_contact_public_key">Public key:</string>
     <string name="new_contact_name">Name (optional):</string>

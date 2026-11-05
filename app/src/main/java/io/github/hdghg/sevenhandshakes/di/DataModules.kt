@@ -10,11 +10,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultContactRepository
+import io.github.hdghg.sevenhandshakes.data.DefaultIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
+import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
+import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityDao
 import javax.inject.Singleton
 
 @Module
@@ -27,6 +30,10 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindContactRepository(repository: DefaultContactRepository): ContactRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindIdentityRepository(repository: DefaultIdentityRepository): IdentityRepository
 }
 
 @Module
@@ -49,4 +56,7 @@ object DatabaseModule {
 
     @Provides
     fun provideContactDao(database: ReviewDatabase): ContactDao = database.contactDao()
+
+    @Provides
+    fun provideIdentityDao(database: ReviewDatabase): IdentityDao = database.identityDao()
 }
