@@ -2,6 +2,7 @@ package io.github.hdghg.sevenhandshakes.ui.newgratitude
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -65,16 +66,10 @@ fun NewGratitudeScreen(
             horizontalAlignment = Alignment.Start,
             modifier = modifier.padding(paddingValues),
         ) {
-            Text(
-                "Your comment:",
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-            )
             OutlinedTextField(
                 value = uiState.text,
                 onValueChange = viewModel::updateText,
+                label = { Text("Your comment") },
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -137,14 +132,8 @@ fun NewGratitudeScreen(
                     }
                 }
             }
-            Text(
-                "Receiver:",
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-            )
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -152,14 +141,25 @@ fun NewGratitudeScreen(
             ) {
                 OutlinedTextField(
                     value = uiState.receiver,
+                    label = { Text("Receiver") },
                     onValueChange = viewModel::updateReceiver,
                     modifier = Modifier.weight(1f),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Button(
-                    onClick = scanQr,
-                ) {
-                    Text("Scan QR")
+                // Stacked so the receiver field keeps a usable width on phones.
+                Column(modifier = Modifier.width(IntrinsicSize.Max)) {
+                    Button(
+                        onClick = scanQr,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("Scan QR")
+                    }
+                    Button(
+                        onClick = { /* TODO: pick receiver from contacts */ },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("From contacts")
+                    }
                 }
             }
             uiState.userMessage?.let { messageId ->
