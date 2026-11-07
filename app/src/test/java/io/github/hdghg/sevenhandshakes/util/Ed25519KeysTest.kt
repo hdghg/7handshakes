@@ -86,6 +86,20 @@ class Ed25519KeysTest {
     }
 
     @Test
+    fun isValidPublicKey() {
+        val publicKey = "MCowBQYDK2VwAyEAGb9ECWmEzf6FQbrBZ9w7lshQhqowtrbLDFw4rXAxZuE="
+        assertThat(Ed25519Keys.isValidPublicKey(publicKey)).isTrue()
+        assertThat(Ed25519Keys.isValidPublicKey(" $publicKey\n")).isTrue()
+        assertThat(Ed25519Keys.isValidPublicKey(Ed25519Keys.publicKeyOf(Ed25519Keys.generatePrivateKey())!!)).isTrue()
+
+        assertThat(Ed25519Keys.isValidPublicKey("")).isFalse()
+        assertThat(Ed25519Keys.isValidPublicKey("not base64 !!")).isFalse()
+        assertThat(Ed25519Keys.isValidPublicKey("AAAA")).isFalse()
+        // A private key is not a public key.
+        assertThat(Ed25519Keys.isValidPublicKey("MC4CAQAwBQYDK2VwBCIEINTuctv5E1hK1bbY8fdp+K06/nwoy/HU++CXqI9EdVhC")).isFalse()
+    }
+
+    @Test
     fun invalidInput_returnsNull() {
         assertThat(Ed25519Keys.publicKeyOf("")).isNull()
         assertThat(Ed25519Keys.publicKeyOf("not base64 !!")).isNull()

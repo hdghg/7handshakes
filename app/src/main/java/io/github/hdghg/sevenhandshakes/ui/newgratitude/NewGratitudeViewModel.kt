@@ -7,9 +7,14 @@ import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.InsertResult
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
+import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -20,6 +25,8 @@ data class NewGratitudeUiState(
     val bytesSpentText: Int = 0,
     val receiver: String = "",
     val bytesSpentReceiver: Int = 0,
+    /** True when [receiver] is filled in but is not a valid Ed25519 public key. */
+    val isReceiverInvalid: Boolean = false,
     val stars: Int = 2,
     val isSaving: Boolean = false,
     /** String resource id of an error to show once, or null. */
@@ -37,6 +44,18 @@ class NewGratitudeViewModel
         private val _uiState = MutableStateFlow(NewGratitudeUiState())
 
         val uiState: StateFlow<NewGratitudeUiState> = _uiState.asStateFlow()
+
+        /** Contacts the receiver can be picked from. Ignored contacts are left out. */
+        val contacts: StateFlow<List<ContactRecord>> =
+            contactRepository
+                .getContactsStream()
+                .map { list -> list.filterNot { it.isIgnored } }
+                .map { list -> list.filterNot { it.name == null } }
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = emptyList(),
+                )
 
         fun updateText(newText: String) {
             val size = newText.toByteArray().size
@@ -60,6 +79,7 @@ class NewGratitudeViewModel
                 it.copy(
                     receiver = newReceiver,
                     bytesSpentReceiver = size,
+                    isReceiverInvalid = newReceiver.isNotBlank() && !Ed25519Keys.isValidPublicKey(newReceiver),
                 )
             }
         }

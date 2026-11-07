@@ -7,8 +7,10 @@ import org.bouncycastle.asn1.x509.AlgorithmIdentifier
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
 import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
+import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import org.bouncycastle.crypto.util.OpenSSHPrivateKeyUtil
 import org.bouncycastle.crypto.util.PrivateKeyFactory
+import org.bouncycastle.crypto.util.PublicKeyFactory
 import org.bouncycastle.crypto.util.SubjectPublicKeyInfoFactory
 import org.bouncycastle.util.encoders.Base64
 import java.security.SecureRandom
@@ -40,6 +42,20 @@ object Ed25519Keys {
         val params = parsePrivateKey(privateKey) ?: return null
         val publicKeyInfo = SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(params.generatePublicKey())
         return Base64.toBase64String(publicKeyInfo.encoded)
+    }
+
+    /**
+     * True if [publicKey] is a Base64 X.509 SubjectPublicKeyInfo Ed25519 public key
+     * (the app's public key format). Surrounding whitespace is ignored.
+     */
+    fun isValidPublicKey(publicKey: String): Boolean {
+        val bytes = decodeBase64(publicKey.trim()) ?: return false
+        val params = try {
+            PublicKeyFactory.createKey(bytes)
+        } catch (e: Exception) {
+            return false
+        }
+        return params is Ed25519PublicKeyParameters
     }
 
     /**

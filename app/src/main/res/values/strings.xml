@@ -28,6 +28,10 @@
     <string name="new_gratitude">New Gratitude</string>
     <string name="new_gratitude_empty_receiver">Receiver cannot be empty</string>
     <string name="new_gratitude_cannot_create_contact">Contact could not be created</string>
+    <string name="new_gratitude_invalid_receiver">Not a valid Ed25519 public key</string>
+    <string name="new_gratitude_pick_contact">Choose receiver</string>
+    <string name="new_gratitude_no_contacts">You have no contacts to choose from.</string>
+    <string name="cancel">Cancel</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_empty">You have no contacts.</string>
     <string name="contact_unnamed">Unnamed contact</string>
