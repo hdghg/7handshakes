@@ -1,10 +1,13 @@
 package io.github.hdghg.sevenhandshakes.ui.contactdetail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -18,26 +21,24 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.ui.RateStar
 
 @Composable
@@ -127,70 +128,81 @@ private fun Field(label: String, content: @Composable () -> Unit) {
     }
 }
 
-/** One row per rate level: received from this contact, given to it, and received minus given. */
+/**
+ * One column per rate level, diamond first. Each shows its star and received minus given below it.
+ * Tapping the table reveals or hides the received and given counts.
+ */
 @Composable
 private fun ReviewExchangeTable(exchange: ReviewExchange) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    Column(modifier = Modifier.fillMaxWidth().padding(top = margin / 2)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(RateColumnWidth))
-            HeaderCell(stringResource(id = R.string.contact_reviews_received))
-            HeaderCell(stringResource(id = R.string.contact_reviews_given))
-            HeaderCell(stringResource(id = R.string.contact_reviews_difference))
-        }
-        HorizontalDivider(modifier = Modifier.padding(vertical = margin / 4))
-        RATE_LEVELS.forEach { level ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = margin / 4),
-            ) {
-                Box(modifier = Modifier.width(RateColumnWidth)) {
-                    RateStar(rate = level)
-                }
-                NumberCell(exchange.receivedOf(level).toString())
-                NumberCell(exchange.givenOf(level).toString())
-                val difference = exchange.differenceOf(level)
-                NumberCell(
-                    text = formatDifference(difference),
-                    color = when {
-                        difference > 0 -> MaterialTheme.colorScheme.secondary
-                        difference < 0 -> MaterialTheme.colorScheme.error
-                        else -> MaterialTheme.colorScheme.onSurface
-                    },
+    var showDetails by rememberSaveable { mutableStateOf(false) }
+    val toggleLabel = stringResource(
+        id = if (showDetails) R.string.contact_reviews_hide_details else R.string.contact_reviews_show_details,
+    )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = margin / 2)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(onClickLabel = toggleLabel) { showDetails = !showDetails }
+            .padding(vertical = margin / 2),
+    ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            RATE_LEVELS.sortedDescending().forEach { level ->
+                RateColumn(
+                    level = level,
+                    exchange = exchange,
+                    showDetails = showDetails,
+                    modifier = Modifier.weight(1f),
                 )
+            }
+        }
+        Text(
+            text = toggleLabel,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = margin / 2),
+        )
+    }
+}
+
+@Composable
+private fun RateColumn(level: Byte, exchange: ReviewExchange, showDetails: Boolean, modifier: Modifier = Modifier) {
+    val difference = exchange.differenceOf(level)
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+        RateStar(rate = level, modifier = Modifier.size(32.dp))
+        Text(
+            text = formatDifference(difference),
+            style = MaterialTheme.typography.titleMedium,
+            color = when {
+                difference > 0 -> MaterialTheme.colorScheme.secondary
+                difference < 0 -> MaterialTheme.colorScheme.error
+                else -> MaterialTheme.colorScheme.onSurface
+            },
+        )
+        AnimatedVisibility(visible = showDetails) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.receivedOf(level)))
+                DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.givenOf(level)))
             }
         }
     }
 }
 
-private val RateColumnWidth = 48.dp
+@Composable
+private fun DetailLine(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
 
 private fun formatDifference(value: Int): String = when {
     value > 0 -> "+$value"
     value < 0 -> "−${-value}"
     else -> "0"
-}
-
-@Composable
-private fun RowScope.HeaderCell(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.End,
-        modifier = Modifier.weight(1f),
-    )
-}
-
-@Composable
-private fun RowScope.NumberCell(text: String, color: Color = MaterialTheme.colorScheme.onSurface) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge,
-        color = color,
-        textAlign = TextAlign.End,
-        modifier = Modifier.weight(1f),
-    )
 }
 
 @Composable

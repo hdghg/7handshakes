@@ -34,6 +34,10 @@
     <string name="new_gratitude_no_contacts">You have no contacts to choose from.</string>
     <string name="cancel">Cancel</string>
     <string name="feed_show_all">Show all reviews</string>
+    <string name="new_gratitude_stars">Stars</string>
+    <string name="rate_diamond">Diamond</string>
+    <string name="rate_gold">Gold</string>
+    <string name="rate_silver">Silver</string>
     <string name="feed_rate_silver">Silver star: small gratitude</string>
     <string name="feed_rate_gold">Gold star: usual gratitude</string>
     <string name="feed_rate_diamond">Diamond star: outstanding gratitude</string>
@@ -52,9 +56,10 @@
     <string name="contact_public_key">Public key</string>
     <string name="contact_ignored">Ignored</string>
     <string name="contact_reviews">Reviews with your selected identity</string>
-    <string name="contact_reviews_received">Received</string>
-    <string name="contact_reviews_given">Given</string>
-    <string name="contact_reviews_difference">Difference</string>
+    <string name="contact_reviews_received_count">Received: %1$d</string>
+    <string name="contact_reviews_given_count">Given: %1$d</string>
+    <string name="contact_reviews_show_details">Tap to show received and given</string>
+    <string name="contact_reviews_hide_details">Tap to hide received and given</string>
     <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
