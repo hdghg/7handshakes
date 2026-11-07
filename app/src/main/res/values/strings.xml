@@ -55,7 +55,18 @@
     <string name="contact_name">Name</string>
     <string name="contact_public_key">Public key</string>
     <string name="contact_ignored">Ignored</string>
-    <string name="contact_reviews">Reviews with your selected identity</string>
+    <string-array name="handshake_rating_titles">
+        <item>One handshake rating</item>
+        <item>Two handshakes rating</item>
+        <item>Three handshakes rating</item>
+        <item>Four handshakes rating</item>
+        <item>Five handshakes rating</item>
+        <item>Six handshakes rating</item>
+        <item>Seven handshakes rating</item>
+    </string-array>
+    <string name="handshake_rating_title_n">%1$d handshakes rating</string>
+    <string name="handshake_rating_calculating">Calculating…</string>
+    <string name="handshake_rating_waiting">Waiting for the previous rating</string>
     <string name="contact_reviews_received_count">Received: %1$d</string>
     <string name="contact_reviews_given_count">Given: %1$d</string>
     <string name="contact_reviews_show_details">Tap to show received and given</string>

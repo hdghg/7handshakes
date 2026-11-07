@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
+import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKES
+import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
@@ -19,32 +21,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-
-/**
- * Review counts between this contact and the selected identity, keyed by rate level.
- * Levels without reviews are absent.
- */
-data class ReviewExchange(
-    /** Reviews this contact wrote to the selected identity. */
-    val received: Map<Byte, Int> = emptyMap(),
-    /** Reviews the selected identity wrote to this contact. */
-    val given: Map<Byte, Int> = emptyMap(),
-) {
-    fun receivedOf(level: Byte): Int = received[level] ?: 0
-
-    fun givenOf(level: Byte): Int = given[level] ?: 0
-
-    /** Received minus given: positive means this contact thanked you more often than you thanked them. */
-    fun differenceOf(level: Byte): Int = receivedOf(level) - givenOf(level)
-}
 
 data class ContactDetailUiState(
     val contact: ContactRecord? = null,
     val isLoading: Boolean = false,
-    /** Null when there is no identity to compare against. */
-    val exchange: ReviewExchange? = null,
+    /**
+     * Handshake ratings calculated so far: index 0 is one handshake, index 1 two handshakes, and so on.
+     * Levels past the end of the list are still waiting. Null when there is no identity to compare against.
+     */
+    val handshakeRatings: List<ReviewExchange>? = null,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -53,7 +41,7 @@ class ContactDetailViewModel
     @Inject
     constructor(
         contactRepository: ContactRepository,
-        reviewRepository: ReviewRepository,
+        private val reviewRepository: ReviewRepository,
         identityRepository: IdentityRepository,
         selectedIdentityRepository: SelectedIdentityRepository,
         savedStateHandle: SavedStateHandle,
@@ -68,24 +56,39 @@ class ContactDetailViewModel
                 selectedIdentityOf(identities, selectedId)?.identity?.contactId
             }.distinctUntilChanged()
 
-        private val exchange: Flow<ReviewExchange?> =
+        private val handshakeRatings: Flow<List<ReviewExchange>?> =
             myContactId.flatMapLatest { me ->
-                if (me == null) {
-                    flowOf(null)
-                } else {
-                    combine(
-                        reviewRepository.getRateCountsStream(sourceContactId = contactId, targetContactId = me),
-                        reviewRepository.getRateCountsStream(sourceContactId = me, targetContactId = contactId),
-                    ) { received, given -> ReviewExchange(received = received, given = given) }
-                }
+                if (me == null) flowOf(null) else ratingsFrom(me, level = 1, previous = null, done = emptyList())
             }
 
         val uiState: StateFlow<ContactDetailUiState> =
-            combine(contactRepository.getContactStream(contactId), exchange) { contact, exchange ->
-                ContactDetailUiState(contact = contact, exchange = exchange)
+            combine(contactRepository.getContactStream(contactId), handshakeRatings) { contact, ratings ->
+                ContactDetailUiState(contact = contact, handshakeRatings = ratings)
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ContactDetailUiState(isLoading = true),
             )
+
+        /**
+         * Calculates [level] from [previous], then the next level from that result, up to [MAX_HANDSHAKES].
+         * Emits the growing list of finished levels, so each level appears as soon as it is ready.
+         * When a level emits a new value, every level after it starts over.
+         */
+        private fun ratingsFrom(
+            me: Int,
+            level: Int,
+            previous: ReviewExchange?,
+            done: List<ReviewExchange>,
+        ): Flow<List<ReviewExchange>> =
+            reviewRepository
+                .getRateCountsStream(contactId = contactId, myContactId = me, level = level, previous = previous)
+                .flatMapLatest { exchange ->
+                    val finished = done + exchange
+                    if (level >= MAX_HANDSHAKES) {
+                        flowOf(finished)
+                    } else {
+                        ratingsFrom(me, level + 1, exchange, finished).onStart { emit(finished) }
+                    }
+                }
     }

@@ -13,7 +13,9 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,6 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -30,13 +33,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKES
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
+import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
@@ -51,7 +57,7 @@ fun ContactDetailScreen(
     ContactDetailContent(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
-        exchange = uiState.exchange,
+        handshakeRatings = uiState.handshakeRatings,
         onBack = onBack,
         modifier = modifier,
     )
@@ -61,7 +67,7 @@ fun ContactDetailScreen(
 private fun ContactDetailContent(
     contact: ContactRecord?,
     isLoading: Boolean,
-    exchange: ReviewExchange?,
+    handshakeRatings: List<ReviewExchange>?,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -104,11 +110,23 @@ private fun ContactDetailContent(
             if (contact.isIgnored) {
                 Flag(Icons.Filled.Block, stringResource(id = R.string.contact_ignored), MaterialTheme.colorScheme.error)
             }
-            Field(label = stringResource(id = R.string.contact_reviews)) {
-                if (exchange == null) {
+            if (handshakeRatings == null) {
+                Field(label = handshakeTitle(level = 1)) {
                     Text(text = stringResource(id = R.string.contact_reviews_no_identity))
-                } else {
-                    ReviewExchangeTable(exchange)
+                }
+            } else {
+                for (level in 1..MAX_HANDSHAKES) {
+                    // Keyed so each table keeps its own revealed/hidden state.
+                    key(level) {
+                        Field(label = handshakeTitle(level)) {
+                            val rating = handshakeRatings.getOrNull(level - 1)
+                            when {
+                                rating != null -> ReviewExchangeTable(rating)
+                                level - 1 == handshakeRatings.size -> PendingRating(calculating = true)
+                                else -> PendingRating(calculating = false)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -199,6 +217,42 @@ private fun DetailLine(text: String) {
     )
 }
 
+/** Placeholder for a rating that is being calculated, or waiting for the previous one. */
+@Composable
+private fun PendingRating(calculating: Boolean) {
+    val margin = dimensionResource(id = R.dimen.horizontal_margin)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = margin / 2),
+    ) {
+        if (calculating) {
+            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+        } else {
+            Icon(
+                imageVector = Icons.Filled.HourglassEmpty,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(16.dp),
+            )
+        }
+        Text(
+            text = stringResource(
+                id = if (calculating) R.string.handshake_rating_calculating else R.string.handshake_rating_waiting,
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = margin / 2),
+        )
+    }
+}
+
+/** "One handshake rating", "Two handshakes rating", ...; digits past the named levels. */
+@Composable
+private fun handshakeTitle(level: Int): String {
+    val named = stringArrayResource(id = R.array.handshake_rating_titles)
+    return named.getOrNull(level - 1) ?: stringResource(id = R.string.handshake_rating_title_n, level)
+}
+
 private fun formatDifference(value: Int): String = when {
     value > 0 -> "+$value"
     value < 0 -> "−${-value}"
@@ -230,10 +284,12 @@ fun ContactDetailScreenPreview() {
                 isIgnored = true,
             ),
             isLoading = false,
-            exchange = ReviewExchange(
-                received = mapOf(1.toByte() to 4, 2.toByte() to 2, 3.toByte() to 1),
-                given = mapOf(1.toByte() to 1, 2.toByte() to 3),
-            ),
+            handshakeRatings = List(2) {
+                ReviewExchange(
+                    received = mapOf(1.toByte() to 4, 2.toByte() to 2, 3.toByte() to 1),
+                    given = mapOf(1.toByte() to 1, 2.toByte() to 3),
+                )
+            },
             onBack = {},
         )
     }

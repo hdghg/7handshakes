@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes.data
 
+import io.github.hdghg.sevenhandshakes.data.source.gratitude.RateCount
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
 import io.github.hdghg.sevenhandshakes.di.ApplicationScope
@@ -27,12 +28,23 @@ class DefaultReviewRepository
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
-        override fun getRateCountsStream(sourceContactId: Int, targetContactId: Int): Flow<Map<Byte, Int>> =
-            reviewDao.observeRateCounts(sourceContactId, targetContactId).map { counts ->
-                counts
-                    .groupBy({ rateLevelOf(it.gratitude) }, { it.count })
-                    .mapValues { (_, values) -> values.sum() }
+        override fun getRateCountsStream(
+            contactId: Int,
+            myContactId: Int,
+            level: Int,
+            previous: ReviewExchange?,
+        ): Flow<ReviewExchange> =
+            reviewDao.observeExchangeRateCounts(contactId, myContactId).map { counts ->
+                ReviewExchange(
+                    received = countsByLevel(counts.filter { it.sourceContactId == contactId }),
+                    given = countsByLevel(counts.filter { it.sourceContactId == myContactId }),
+                )
             }
+
+        private fun countsByLevel(counts: List<RateCount>): Map<Byte, Int> =
+            counts
+                .groupBy({ rateLevelOf(it.gratitude) }, { it.count })
+                .mapValues { (_, values) -> values.sum() }
 
         override suspend fun placeNewReview(
             reviewText: String,
