@@ -9,6 +9,7 @@ import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
+import io.github.hdghg.sevenhandshakes.util.UuidV7
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +49,7 @@ class FeedViewModel
                     records
                 } else {
                     records.filter { it.sourceContactId == myContactId || it.targetContactId == myContactId }
-                }
+                }.sortedByDescending { it.uuid }
                 FeedUiState(
                     showAll = showAll,
                     items =
@@ -60,6 +61,7 @@ class FeedViewModel
                                 rate = it.gratitude,
                                 sourceName = namesById[it.sourceContactId],
                                 targetName = namesById[it.targetContactId],
+                                createdAt = UuidV7.timestampOf(it.uuid),
                             )
                         },
                 )

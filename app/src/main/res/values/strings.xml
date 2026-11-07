@@ -34,6 +34,9 @@
     <string name="new_gratitude_no_contacts">You have no contacts to choose from.</string>
     <string name="cancel">Cancel</string>
     <string name="feed_show_all">Show all reviews</string>
+    <string name="feed_today">Today</string>
+    <string name="feed_yesterday">Yesterday</string>
+    <string name="feed_unknown_date">Date unknown</string>
     <string name="feed_from_to">%1$s → %2$s</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_empty">You have no contacts.</string>

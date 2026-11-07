@@ -9,4 +9,6 @@ class Review(
     val sourceName: String? = null,
     /** Name of the receiver contact, or null if it has none. */
     val targetName: String? = null,
+    /** Creation time in Unix milliseconds, read from [uuid]; null if [uuid] is not a UUIDv7. */
+    val createdAt: Long? = null,
 )
