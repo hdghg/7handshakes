@@ -7,6 +7,7 @@ import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import io.github.hdghg.sevenhandshakes.util.UuidV7
@@ -25,6 +26,13 @@ class DefaultReviewRepository
     ) : ReviewRepository {
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
+
+        override fun getRateCountsStream(sourceContactId: Int, targetContactId: Int): Flow<Map<Byte, Int>> =
+            reviewDao.observeRateCounts(sourceContactId, targetContactId).map { counts ->
+                counts
+                    .groupBy({ rateLevelOf(it.gratitude) }, { it.count })
+                    .mapValues { (_, values) -> values.sum() }
+            }
 
         override suspend fun placeNewReview(
             reviewText: String,

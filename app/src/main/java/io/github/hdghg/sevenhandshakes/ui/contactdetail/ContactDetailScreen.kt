@@ -30,6 +30,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
+import io.github.hdghg.sevenhandshakes.ui.RateStar
 
 @Composable
 fun ContactDetailScreen(
@@ -41,6 +50,7 @@ fun ContactDetailScreen(
     ContactDetailContent(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
+        exchange = uiState.exchange,
         onBack = onBack,
         modifier = modifier,
     )
@@ -50,6 +60,7 @@ fun ContactDetailScreen(
 private fun ContactDetailContent(
     contact: ContactRecord?,
     isLoading: Boolean,
+    exchange: ReviewExchange?,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,6 +103,13 @@ private fun ContactDetailContent(
             if (contact.isIgnored) {
                 Flag(Icons.Filled.Block, stringResource(id = R.string.contact_ignored), MaterialTheme.colorScheme.error)
             }
+            Field(label = stringResource(id = R.string.contact_reviews)) {
+                if (exchange == null) {
+                    Text(text = stringResource(id = R.string.contact_reviews_no_identity))
+                } else {
+                    ReviewExchangeTable(exchange)
+                }
+            }
         }
     }
 }
@@ -107,6 +125,72 @@ private fun Field(label: String, content: @Composable () -> Unit) {
         )
         content()
     }
+}
+
+/** One row per rate level: received from this contact, given to it, and received minus given. */
+@Composable
+private fun ReviewExchangeTable(exchange: ReviewExchange) {
+    val margin = dimensionResource(id = R.dimen.horizontal_margin)
+    Column(modifier = Modifier.fillMaxWidth().padding(top = margin / 2)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.width(RateColumnWidth))
+            HeaderCell(stringResource(id = R.string.contact_reviews_received))
+            HeaderCell(stringResource(id = R.string.contact_reviews_given))
+            HeaderCell(stringResource(id = R.string.contact_reviews_difference))
+        }
+        HorizontalDivider(modifier = Modifier.padding(vertical = margin / 4))
+        RATE_LEVELS.forEach { level ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = margin / 4),
+            ) {
+                Box(modifier = Modifier.width(RateColumnWidth)) {
+                    RateStar(rate = level)
+                }
+                NumberCell(exchange.receivedOf(level).toString())
+                NumberCell(exchange.givenOf(level).toString())
+                val difference = exchange.differenceOf(level)
+                NumberCell(
+                    text = formatDifference(difference),
+                    color = when {
+                        difference > 0 -> MaterialTheme.colorScheme.secondary
+                        difference < 0 -> MaterialTheme.colorScheme.error
+                        else -> MaterialTheme.colorScheme.onSurface
+                    },
+                )
+            }
+        }
+    }
+}
+
+private val RateColumnWidth = 48.dp
+
+private fun formatDifference(value: Int): String = when {
+    value > 0 -> "+$value"
+    value < 0 -> "−${-value}"
+    else -> "0"
+}
+
+@Composable
+private fun RowScope.HeaderCell(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.End,
+        modifier = Modifier.weight(1f),
+    )
+}
+
+@Composable
+private fun RowScope.NumberCell(text: String, color: Color = MaterialTheme.colorScheme.onSurface) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyLarge,
+        color = color,
+        textAlign = TextAlign.End,
+        modifier = Modifier.weight(1f),
+    )
 }
 
 @Composable
@@ -134,6 +218,10 @@ fun ContactDetailScreenPreview() {
                 isIgnored = true,
             ),
             isLoading = false,
+            exchange = ReviewExchange(
+                received = mapOf(1.toByte() to 4, 2.toByte() to 2, 3.toByte() to 1),
+                given = mapOf(1.toByte() to 1, 2.toByte() to 3),
+            ),
             onBack = {},
         )
     }
