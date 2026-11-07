@@ -5,4 +5,8 @@ class Review(
     val uuid: String, // UUIDv7
     val text: String,
     val rate: Byte,
+    /** Name of the author contact, or null if it has none. */
+    val sourceName: String? = null,
+    /** Name of the receiver contact, or null if it has none. */
+    val targetName: String? = null,
 )

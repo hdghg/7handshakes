@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,19 +84,43 @@ private fun FeedContent(
 
 @Composable
 private fun FeedItem(review: Review) {
+    val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = margin, vertical = margin / 2),
     ) {
         Icon(
             imageVector = Icons.Filled.Handshake,
             contentDescription = null,
-            modifier = Modifier.padding(end = dimensionResource(id = R.dimen.horizontal_margin)),
+            modifier = Modifier.padding(end = margin),
         )
-        Column {
-            Text(text = review.text, style = MaterialTheme.typography.headlineSmall)
-            Text(text = "★".repeat(review.rate.toInt().coerceAtLeast(0)), style = MaterialTheme.typography.bodySmall)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = review.text,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            val unnamed = stringResource(id = R.string.contact_unnamed)
+            Text(
+                text = stringResource(
+                    id = R.string.feed_from_to,
+                    review.sourceName ?: unnamed,
+                    review.targetName ?: unnamed,
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
+        Text(
+            text = "★".repeat(review.rate.toInt().coerceAtLeast(0)),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(start = margin),
+        )
     }
 }
 
@@ -105,9 +131,9 @@ fun FeedScreenPreview() {
         FeedContent(
             reviews =
                 listOf(
-                    Review(id = 1, uuid = "1", text = "Bra jobbat", rate = 3),
-                    Review(id = 2, uuid = "2", text = "Other text", rate = 2),
-                    Review(id = 3, uuid = "3", text = "kul", rate = 1),
+                    Review(id = 1, uuid = "1", text = "Bra jobbat", rate = 3, sourceName = "Me", targetName = "Alice"),
+                    Review(id = 2, uuid = "2", text = "Other text", rate = 2, sourceName = "Me", targetName = "Bob"),
+                    Review(id = 3, uuid = "3", text = "kul", rate = 1, sourceName = "Me"),
                 ),
             openDrawer = {},
             newGratitude = {},
