@@ -71,7 +71,8 @@ object DatabaseModule {
             context.applicationContext,
             ReviewDatabase::class.java,
             "Gratitudes.db",
-        ).fallbackToDestructiveMigration()
+        ).addMigrations(ReviewDatabase.MIGRATION_4_5)
+        .fallbackToDestructiveMigration()
         .build()
 
     @Provides

@@ -9,9 +9,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
+import io.github.hdghg.sevenhandshakes.util.UuidV7
 import org.bouncycastle.crypto.signers.Ed25519Signer
 import timber.log.Timber
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -53,7 +53,7 @@ class DefaultReviewRepository
 
             val r = ReviewRecord(
                 id = 0,
-                uuid = UUID.randomUUID().toString(),
+                uuid = UuidV7.generate().toString(),
                 sourceContactId = sourceContactId,
                 targetContactId = contactId,
                 text = reviewText,

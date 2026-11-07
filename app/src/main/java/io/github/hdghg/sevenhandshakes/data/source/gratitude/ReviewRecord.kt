@@ -1,10 +1,14 @@
 package io.github.hdghg.sevenhandshakes.data.source.gratitude
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-// Create unique index on uuid+sourceContactId
-@Entity(tableName = "review")
+@Entity(
+    tableName = "review",
+    // A review is identified by its uuid together with its author.
+    indices = [Index(value = ["uuid", "sourceContactId"], unique = true)],
+)
 data class ReviewRecord(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val uuid: String, // UUIDv7
