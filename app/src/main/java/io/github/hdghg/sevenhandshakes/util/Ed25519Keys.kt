@@ -83,11 +83,12 @@ object Ed25519Keys {
     }
 
     /**
+     * Parses [privateKey] for signing. Returns null if it is not a readable Ed25519 private key.
      * Accepts, ignoring whitespace and line breaks:
      * - Base64 PKCS#8, with or without the "-----BEGIN PRIVATE KEY-----" lines (`openssl genpkey`)
      * - unencrypted OpenSSH, with or without the "-----BEGIN OPENSSH PRIVATE KEY-----" lines (`ssh-keygen`)
      */
-    private fun parsePrivateKey(privateKey: String): Ed25519PrivateKeyParameters? {
+    fun parsePrivateKey(privateKey: String): Ed25519PrivateKeyParameters? {
         val bytes = decodeBase64(stripPem(privateKey)) ?: return null
         val params = try {
             if (isOpenSshBlob(bytes)) {

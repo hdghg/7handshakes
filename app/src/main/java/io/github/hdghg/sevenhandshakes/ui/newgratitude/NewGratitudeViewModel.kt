@@ -5,14 +5,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
+import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.InsertResult
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
+import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,6 +44,8 @@ class NewGratitudeViewModel
     constructor(
         private val reviewRepository: ReviewRepository,
         private val contactRepository: ContactRepository,
+        private val identityRepository: IdentityRepository,
+        private val selectedIdentityRepository: SelectedIdentityRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(NewGratitudeUiState())
 
@@ -107,6 +113,16 @@ class NewGratitudeViewModel
             Timber.d("Completing new gratitude, stars=%d", state.stars)
             _uiState.update { it.copy(isSaving = true) }
             viewModelScope.launch {
+                val author = selectedIdentityOf(
+                    identities = identityRepository.getIdentitiesStream().first(),
+                    selectedId = selectedIdentityRepository.getSelectedIdentityIdStream().first(),
+                )
+                if (author == null) {
+                    _uiState.update {
+                        it.copy(userMessage = R.string.new_gratitude_no_identity, isSaving = false)
+                    }
+                    return@launch
+                }
                 when (val res = contactRepository.getOrCreateContactId(receiverKey)) {
                     is InsertResult.Error -> {
                         Timber.e(res.e, "Failed to place review")
@@ -122,6 +138,8 @@ class NewGratitudeViewModel
                         reviewRepository.placeNewReview(
                             reviewText = state.text,
                             gratitude = state.stars.toByte(),
+                            sourceContactId = author.identity.contactId,
+                            authorPrivateKey = author.identity.privateKey,
                             contactId = res.id,
                         )
                         _uiState.update {

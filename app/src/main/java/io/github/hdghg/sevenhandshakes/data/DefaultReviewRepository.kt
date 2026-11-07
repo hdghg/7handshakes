@@ -8,12 +8,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
-import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters
-import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
+import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import org.bouncycastle.crypto.signers.Ed25519Signer
 import timber.log.Timber
-import java.security.SecureRandom
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,17 +26,24 @@ class DefaultReviewRepository
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
-        override suspend fun placeNewReview(reviewText: String, gratitude: Byte, contactId: Int) {
+        override suspend fun placeNewReview(
+            reviewText: String,
+            gratitude: Byte,
+            sourceContactId: Int,
+            authorPrivateKey: String,
+            contactId: Int,
+        ) {
             Timber.d(
-                "Placing review: %d chars, gratitude=%d, contactId=%d",
+                "Placing review: %d chars, gratitude=%d, sourceContactId=%d, contactId=%d",
                 reviewText.length,
                 gratitude,
+                sourceContactId,
                 contactId,
             )
-            val keyPairGenerator = Ed25519KeyPairGenerator()
-            keyPairGenerator.init(Ed25519KeyGenerationParameters(SecureRandom()))
-            val keyPair = keyPairGenerator.generateKeyPair()
-            val privateKey = keyPair.private as Ed25519PrivateKeyParameters
+            // Identity keys are validated when saved, so this only fails on a corrupted record.
+            val privateKey = requireNotNull(Ed25519Keys.parsePrivateKey(authorPrivateKey)) {
+                "Identity of contact $sourceContactId has an unreadable private key"
+            }
 
             val message = reviewText.toByteArray(Charsets.UTF_8)
             val signer = Ed25519Signer()
@@ -50,7 +54,7 @@ class DefaultReviewRepository
             val r = ReviewRecord(
                 id = 0,
                 uuid = UUID.randomUUID().toString(),
-                sourceContactId = 111,
+                sourceContactId = sourceContactId,
                 targetContactId = contactId,
                 text = reviewText,
                 gratitude = gratitude,

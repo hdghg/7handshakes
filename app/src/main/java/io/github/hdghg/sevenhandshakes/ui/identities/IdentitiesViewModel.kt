@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
+import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
 import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityWithContact
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,9 +32,7 @@ class IdentitiesViewModel
                 identityRepository.getIdentitiesStream(),
                 selectedIdentityRepository.getSelectedIdentityIdStream(),
             ) { identities, selectedId ->
-                // Until the user picks one (or if the stored one no longer exists),
-                // the first identity is shown as selected.
-                val selected = identities.find { it.identity.id == selectedId } ?: identities.firstOrNull()
+                val selected = selectedIdentityOf(identities, selectedId)
                 IdentitiesUiState(
                     selected = selected,
                     others = identities.filter { it !== selected },
