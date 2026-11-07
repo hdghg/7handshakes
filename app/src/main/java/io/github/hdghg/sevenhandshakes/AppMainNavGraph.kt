@@ -10,10 +10,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import io.github.hdghg.sevenhandshakes.ui.contactdetail.ContactDetailScreen
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
@@ -58,7 +61,16 @@ fun AppMainNavGraph(
                 ContactsScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newContact = { navActions.navigateToAddContact() },
+                    openContact = { contact -> navActions.navigateToContactDetail(contact.id) },
                 )
+            }
+        }
+        composable(
+            MyAppDestinations.CONTACT_DETAIL_ROUTE,
+            arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) { type = NavType.IntType }),
+        ) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ContactDetailScreen(onBack = { navController.popBackStack() })
             }
         }
         composable(MyAppDestinations.IDENTITIES_ROUTE) {

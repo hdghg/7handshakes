@@ -2,6 +2,7 @@ package io.github.hdghg.sevenhandshakes
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TASK_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_EDIT_TASK_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_GRATITUDE_SCREEN
@@ -18,6 +19,7 @@ private object MyScreens {
     const val ADD_GRATITUDE_SCREEN = "addGratitude"
     const val CONTACTS_SCREEN = "contacts"
     const val ADD_CONTACT_SCREEN = "addContact"
+    const val CONTACT_DETAIL_SCREEN = "contact"
     const val IDENTITIES_SCREEN = "identities"
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
 }
@@ -29,6 +31,7 @@ object MyAppDestinationsArgs {
     const val USER_MESSAGE_ARG = "userMessage"
     const val TASK_ID_ARG = "taskId"
     const val TITLE_ARG = "title"
+    const val CONTACT_ID_ARG = "contactId"
 }
 
 /**
@@ -39,6 +42,7 @@ object MyAppDestinations {
     const val ADD_GRATITUDE_ROUTE = MyScreens.ADD_GRATITUDE_SCREEN
     const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
     const val ADD_CONTACT_ROUTE = MyScreens.ADD_CONTACT_SCREEN
+    const val CONTACT_DETAIL_ROUTE = "${MyScreens.CONTACT_DETAIL_SCREEN}/{$CONTACT_ID_ARG}"
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
 }
@@ -79,6 +83,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
 
     fun navigateToAddContact() {
         navController.navigate(MyAppDestinations.ADD_CONTACT_ROUTE)
+    }
+
+    fun navigateToContactDetail(contactId: Int) {
+        navController.navigate("${MyScreens.CONTACT_DETAIL_SCREEN}/$contactId")
     }
 
     fun navigateToFeed(fromDrawer: Boolean) {

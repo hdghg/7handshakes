@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface ContactRepository {
     fun getContactsStream(): Flow<List<ContactRecord>>
 
+    /** Emits the contact with [id], or null if there is none. */
+    fun getContactStream(id: Int): Flow<ContactRecord?>
+
     /** Returns the contact with [publicKey], or null if there is none. */
     suspend fun getContactByPublicKey(publicKey: String): ContactRecord?
 

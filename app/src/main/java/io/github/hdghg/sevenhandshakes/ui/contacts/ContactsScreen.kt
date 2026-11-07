@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes.ui.contacts
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +39,7 @@ import io.github.hdghg.sevenhandshakes.ui.ContactsTopAppBar
 fun ContactsScreen(
     openDrawer: () -> Unit,
     newContact: () -> Unit,
+    openContact: (ContactRecord) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ContactsViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -48,6 +50,7 @@ fun ContactsScreen(
         isLoading = uiState.isLoading,
         openDrawer = openDrawer,
         newContact = newContact,
+        openContact = openContact,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -59,6 +62,7 @@ private fun ContactsContent(
     isLoading: Boolean,
     openDrawer: () -> Unit,
     newContact: () -> Unit,
+    openContact: (ContactRecord) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -82,7 +86,7 @@ private fun ContactsContent(
         } else {
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
                 items(contacts, key = { it.id }) { contact ->
-                    ContactItem(contact)
+                    ContactItem(contact, onClick = { openContact(contact) })
                 }
             }
         }
@@ -90,7 +94,7 @@ private fun ContactsContent(
 }
 
 @Composable
-private fun ContactItem(contact: ContactRecord) {
+private fun ContactItem(contact: ContactRecord, onClick: () -> Unit) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     val textColor = if (contact.isIgnored) {
         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
@@ -101,6 +105,7 @@ private fun ContactItem(contact: ContactRecord) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
         Icon(
@@ -145,6 +150,7 @@ fun ContactsScreenPreview() {
             isLoading = false,
             openDrawer = {},
             newContact = {},
+            openContact = {},
         )
     }
 }

@@ -46,6 +46,11 @@
     <string name="contact_unnamed">Unnamed contact</string>
     <string name="contact_favorite">Favorite</string>
     <string name="new_contact">New Contact</string>
+    <string name="contact_details">Contact</string>
+    <string name="contact_not_found">Contact not found</string>
+    <string name="contact_name">Name</string>
+    <string name="contact_public_key">Public key</string>
+    <string name="contact_ignored">Ignored</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>
