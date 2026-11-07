@@ -45,6 +45,8 @@ fun FeedScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FeedContent(
         reviews = uiState.items,
+        showAll = uiState.showAll,
+        onShowAllChange = viewModel::setShowAll,
         openDrawer = openDrawer,
         newGratitude = newGratitude,
         modifier = modifier,
@@ -55,6 +57,8 @@ fun FeedScreen(
 @Composable
 private fun FeedContent(
     reviews: List<Review>,
+    showAll: Boolean,
+    onShowAllChange: (Boolean) -> Unit,
     openDrawer: () -> Unit,
     newGratitude: () -> Unit,
     modifier: Modifier = Modifier,
@@ -63,7 +67,7 @@ private fun FeedContent(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { FeedTopAppBar(openDrawer) },
+        topBar = { FeedTopAppBar(openDrawer, showAll, onShowAllChange) },
         floatingActionButton = {
             SmallFloatingActionButton(onClick = { newGratitude() }) {
                 Icon(Icons.Filled.Add, stringResource(id = R.string.edit_task))
@@ -135,6 +139,8 @@ fun FeedScreenPreview() {
                     Review(id = 2, uuid = "2", text = "Other text", rate = 2, sourceName = "Me", targetName = "Bob"),
                     Review(id = 3, uuid = "3", text = "kul", rate = 1, sourceName = "Me"),
                 ),
+            showAll = false,
+            onShowAllChange = {},
             openDrawer = {},
             newGratitude = {},
         )

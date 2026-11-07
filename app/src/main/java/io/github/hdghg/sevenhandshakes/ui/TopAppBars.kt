@@ -7,9 +7,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -21,12 +23,17 @@ import io.github.hdghg.sevenhandshakes.MainTheme
 import io.github.hdghg.sevenhandshakes.R
 
 @Composable
-fun FeedTopAppBar(openDrawer: () -> Unit) {
+fun FeedTopAppBar(openDrawer: () -> Unit, showAll: Boolean, onShowAllChange: (Boolean) -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.feed_title)) },
         navigationIcon = {
             IconButton(onClick = openDrawer) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+            }
+        },
+        actions = {
+            IconToggleButton(checked = showAll, onCheckedChange = onShowAllChange) {
+                Icon(Icons.Filled.Public, stringResource(id = R.string.feed_show_all))
             }
         },
         modifier = Modifier.fillMaxWidth(),
@@ -118,7 +125,7 @@ fun NewGratitudeTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
 private fun FeedTopAppBarPreview() {
     MainTheme {
         Surface {
-            FeedTopAppBar { }
+            FeedTopAppBar(openDrawer = {}, showAll = false, onShowAllChange = {})
         }
     }
 }
