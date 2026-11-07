@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -105,7 +106,7 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
-            .background(primaryDarkColor)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .height(dimensionResource(id = R.dimen.header_height))
             .padding(dimensionResource(id = R.dimen.header_padding)),
     ) {
@@ -113,11 +114,12 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
             imageVector = Icons.Filled.Edit,
             contentDescription =
                 stringResource(id = R.string.tasks_header_image_content_description),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
             modifier = Modifier.width(dimensionResource(id = R.dimen.header_image_width)),
         )
         Text(
             text = stringResource(id = R.string.navigation_view_header_title),
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }

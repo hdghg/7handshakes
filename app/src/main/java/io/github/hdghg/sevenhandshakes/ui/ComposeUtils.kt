@@ -2,11 +2,8 @@ package io.github.hdghg.sevenhandshakes.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-
-val primaryDarkColor: Color = Color(0xFF263238)
 
 /**
  * Display an initial empty state or swipe to refresh content.
