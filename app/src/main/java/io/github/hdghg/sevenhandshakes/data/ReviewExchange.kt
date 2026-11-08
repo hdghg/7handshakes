@@ -1,8 +1,5 @@
 package io.github.hdghg.sevenhandshakes.data
 
-/** How many handshake ratings the contact screen shows: levels 1..MAX_HANDSHAKES. */
-const val MAX_HANDSHAKES = 5
-
 /**
  * A chain of contacts found by the handshake search, in review direction: each contact reviewed the next.
  * [weights] has one entry per edge: how many reviews of the rate level the edge stands for.

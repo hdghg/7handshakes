@@ -35,7 +35,11 @@ class DefaultReviewRepository
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
-        override fun getHandshakeRatingsStream(contactId: Int, myContactId: Int): Flow<List<ReviewExchange>> =
+        override fun getHandshakeRatingsStream(
+            contactId: Int,
+            myContactId: Int,
+            depth: Int,
+        ): Flow<List<ReviewExchange>> =
             combine(reviewDao.observeEdgeCounts(), contactDao.observeIgnoredIds()) { edges, ignored ->
                 HandshakeGraph(
                     edges.map {
@@ -48,8 +52,8 @@ class DefaultReviewRepository
                     },
                 ) to ignored.toSet()
             }.transformLatest { (graph, ignored) ->
-                val finished = ArrayList<ReviewExchange>(MAX_HANDSHAKES)
-                for (level in 1..MAX_HANDSHAKES) {
+                val finished = ArrayList<ReviewExchange>(depth)
+                for (level in 1..depth) {
                     currentCoroutineContext().ensureActive()
                     finished += graph.exchange(contactId, myContactId, handshakes = level, ignored = ignored)
                     emit(finished.toList())

@@ -41,7 +41,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
-import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKES
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
@@ -61,6 +60,8 @@ fun ContactDetailScreen(
         handshakeRatings = uiState.handshakeRatings,
         myContactId = uiState.myContactId,
         contactNames = uiState.contactNames,
+        handshakeDepth = uiState.handshakeDepth,
+        onHandshakeDepthChange = viewModel::setHandshakeDepth,
         onBack = onBack,
         modifier = modifier,
     )
@@ -73,13 +74,23 @@ private fun ContactDetailContent(
     handshakeRatings: List<ReviewExchange>?,
     myContactId: Int?,
     contactNames: Map<Int, String?>,
+    handshakeDepth: Int,
+    onHandshakeDepthChange: (Int) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
+    var showDepthSheet by rememberSaveable { mutableStateOf(false) }
+    if (showDepthSheet) {
+        HandshakeDepthSheet(
+            depth = handshakeDepth,
+            onDepthChange = onHandshakeDepthChange,
+            onDismiss = { showDepthSheet = false },
+        )
+    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { ContactDetailTopAppBar(onBack) },
+        topBar = { ContactDetailTopAppBar(onBack = onBack, onHandshakeDepthClick = { showDepthSheet = true }) },
     ) { paddingValues ->
         if (contact == null) {
             if (!isLoading) {
@@ -119,8 +130,12 @@ private fun ContactDetailContent(
                 Field(label = handshakeTitle(level = 1)) {
                     Text(text = stringResource(id = R.string.contact_reviews_no_identity))
                 }
+            } else if (handshakeDepth == 0) {
+                Field(label = stringResource(id = R.string.handshake_ratings)) {
+                    Text(text = stringResource(id = R.string.handshake_ratings_off))
+                }
             } else {
-                for (level in 1..MAX_HANDSHAKES) {
+                for (level in 1..handshakeDepth) {
                     // Keyed so each table keeps its own revealed/hidden state.
                     key(level) {
                         Field(label = handshakeTitle(level)) {
@@ -335,6 +350,8 @@ fun ContactDetailScreenPreview() {
             ),
             myContactId = 9,
             contactNames = mapOf(1 to "Alice", 2 to "Bob", 3 to null, 9 to "Me"),
+            handshakeDepth = 3,
+            onHandshakeDepthChange = {},
             onBack = {},
         )
     }

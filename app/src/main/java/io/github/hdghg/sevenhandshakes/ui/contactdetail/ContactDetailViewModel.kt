@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
+import io.github.hdghg.sevenhandshakes.data.DEFAULT_HANDSHAKE_DEPTH
+import io.github.hdghg.sevenhandshakes.data.HandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ContactDetailUiState(
@@ -36,6 +39,8 @@ data class ContactDetailUiState(
     val myContactId: Int? = null,
     /** Names of all contacts by id, for labelling handshake paths. Null for unnamed contacts. */
     val contactNames: Map<Int, String?> = emptyMap(),
+    /** How many handshake levels are calculated, shared by all contacts. */
+    val handshakeDepth: Int = DEFAULT_HANDSHAKE_DEPTH,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -47,6 +52,7 @@ class ContactDetailViewModel
         private val reviewRepository: ReviewRepository,
         identityRepository: IdentityRepository,
         selectedIdentityRepository: SelectedIdentityRepository,
+        private val handshakeDepthRepository: HandshakeDepthRepository,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         private val contactId: Int = checkNotNull(savedStateHandle[MyAppDestinationsArgs.CONTACT_ID_ARG])
@@ -59,15 +65,18 @@ class ContactDetailViewModel
                 selectedIdentityOf(identities, selectedId)?.identity?.contactId
             }.distinctUntilChanged()
 
+        private val handshakeDepth: Flow<Int> = handshakeDepthRepository.getHandshakeDepthStream()
+
         private val handshakeRatings: Flow<List<ReviewExchange>?> =
-            myContactId.flatMapLatest { me ->
-                if (me == null) {
-                    flowOf(null)
-                } else {
-                    // Empty until level 1 is ready, so the screen shows it as calculating.
-                    reviewRepository.getHandshakeRatingsStream(contactId, me).onStart { emit(emptyList()) }
+            combine(myContactId, handshakeDepth) { me, depth -> me to depth }
+                .flatMapLatest { (me, depth) ->
+                    if (me == null) {
+                        flowOf(null)
+                    } else {
+                        // Empty until level 1 is ready, so the screen shows it as calculating.
+                        reviewRepository.getHandshakeRatingsStream(contactId, me, depth).onStart { emit(emptyList()) }
+                    }
                 }
-            }
 
         val uiState: StateFlow<ContactDetailUiState> =
             combine(
@@ -75,16 +84,22 @@ class ContactDetailViewModel
                 handshakeRatings,
                 myContactId,
                 contactRepository.getContactsStream(),
-            ) { contact, ratings, me, contacts ->
+                handshakeDepth,
+            ) { contact, ratings, me, contacts, depth ->
                 ContactDetailUiState(
                     contact = contact,
                     handshakeRatings = ratings,
                     myContactId = me,
                     contactNames = contacts.associate { it.id to it.name },
+                    handshakeDepth = depth,
                 )
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ContactDetailUiState(isLoading = true),
             )
+
+        fun setHandshakeDepth(depth: Int) {
+            viewModelScope.launch { handshakeDepthRepository.setHandshakeDepth(depth) }
+        }
     }

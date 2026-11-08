@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,12 +55,17 @@ fun ContactsTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
-fun ContactDetailTopAppBar(onBack: () -> Unit) {
+fun ContactDetailTopAppBar(onBack: () -> Unit, onHandshakeDepthClick: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.contact_details)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        actions = {
+            IconButton(onClick = onHandshakeDepthClick) {
+                Icon(Icons.Filled.Tune, stringResource(id = R.string.handshake_depth_title))
             }
         },
         modifier = Modifier.fillMaxWidth(),

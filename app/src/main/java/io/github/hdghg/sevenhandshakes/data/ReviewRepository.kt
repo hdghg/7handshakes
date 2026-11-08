@@ -8,7 +8,8 @@ interface ReviewRepository {
 
     /**
      * Emits handshake ratings between [contactId] and the selected identity's contact [myContactId]:
-     * index 0 is one handshake, index 1 two handshakes, up to [MAX_HANDSHAKES].
+     * index 0 is one handshake, index 1 two handshakes, up to [depth] handshakes.
+     * With [depth] 0 nothing is emitted.
      *
      * Each level is emitted as soon as it is ready, so the list grows one level at a time.
      * When reviews or ignored contacts change, the calculation starts over from level 1.
@@ -16,6 +17,7 @@ interface ReviewRepository {
     fun getHandshakeRatingsStream(
         contactId: Int,
         myContactId: Int,
+        depth: Int,
     ): Flow<List<ReviewExchange>>
 
     /**

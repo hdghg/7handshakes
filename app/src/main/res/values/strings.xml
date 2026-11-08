@@ -72,6 +72,15 @@
     <string name="contact_reviews_show_details">Tap to show received, given and paths</string>
     <string name="contact_reviews_hide_details">Tap to hide received, given and paths</string>
     <string name="handshake_path_me">You</string>
+    <string name="handshake_ratings">Handshake ratings</string>
+    <string name="handshake_ratings_off">Turned off. Use the button in the top bar to choose how many handshakes to calculate.</string>
+    <string name="handshake_depth_title">Handshake depth</string>
+    <string name="handshake_depth_off">Handshake ratings off</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="one">Up to %1$d handshake</item>
+        <item quantity="other">Up to %1$d handshakes</item>
+    </plurals>
+    <string name="handshake_depth_hint">Applies to all contacts. Deeper levels take longer to calculate.</string>
     <string name="handshake_path_none">No path</string>
     <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
     <string name="identities_title">Identities</string>

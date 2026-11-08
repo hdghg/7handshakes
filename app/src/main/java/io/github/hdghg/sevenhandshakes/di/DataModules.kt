@@ -16,7 +16,9 @@ import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
+import io.github.hdghg.sevenhandshakes.data.DefaultHandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultSelectedIdentityRepository
+import io.github.hdghg.sevenhandshakes.data.HandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
@@ -44,6 +46,10 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindSelectedIdentityRepository(repository: DefaultSelectedIdentityRepository): SelectedIdentityRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindHandshakeDepthRepository(repository: DefaultHandshakeDepthRepository): HandshakeDepthRepository
 }
 
 @Module
