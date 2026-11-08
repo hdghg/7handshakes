@@ -19,10 +19,16 @@ interface ContactRepository {
     /**
      * Saves a new contact.
      */
-    suspend fun addContact(publicKey: String, name: String?, isFavorite: Boolean, isIgnored: Boolean): AddContactResult
+    suspend fun addContact(
+        publicKey: String,
+        name: String?,
+        email: String?,
+        isFavorite: Boolean,
+        isIgnored: Boolean,
+    ): AddContactResult
 
     /** Saves new details for the contact with [id]. The public key cannot change. */
-    suspend fun updateContact(id: Int, name: String?, isFavorite: Boolean, isIgnored: Boolean)
+    suspend fun updateContact(id: Int, name: String?, email: String?, isFavorite: Boolean, isIgnored: Boolean)
 
     /** Deletes the contact with [id] together with every review written by or to it. */
     suspend fun deleteContact(id: Int): DeleteContactResult

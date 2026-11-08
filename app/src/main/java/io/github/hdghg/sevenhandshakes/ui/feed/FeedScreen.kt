@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
@@ -174,12 +175,11 @@ private fun FeedItem(review: Review) {
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            val unnamed = stringResource(id = R.string.contact_unnamed)
             Text(
                 text = stringResource(
                     id = R.string.feed_from_to,
-                    review.sourceName ?: unnamed,
-                    review.targetName ?: unnamed,
+                    displayNameOrUnknown(review.sourceName),
+                    displayNameOrUnknown(review.targetName),
                 ),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,

@@ -43,7 +43,7 @@ class FeedViewModel
                 selectedIdentityRepository.getSelectedIdentityIdStream(),
                 showAll,
             ) { records, contacts, identities, selectedId, showAll ->
-                val namesById = contacts.associate { it.id to it.name }
+                val namesById = contacts.associate { it.id to it.displayName }
                 val myContactId = selectedIdentityOf(identities, selectedId)?.identity?.contactId
                 val visible = if (showAll) {
                     records

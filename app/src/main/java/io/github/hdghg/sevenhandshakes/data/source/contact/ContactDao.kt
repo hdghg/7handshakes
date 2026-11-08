@@ -31,8 +31,11 @@ interface ContactDao {
     suspend fun updateName(id: Int, name: String?)
 
     /** Changes everything but the public key, which identifies the contact. */
-    @Query("UPDATE contact SET name = :name, isFavorite = :isFavorite, isIgnored = :isIgnored WHERE id = :id")
-    suspend fun updateDetails(id: Int, name: String?, isFavorite: Boolean, isIgnored: Boolean)
+    @Query(
+        "UPDATE contact SET name = :name, email = :email, isFavorite = :isFavorite, isIgnored = :isIgnored " +
+            "WHERE id = :id",
+    )
+    suspend fun updateDetails(id: Int, name: String?, email: String?, isFavorite: Boolean, isIgnored: Boolean)
 
     @Query("DELETE FROM review WHERE sourceContactId = :id OR targetContactId = :id")
     suspend fun deleteReviewsOf(id: Int)

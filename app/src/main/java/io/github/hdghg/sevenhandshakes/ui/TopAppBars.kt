@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,12 +46,20 @@ fun FeedTopAppBar(openDrawer: () -> Unit, showAll: Boolean, onShowAllChange: (Bo
 }
 
 @Composable
-fun ContactsTopAppBar(openDrawer: () -> Unit) {
+fun ContactsTopAppBar(openDrawer: () -> Unit, showUnknown: Boolean, onShowUnknownChange: (Boolean) -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.contacts_title)) },
         navigationIcon = {
             IconButton(onClick = openDrawer) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+            }
+        },
+        actions = {
+            IconToggleButton(checked = showUnknown, onCheckedChange = onShowUnknownChange) {
+                Icon(
+                    imageVector = if (showUnknown) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                    contentDescription = stringResource(id = R.string.contacts_show_unknown),
+                )
             }
         },
         modifier = Modifier.fillMaxWidth(),

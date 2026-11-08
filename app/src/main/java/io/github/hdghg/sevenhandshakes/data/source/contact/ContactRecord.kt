@@ -14,4 +14,9 @@ class ContactRecord(
     val name: String?,
     val isFavorite: Boolean,
     val isIgnored: Boolean,
-)
+    val email: String? = null,
+) {
+    /** How the contact is shown: its name, else its email, else null for an unknown contact. */
+    val displayName: String?
+        get() = name?.takeIf { it.isNotBlank() } ?: email?.takeIf { it.isNotBlank() }
+}

@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes.ui.newcontact
 
+import android.util.Patterns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,13 +26,23 @@ data class NewContactUiState(
     val isLoading: Boolean = false,
     val publicKey: String = "",
     val name: String = "",
+    val email: String = "",
     val isFavorite: Boolean = false,
     val isIgnored: Boolean = false,
     val isSaving: Boolean = false,
+    /** Set by the first save attempt, so field errors only show up after the user tried to save. */
+    val saveAttempted: Boolean = false,
     /** String resource id of an error to show once, or null. */
     val userMessage: Int? = null,
     val editComplete: Boolean = false,
-)
+) {
+    val isPublicKeyError: Boolean get() = saveAttempted && publicKey.isBlank()
+
+    val isEmailError: Boolean get() = saveAttempted && !isValidEmail(email)
+}
+
+/** Empty counts as valid, since the email is optional. */
+private fun isValidEmail(email: String): Boolean = email.isBlank() || Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
 
 @HiltViewModel
 class NewContactViewModel
@@ -64,6 +75,7 @@ class NewContactViewModel
                             isLoading = false,
                             publicKey = contact.publicKey,
                             name = contact.name.orEmpty(),
+                            email = contact.email.orEmpty(),
                             isFavorite = contact.isFavorite,
                             isIgnored = contact.isIgnored,
                         )
@@ -86,6 +98,13 @@ class NewContactViewModel
             _uiState.update { it.copy(name = newName) }
         }
 
+        fun updateEmail(newEmail: String) {
+            if (newEmail.toByteArray().size > BYTES_EMAIL_MAX) {
+                return
+            }
+            _uiState.update { it.copy(email = newEmail) }
+        }
+
         fun setFavorite(value: Boolean) {
             _uiState.update { it.copy(isFavorite = value) }
         }
@@ -99,22 +118,30 @@ class NewContactViewModel
         }
 
         fun complete() {
+            if (_uiState.value.isSaving || _uiState.value.isLoading) return
+            _uiState.update { it.copy(saveAttempted = true) }
             val state = _uiState.value
-            if (state.isSaving || state.isLoading) return
-            if (contactId != null) {
-                save(contactId, state)
-                return
-            }
-            val publicKey = state.publicKey.trim()
-            if (publicKey.isEmpty()) {
-                _uiState.update { it.copy(userMessage = R.string.new_contact_empty_public_key) }
-                return
-            }
+            if (state.isPublicKeyError || state.isEmailError) return
+
+            val name = state.name.trim().ifEmpty { null }
+            val email = state.email.trim().ifEmpty { null }
             _uiState.update { it.copy(isSaving = true) }
             viewModelScope.launch {
+                if (contactId != null) {
+                    contactRepository.updateContact(
+                        id = contactId,
+                        name = name,
+                        email = email,
+                        isFavorite = state.isFavorite,
+                        isIgnored = state.isIgnored,
+                    )
+                    _uiState.update { it.copy(isSaving = false, editComplete = true) }
+                    return@launch
+                }
                 val result = contactRepository.addContact(
-                    publicKey = publicKey,
-                    name = state.name.trim().ifEmpty { null },
+                    publicKey = state.publicKey.trim(),
+                    name = name,
+                    email = email,
                     isFavorite = state.isFavorite,
                     isIgnored = state.isIgnored,
                 )
@@ -128,21 +155,11 @@ class NewContactViewModel
             }
         }
 
-        private fun save(id: Int, state: NewContactUiState) {
-            _uiState.update { it.copy(isSaving = true) }
-            viewModelScope.launch {
-                contactRepository.updateContact(
-                    id = id,
-                    name = state.name.trim().ifEmpty { null },
-                    isFavorite = state.isFavorite,
-                    isIgnored = state.isIgnored,
-                )
-                _uiState.update { it.copy(isSaving = false, editComplete = true) }
-            }
-        }
-
         companion object {
             const val BYTES_PUBLIC_KEY_MAX = 64
             const val BYTES_NAME_MAX = 64
+
+            /** Longest address allowed by RFC 5321. */
+            const val BYTES_EMAIL_MAX = 254
         }
     }

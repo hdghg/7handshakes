@@ -11,7 +11,7 @@ import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityRecord
 
 @Database(
     entities = [ReviewRecord::class, ContactRecord::class, IdentityRecord::class],
-    version = 5,
+    version = 6,
     exportSchema = false,
 )
 abstract class ReviewDatabase : RoomDatabase() {
@@ -30,6 +30,14 @@ abstract class ReviewDatabase : RoomDatabase() {
                         "CREATE UNIQUE INDEX IF NOT EXISTS `index_review_uuid_sourceContactId` " +
                             "ON `review` (`uuid`, `sourceContactId`)",
                     )
+                }
+            }
+
+        /** Adds the optional email column to contact. Keeps existing data. */
+        val MIGRATION_5_6 =
+            object : Migration(5, 6) {
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    db.execSQL("ALTER TABLE `contact` ADD COLUMN `email` TEXT")
                 }
             }
     }

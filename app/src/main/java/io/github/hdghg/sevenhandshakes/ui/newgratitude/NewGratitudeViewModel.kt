@@ -56,7 +56,7 @@ class NewGratitudeViewModel
             contactRepository
                 .getContactsStream()
                 .map { list -> list.filterNot { it.isIgnored } }
-                .map { list -> list.filterNot { it.name == null } }
+                .map { list -> list.filterNot { it.displayName == null } }
                 .stateIn(
                     scope = viewModelScope,
                     started = SharingStarted.WhileSubscribed(5_000),

@@ -39,7 +39,7 @@ data class ContactDetailUiState(
     val handshakeRatings: List<ReviewExchange>? = null,
     /** Contact id of the selected identity: the middle of every handshake path. */
     val myContactId: Int? = null,
-    /** Names of all contacts by id, for labelling handshake paths. Null for unnamed contacts. */
+    /** Display names of all contacts by id, for labelling handshake paths. Null for unknown contacts. */
     val contactNames: Map<Int, String?> = emptyMap(),
     /** How many handshake levels are calculated, shared by all contacts. */
     val handshakeDepth: Int = DEFAULT_HANDSHAKE_DEPTH,
@@ -107,7 +107,7 @@ class ContactDetailViewModel
                     contact = contact,
                     handshakeRatings = ratings,
                     myContactId = me,
-                    contactNames = contacts.associate { it.id to it.name },
+                    contactNames = contacts.associate { it.id to it.displayName },
                     handshakeDepth = depth,
                     isUsedByIdentity = usedByIdentity,
                 )

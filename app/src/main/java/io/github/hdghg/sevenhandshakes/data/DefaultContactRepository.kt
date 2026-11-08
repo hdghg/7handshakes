@@ -28,12 +28,14 @@ class DefaultContactRepository
         override suspend fun addContact(
             publicKey: String,
             name: String?,
+            email: String?,
             isFavorite: Boolean,
             isIgnored: Boolean,
         ): AddContactResult {
             val record = ContactRecord(
                 publicKey = publicKey,
                 name = name,
+                email = email,
                 isFavorite = isFavorite,
                 isIgnored = isIgnored,
             )
@@ -48,8 +50,14 @@ class DefaultContactRepository
             return AddContactResult.Success(id)
         }
 
-        override suspend fun updateContact(id: Int, name: String?, isFavorite: Boolean, isIgnored: Boolean) {
-            contactDao.updateDetails(id, name, isFavorite, isIgnored)
+        override suspend fun updateContact(
+            id: Int,
+            name: String?,
+            email: String?,
+            isFavorite: Boolean,
+            isIgnored: Boolean,
+        ) {
+            contactDao.updateDetails(id, name, email, isFavorite, isIgnored)
             Timber.d("Contact %d updated, favorite=%b, ignored=%b", id, isFavorite, isIgnored)
         }
 

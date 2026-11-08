@@ -47,7 +47,10 @@
     <string name="feed_from_to">%1$s → %2$s</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_empty">You have no contacts.</string>
-    <string name="contact_unnamed">Unnamed contact</string>
+    <string name="contact_unknown">Unknown contact</string>
+    <string name="contact_email">Email</string>
+    <string name="contacts_empty_hidden">No contacts with a name or email. Use the button in the top bar to show unknown contacts.</string>
+    <string name="contacts_show_unknown">Show unknown contacts</string>
     <string name="contact_favorite">Favorite</string>
     <string name="new_contact">New Contact</string>
     <string name="edit_contact">Edit Contact</string>
@@ -108,8 +111,11 @@
     <string name="identity_cannot_save">Enter a valid private key and a name</string>
     <string name="identity_duplicate">This identity already exists</string>
     <string name="menu_save_contact">Save contact</string>
-    <string name="new_contact_public_key">Public key:</string>
-    <string name="new_contact_name">Name (optional):</string>
+    <string name="new_contact_public_key">Public key</string>
+    <string name="new_contact_name">Name (optional)</string>
+    <string name="new_contact_email">Email (optional)</string>
+    <string name="new_contact_invalid_email">Enter a valid email address</string>
+    <string name="new_contact_scan_qr">Scan QR</string>
     <string name="new_contact_favorite">Favorite</string>
     <string name="new_contact_ignored">Ignored</string>
     <string name="new_contact_empty_public_key">Public key cannot be empty</string>

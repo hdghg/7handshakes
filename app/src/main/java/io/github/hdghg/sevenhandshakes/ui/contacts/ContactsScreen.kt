@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactsTopAppBar
+import io.github.hdghg.sevenhandshakes.ui.contactLabel
 
 @Composable
 fun ContactsScreen(
@@ -48,6 +49,9 @@ fun ContactsScreen(
     ContactsContent(
         contacts = uiState.items,
         isLoading = uiState.isLoading,
+        showUnknown = uiState.showUnknown,
+        allHidden = uiState.allHidden,
+        onShowUnknownChange = viewModel::setShowUnknown,
         openDrawer = openDrawer,
         newContact = newContact,
         openContact = openContact,
@@ -60,6 +64,9 @@ fun ContactsScreen(
 private fun ContactsContent(
     contacts: List<ContactRecord>,
     isLoading: Boolean,
+    showUnknown: Boolean,
+    allHidden: Boolean,
+    onShowUnknownChange: (Boolean) -> Unit,
     openDrawer: () -> Unit,
     newContact: () -> Unit,
     openContact: (ContactRecord) -> Unit,
@@ -69,7 +76,13 @@ private fun ContactsContent(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { ContactsTopAppBar(openDrawer) },
+        topBar = {
+            ContactsTopAppBar(
+                openDrawer = openDrawer,
+                showUnknown = showUnknown,
+                onShowUnknownChange = onShowUnknownChange,
+            )
+        },
         floatingActionButton = {
             SmallFloatingActionButton(onClick = newContact) {
                 Icon(Icons.Filled.Add, stringResource(id = R.string.new_contact))
@@ -78,7 +91,7 @@ private fun ContactsContent(
     ) { paddingValues ->
         if (contacts.isEmpty() && !isLoading) {
             Text(
-                text = stringResource(id = R.string.contacts_empty),
+                text = stringResource(id = if (allHidden) R.string.contacts_empty_hidden else R.string.contacts_empty),
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(all = dimensionResource(id = R.dimen.horizontal_margin)),
@@ -115,7 +128,7 @@ private fun ContactItem(contact: ContactRecord, onClick: () -> Unit) {
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = contact.name ?: stringResource(id = R.string.contact_unnamed),
+                text = contactLabel(contact),
                 style = MaterialTheme.typography.titleMedium,
                 color = textColor,
             )
@@ -144,10 +157,20 @@ fun ContactsScreenPreview() {
         ContactsContent(
             contacts = listOf(
                 ContactRecord(id = 1, publicKey = "MCowBQYDK2VwAyEAabc", name = "Alice", isFavorite = true, isIgnored = false),
-                ContactRecord(id = 2, publicKey = "MCowBQYDK2VwAyEAdef", name = null, isFavorite = false, isIgnored = false),
+                ContactRecord(
+                    id = 2,
+                    publicKey = "MCowBQYDK2VwAyEAdef",
+                    name = null,
+                    isFavorite = false,
+                    isIgnored = false,
+                    email = "carol@example.com",
+                ),
                 ContactRecord(id = 3, publicKey = "MCowBQYDK2VwAyEAghi", name = "Bob", isFavorite = false, isIgnored = true),
             ),
             isLoading = false,
+            showUnknown = false,
+            allHidden = false,
+            onShowUnknownChange = {},
             openDrawer = {},
             newContact = {},
             openContact = {},

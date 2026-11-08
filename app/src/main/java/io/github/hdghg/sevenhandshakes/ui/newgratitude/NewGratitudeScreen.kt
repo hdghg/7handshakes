@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.NewGratitudeTopAppBar
@@ -188,7 +189,7 @@ private fun ContactPickerDialog(
                     items(contacts, key = { it.id }) { contact ->
                         ListItem(
                             headlineContent = {
-                                Text(contact.name ?: stringResource(id = R.string.contact_unnamed))
+                                Text(contactLabel(contact))
                             },
                             supportingContent = {
                                 Text(

@@ -49,6 +49,8 @@ import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.contactLabel
+import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 
 @Composable
 fun ContactDetailScreen(
@@ -139,11 +141,18 @@ private fun ContactDetailContent(
                 .verticalScroll(rememberScrollState())
                 .padding(all = margin),
         ) {
-            Field(label = stringResource(id = R.string.contact_name)) {
+            Field(label = stringResource(id = R.string.contact_details)) {
                 Text(
-                    text = contact.name ?: stringResource(id = R.string.contact_unnamed),
+                    text = contactLabel(contact),
                     style = MaterialTheme.typography.titleLarge,
                 )
+            }
+            contact.email?.takeIf { it.isNotBlank() }?.let { email ->
+                Field(label = stringResource(id = R.string.contact_email)) {
+                    SelectionContainer {
+                        Text(text = email, style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
             }
             Field(label = stringResource(id = R.string.contact_public_key)) {
                 SelectionContainer {
@@ -305,12 +314,11 @@ private fun RateColumn(
                 DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.receivedOf(level)))
                 DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.givenOf(level)))
                 if (myContactId != null) {
-                    val unnamed = stringResource(id = R.string.contact_unnamed)
                     HandshakePathDiagram(
                         received = exchange.receivedPaths[level],
                         given = exchange.givenPaths[level],
                         handshakes = handshakes,
-                        labelOf = { id -> contactNames[id] ?: unnamed },
+                        labelOf = { id -> displayNameOrUnknown(contactNames[id]) },
                         modifier = Modifier.padding(top = 8.dp),
                     )
                 }
