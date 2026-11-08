@@ -69,8 +69,10 @@
     <string name="handshake_rating_waiting">Waiting for the previous rating</string>
     <string name="contact_reviews_received_count">Received: %1$d</string>
     <string name="contact_reviews_given_count">Given: %1$d</string>
-    <string name="contact_reviews_show_details">Tap to show received and given</string>
-    <string name="contact_reviews_hide_details">Tap to hide received and given</string>
+    <string name="contact_reviews_show_details">Tap to show received, given and paths</string>
+    <string name="contact_reviews_hide_details">Tap to hide received, given and paths</string>
+    <string name="handshake_path_me">You</string>
+    <string name="handshake_path_none">No path</string>
     <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>

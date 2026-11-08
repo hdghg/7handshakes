@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.data.HandshakePath
 import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKES
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
@@ -58,6 +59,8 @@ fun ContactDetailScreen(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
         handshakeRatings = uiState.handshakeRatings,
+        myContactId = uiState.myContactId,
+        contactNames = uiState.contactNames,
         onBack = onBack,
         modifier = modifier,
     )
@@ -68,6 +71,8 @@ private fun ContactDetailContent(
     contact: ContactRecord?,
     isLoading: Boolean,
     handshakeRatings: List<ReviewExchange>?,
+    myContactId: Int?,
+    contactNames: Map<Int, String?>,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -121,7 +126,12 @@ private fun ContactDetailContent(
                         Field(label = handshakeTitle(level)) {
                             val rating = handshakeRatings.getOrNull(level - 1)
                             when {
-                                rating != null -> ReviewExchangeTable(rating)
+                                rating != null -> ReviewExchangeTable(
+                                    exchange = rating,
+                                    handshakes = level,
+                                    myContactId = myContactId,
+                                    contactNames = contactNames,
+                                )
                                 level - 1 == handshakeRatings.size -> PendingRating(calculating = true)
                                 else -> PendingRating(calculating = false)
                             }
@@ -148,10 +158,15 @@ private fun Field(label: String, content: @Composable () -> Unit) {
 
 /**
  * One column per rate level, diamond first. Each shows its star and received minus given below it.
- * Tapping the table reveals or hides the received and given counts.
+ * Tapping the table reveals or hides the received and given counts and the paths behind them.
  */
 @Composable
-private fun ReviewExchangeTable(exchange: ReviewExchange) {
+private fun ReviewExchangeTable(
+    exchange: ReviewExchange,
+    handshakes: Int,
+    myContactId: Int?,
+    contactNames: Map<Int, String?>,
+) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     var showDetails by rememberSaveable { mutableStateOf(false) }
     val toggleLabel = stringResource(
@@ -171,6 +186,9 @@ private fun ReviewExchangeTable(exchange: ReviewExchange) {
                 RateColumn(
                     level = level,
                     exchange = exchange,
+                    handshakes = handshakes,
+                    myContactId = myContactId,
+                    contactNames = contactNames,
                     showDetails = showDetails,
                     modifier = Modifier.weight(1f),
                 )
@@ -186,7 +204,15 @@ private fun ReviewExchangeTable(exchange: ReviewExchange) {
 }
 
 @Composable
-private fun RateColumn(level: Byte, exchange: ReviewExchange, showDetails: Boolean, modifier: Modifier = Modifier) {
+private fun RateColumn(
+    level: Byte,
+    exchange: ReviewExchange,
+    handshakes: Int,
+    myContactId: Int?,
+    contactNames: Map<Int, String?>,
+    showDetails: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val difference = exchange.differenceOf(level)
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         RateStar(rate = level, modifier = Modifier.size(32.dp))
@@ -203,6 +229,16 @@ private fun RateColumn(level: Byte, exchange: ReviewExchange, showDetails: Boole
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.receivedOf(level)))
                 DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.givenOf(level)))
+                if (myContactId != null) {
+                    val unnamed = stringResource(id = R.string.contact_unnamed)
+                    HandshakePathDiagram(
+                        received = exchange.receivedPaths[level],
+                        given = exchange.givenPaths[level],
+                        handshakes = handshakes,
+                        labelOf = { id -> contactNames[id] ?: unnamed },
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
             }
         }
     }
@@ -284,12 +320,21 @@ fun ContactDetailScreenPreview() {
                 isIgnored = true,
             ),
             isLoading = false,
-            handshakeRatings = List(2) {
+            handshakeRatings = listOf(
                 ReviewExchange(
-                    received = mapOf(1.toByte() to 4, 2.toByte() to 2, 3.toByte() to 1),
-                    given = mapOf(1.toByte() to 1, 2.toByte() to 3),
-                )
-            },
+                    receivedPaths = mapOf(3.toByte() to HandshakePath(listOf(1, 9), listOf(2))),
+                    givenPaths = mapOf(2.toByte() to HandshakePath(listOf(9, 1), listOf(3))),
+                ),
+                ReviewExchange(
+                    receivedPaths = mapOf(
+                        3.toByte() to HandshakePath(listOf(1, 2, 9), listOf(4, 1)),
+                        1.toByte() to HandshakePath(listOf(1, 3, 9), listOf(2, 5)),
+                    ),
+                    givenPaths = mapOf(3.toByte() to HandshakePath(listOf(9, 3, 1), listOf(2, 2))),
+                ),
+            ),
+            myContactId = 9,
+            contactNames = mapOf(1 to "Alice", 2 to "Bob", 3 to null, 9 to "Me"),
             onBack = {},
         )
     }

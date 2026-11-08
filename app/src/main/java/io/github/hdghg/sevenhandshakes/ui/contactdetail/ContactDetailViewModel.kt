@@ -32,6 +32,10 @@ data class ContactDetailUiState(
      * Levels past the end of the list are still waiting. Null when there is no identity to compare against.
      */
     val handshakeRatings: List<ReviewExchange>? = null,
+    /** Contact id of the selected identity: the middle of every handshake path. */
+    val myContactId: Int? = null,
+    /** Names of all contacts by id, for labelling handshake paths. Null for unnamed contacts. */
+    val contactNames: Map<Int, String?> = emptyMap(),
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -66,8 +70,18 @@ class ContactDetailViewModel
             }
 
         val uiState: StateFlow<ContactDetailUiState> =
-            combine(contactRepository.getContactStream(contactId), handshakeRatings) { contact, ratings ->
-                ContactDetailUiState(contact = contact, handshakeRatings = ratings)
+            combine(
+                contactRepository.getContactStream(contactId),
+                handshakeRatings,
+                myContactId,
+                contactRepository.getContactsStream(),
+            ) { contact, ratings, me, contacts ->
+                ContactDetailUiState(
+                    contact = contact,
+                    handshakeRatings = ratings,
+                    myContactId = me,
+                    contactNames = contacts.associate { it.id to it.name },
+                )
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),

@@ -16,8 +16,8 @@ class HandshakeSearchTest {
     fun oneHandshakeIsDirectCounts() {
         val graph = HandshakeGraph(listOf(edge(contact, me, 4), edge(me, contact, 2, level = 1)))
         val result = graph.at(1)
-        assertThat(result.received).containsExactly(3.toByte(), 4)
-        assertThat(result.given).containsExactly(1.toByte(), 2)
+        assertThat(result.receivedPaths.mapValues { it.value.weight }).containsExactly(3.toByte(), 4)
+        assertThat(result.givenPaths.mapValues { it.value.weight }).containsExactly(1.toByte(), 2)
     }
 
     @Test
@@ -36,6 +36,20 @@ class HandshakeSearchTest {
             ),
         )
         assertThat(graph.at(2).receivedOf(3)).isEqualTo(3)
+    }
+
+    @Test
+    fun returnsTheWinningPathWithEdgeWeights() {
+        val graph = HandshakeGraph(
+            listOf(
+                edge(contact, 10, 5), edge(10, 11, 2), edge(11, me, 4),
+                edge(contact, 12, 1), edge(12, 13, 9), edge(13, me, 9),
+            ),
+        )
+        val path = graph.at(3).receivedPaths.getValue(3)
+        assertThat(path.contactIds).containsExactly(contact, 10, 11, me).inOrder()
+        assertThat(path.weights).containsExactly(5, 2, 4).inOrder()
+        assertThat(path.weight).isEqualTo(2)
     }
 
     @Test
@@ -85,7 +99,7 @@ class HandshakeSearchTest {
             listOf(edge(me, 10, 4, level = 2), edge(10, contact, 4, level = 1), edge(10, contact, 6, level = 2)),
         )
         val result = graph.at(2)
-        assertThat(result.given).containsExactly(2.toByte(), 4)
+        assertThat(result.givenPaths.mapValues { it.value.weight }).containsExactly(2.toByte(), 4)
     }
 
     @Test

@@ -37,22 +37,20 @@ class HandshakeGraph(edges: List<ReviewEdge>) {
         ignored: Set<Int>,
     ): ReviewExchange {
         val excluded = ignored + contactId + myContactId
-        val received = mutableMapOf<Byte, Int>()
-        val given = mutableMapOf<Byte, Int>()
+        val received = mutableMapOf<Byte, HandshakePath>()
+        val given = mutableMapOf<Byte, HandshakePath>()
         for ((level, out) in byLevel) {
             widestPath(out, from = contactId, to = myContactId, edges = handshakes, excluded = excluded)
-                .takeIf { it > 0 }
                 ?.let { received[level] = it }
             widestPath(out, from = myContactId, to = contactId, edges = handshakes, excluded = excluded)
-                .takeIf { it > 0 }
                 ?.let { given[level] = it }
         }
-        return ReviewExchange(received = received, given = given)
+        return ReviewExchange(receivedPaths = received, givenPaths = given)
     }
 }
 
 /**
- * Best path weight from [from] to [to] using exactly [edges] edges, or 0 when there is no such path.
+ * Best path from [from] to [to] using exactly [edges] edges, or null when there is no such path.
  *
  * A path weighs as much as its weakest edge; among several paths the heaviest one wins.
  * Paths never visit a vertex twice, and every vertex between the ends must be outside [excluded].
@@ -63,8 +61,8 @@ internal fun widestPath(
     to: Int,
     edges: Int,
     excluded: Set<Int>,
-): Int {
-    if (edges < 1 || from == to) return 0
+): HandshakePath? {
+    if (edges < 1 || from == to) return null
 
     fun canStep(target: Int, remainingAfter: Int): Boolean =
         if (remainingAfter == 0) target == to else target !in excluded
@@ -90,7 +88,10 @@ internal fun widestPath(
     }
 
     var best = 0
+    var bestPath: HandshakePath? = null
     val visited = HashSet<Int>().apply { add(from) }
+    val stack = arrayListOf(from)
+    val stackWeights = ArrayList<Int>(edges)
 
     fun search(v: Int, remaining: Int, weight: Int) {
         val targets = out[v] ?: return
@@ -102,14 +103,19 @@ internal fun widestPath(
             if (minOf(through, bound[remainingAfter][w] ?: 0) <= best) continue
             if (remainingAfter == 0) {
                 best = through
+                bestPath = HandshakePath(contactIds = stack + w, weights = stackWeights + edgeWeight)
             } else {
                 visited.add(w)
+                stack.add(w)
+                stackWeights.add(edgeWeight)
                 search(w, remainingAfter, through)
+                stackWeights.removeAt(stackWeights.lastIndex)
+                stack.removeAt(stack.lastIndex)
                 visited.remove(w)
             }
         }
     }
 
     search(from, edges, Int.MAX_VALUE)
-    return best
+    return bestPath
 }
