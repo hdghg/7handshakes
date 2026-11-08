@@ -11,14 +11,12 @@ interface ReviewDao {
     @Query("SELECT * FROM review")
     fun observeAll(): Flow<List<ReviewRecord>>
 
-    /** Per-author, per-rate counts of reviews exchanged between contacts [a] and [b], in both directions. */
+    /** Per-author, per-target, per-rate counts of all reviews: the edges of the handshake graph. */
     @Query(
-        "SELECT sourceContactId, gratitude, COUNT(*) AS count FROM review " +
-            "WHERE (sourceContactId = :a AND targetContactId = :b) " +
-            "OR (sourceContactId = :b AND targetContactId = :a) " +
-            "GROUP BY sourceContactId, gratitude",
+        "SELECT sourceContactId, targetContactId, gratitude, COUNT(*) AS count FROM review " +
+            "GROUP BY sourceContactId, targetContactId, gratitude",
     )
-    fun observeExchangeRateCounts(a: Int, b: Int): Flow<List<RateCount>>
+    fun observeEdgeCounts(): Flow<List<EdgeCount>>
 
     @Upsert
     suspend fun upsert(record: ReviewRecord)

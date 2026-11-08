@@ -14,6 +14,9 @@ interface ContactDao {
     @Query("SELECT * FROM contact WHERE id = :id")
     fun observeById(id: Int): Flow<ContactRecord?>
 
+    @Query("SELECT id FROM contact WHERE isIgnored")
+    fun observeIgnoredIds(): Flow<List<Int>>
+
     @Query("SELECT * FROM contact WHERE publicKey = :publicKey")
     suspend fun getByPublicKey(publicKey: String): ContactRecord?
 

@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
-import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKES
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
@@ -58,7 +57,12 @@ class ContactDetailViewModel
 
         private val handshakeRatings: Flow<List<ReviewExchange>?> =
             myContactId.flatMapLatest { me ->
-                if (me == null) flowOf(null) else ratingsFrom(me, level = 1, previous = null, done = emptyList())
+                if (me == null) {
+                    flowOf(null)
+                } else {
+                    // Empty until level 1 is ready, so the screen shows it as calculating.
+                    reviewRepository.getHandshakeRatingsStream(contactId, me).onStart { emit(emptyList()) }
+                }
             }
 
         val uiState: StateFlow<ContactDetailUiState> =
@@ -69,26 +73,4 @@ class ContactDetailViewModel
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ContactDetailUiState(isLoading = true),
             )
-
-        /**
-         * Calculates [level] from [previous], then the next level from that result, up to [MAX_HANDSHAKES].
-         * Emits the growing list of finished levels, so each level appears as soon as it is ready.
-         * When a level emits a new value, every level after it starts over.
-         */
-        private fun ratingsFrom(
-            me: Int,
-            level: Int,
-            previous: ReviewExchange?,
-            done: List<ReviewExchange>,
-        ): Flow<List<ReviewExchange>> =
-            reviewRepository
-                .getRateCountsStream(contactId = contactId, myContactId = me, level = level, previous = previous)
-                .flatMapLatest { exchange ->
-                    val finished = done + exchange
-                    if (level >= MAX_HANDSHAKES) {
-                        flowOf(finished)
-                    } else {
-                        ratingsFrom(me, level + 1, exchange, finished).onStart { emit(finished) }
-                    }
-                }
     }

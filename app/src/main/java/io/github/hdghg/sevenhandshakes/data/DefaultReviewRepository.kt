@@ -1,50 +1,60 @@
 package io.github.hdghg.sevenhandshakes.data
 
-import io.github.hdghg.sevenhandshakes.data.source.gratitude.RateCount
+import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
 import io.github.hdghg.sevenhandshakes.di.ApplicationScope
 import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import io.github.hdghg.sevenhandshakes.util.UuidV7
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.transformLatest
 import org.bouncycastle.crypto.signers.Ed25519Signer
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class DefaultReviewRepository
     @Inject
     constructor(
         private val reviewDao: ReviewDao,
+        private val contactDao: ContactDao,
         @param:DefaultDispatcher private val dispatcher: CoroutineDispatcher,
         @param:ApplicationScope private val scope: CoroutineScope,
     ) : ReviewRepository {
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
-        override fun getRateCountsStream(
-            contactId: Int,
-            myContactId: Int,
-            level: Int,
-            previous: ReviewExchange?,
-        ): Flow<ReviewExchange> =
-            reviewDao.observeExchangeRateCounts(contactId, myContactId).map { counts ->
-                ReviewExchange(
-                    received = countsByLevel(counts.filter { it.sourceContactId == contactId }),
-                    given = countsByLevel(counts.filter { it.sourceContactId == myContactId }),
-                )
-            }
-
-        private fun countsByLevel(counts: List<RateCount>): Map<Byte, Int> =
-            counts
-                .groupBy({ rateLevelOf(it.gratitude) }, { it.count })
-                .mapValues { (_, values) -> values.sum() }
+        override fun getHandshakeRatingsStream(contactId: Int, myContactId: Int): Flow<List<ReviewExchange>> =
+            combine(reviewDao.observeEdgeCounts(), contactDao.observeIgnoredIds()) { edges, ignored ->
+                HandshakeGraph(
+                    edges.map {
+                        ReviewEdge(
+                            it.sourceContactId,
+                            it.targetContactId,
+                            rateLevelOf(it.gratitude),
+                            it.count,
+                        )
+                    },
+                ) to ignored.toSet()
+            }.transformLatest { (graph, ignored) ->
+                val finished = ArrayList<ReviewExchange>(MAX_HANDSHAKES)
+                for (level in 1..MAX_HANDSHAKES) {
+                    currentCoroutineContext().ensureActive()
+                    finished += graph.exchange(contactId, myContactId, handshakes = level, ignored = ignored)
+                    emit(finished.toList())
+                }
+            }.flowOn(dispatcher)
 
         override suspend fun placeNewReview(
             reviewText: String,

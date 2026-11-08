@@ -7,18 +7,16 @@ interface ReviewRepository {
     fun getGratitudesStream(): Flow<List<ReviewRecord>>
 
     /**
-     * Emits the reviews exchanged between [contactId] and the selected identity's contact [myContactId].
+     * Emits handshake ratings between [contactId] and the selected identity's contact [myContactId]:
+     * index 0 is one handshake, index 1 two handshakes, up to [MAX_HANDSHAKES].
      *
-     * @param level how many handshakes the rating spans, 1..[MAX_HANDSHAKES].
-     * @param previous the result for [level] - 1, or null when [level] is 1.
-     *   Not used yet: every level currently returns the direct exchange.
+     * Each level is emitted as soon as it is ready, so the list grows one level at a time.
+     * When reviews or ignored contacts change, the calculation starts over from level 1.
      */
-    fun getRateCountsStream(
+    fun getHandshakeRatingsStream(
         contactId: Int,
         myContactId: Int,
-        level: Int,
-        previous: ReviewExchange?,
-    ): Flow<ReviewExchange>
+    ): Flow<List<ReviewExchange>>
 
     /**
      * @param sourceContactId id of the author in the contact table (the selected identity's contact).
