@@ -20,6 +20,8 @@ class DefaultContactRepository
 
         override fun getContactStream(id: Int): Flow<ContactRecord?> = contactDao.observeById(id)
 
+        override suspend fun getContact(id: Int): ContactRecord? = contactDao.getById(id)
+
         override suspend fun getContactByPublicKey(publicKey: String): ContactRecord? =
             contactDao.getByPublicKey(publicKey)
 
@@ -44,6 +46,23 @@ class DefaultContactRepository
             }
             Timber.d("Contact saved, favorite=%b, ignored=%b", isFavorite, isIgnored)
             return AddContactResult.Success(id)
+        }
+
+        override suspend fun updateContact(id: Int, name: String?, isFavorite: Boolean, isIgnored: Boolean) {
+            contactDao.updateDetails(id, name, isFavorite, isIgnored)
+            Timber.d("Contact %d updated, favorite=%b, ignored=%b", id, isFavorite, isIgnored)
+        }
+
+        override suspend fun deleteContact(id: Int): DeleteContactResult {
+            try {
+                contactDao.deleteWithReviews(id)
+            } catch (e: SQLiteConstraintException) {
+                // The identity table is the only one with a foreign key to contacts.
+                Timber.w(e, "Contact %d is used by an identity", id)
+                return DeleteContactResult.UsedByIdentity
+            }
+            Timber.d("Contact %d deleted with its reviews", id)
+            return DeleteContactResult.Success
         }
 
         override suspend fun getOrCreateContactId(publicKey: String): InsertResult {

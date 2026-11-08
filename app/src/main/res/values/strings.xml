@@ -50,6 +50,13 @@
     <string name="contact_unnamed">Unnamed contact</string>
     <string name="contact_favorite">Favorite</string>
     <string name="new_contact">New Contact</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="menu_edit_contact">Edit contact</string>
+    <string name="menu_delete_contact">Delete contact</string>
+    <string name="delete_contact_title">Delete contact?</string>
+    <string name="delete_contact_message">The contact and every review written by or to it will be deleted. This cannot be undone.</string>
+    <string name="delete_contact_used_by_identity">This contact belongs to one of your identities, so it cannot be deleted.</string>
+    <string name="delete_contact_confirm">Delete</string>
     <string name="contact_details">Contact</string>
     <string name="contact_not_found">Contact not found</string>
     <string name="contact_name">Name</string>

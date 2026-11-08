@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Tune
@@ -55,7 +57,12 @@ fun ContactsTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
-fun ContactDetailTopAppBar(onBack: () -> Unit, onHandshakeDepthClick: () -> Unit) {
+fun ContactDetailTopAppBar(
+    onBack: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    onHandshakeDepthClick: () -> Unit,
+) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.contact_details)) },
         navigationIcon = {
@@ -64,6 +71,12 @@ fun ContactDetailTopAppBar(onBack: () -> Unit, onHandshakeDepthClick: () -> Unit
             }
         },
         actions = {
+            IconButton(onClick = onEdit) {
+                Icon(Icons.Filled.Edit, stringResource(id = R.string.menu_edit_contact))
+            }
+            IconButton(onClick = onDelete) {
+                Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_contact))
+            }
             IconButton(onClick = onHandshakeDepthClick) {
                 Icon(Icons.Filled.Tune, stringResource(id = R.string.handshake_depth_title))
             }
@@ -104,9 +117,9 @@ fun AddEditIdentityTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
 }
 
 @Composable
-fun NewContactTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
+fun NewContactTopAppBar(isEdit: Boolean, onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
-        title = { Text(text = stringResource(id = R.string.new_contact)) },
+        title = { Text(text = stringResource(id = if (isEdit) R.string.edit_contact else R.string.new_contact)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))

@@ -15,13 +15,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -50,10 +53,26 @@ import io.github.hdghg.sevenhandshakes.ui.RateStar
 @Composable
 fun ContactDetailScreen(
     onBack: () -> Unit,
+    onEdit: (contactId: Int) -> Unit,
+    onDeleted: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ContactDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(uiState.isDeleted) {
+        if (uiState.isDeleted) onDeleted()
+    }
+    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+    if (showDeleteDialog) {
+        DeleteContactDialog(
+            isUsedByIdentity = uiState.isUsedByIdentity,
+            onConfirm = {
+                showDeleteDialog = false
+                viewModel.deleteContact()
+            },
+            onDismiss = { showDeleteDialog = false },
+        )
+    }
     ContactDetailContent(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
@@ -62,6 +81,8 @@ fun ContactDetailScreen(
         contactNames = uiState.contactNames,
         handshakeDepth = uiState.handshakeDepth,
         onHandshakeDepthChange = viewModel::setHandshakeDepth,
+        onEdit = { uiState.contact?.let { onEdit(it.id) } },
+        onDelete = { if (uiState.contact != null) showDeleteDialog = true },
         onBack = onBack,
         modifier = modifier,
     )
@@ -76,6 +97,8 @@ private fun ContactDetailContent(
     contactNames: Map<Int, String?>,
     handshakeDepth: Int,
     onHandshakeDepthChange: (Int) -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -90,7 +113,14 @@ private fun ContactDetailContent(
     }
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { ContactDetailTopAppBar(onBack = onBack, onHandshakeDepthClick = { showDepthSheet = true }) },
+        topBar = {
+            ContactDetailTopAppBar(
+                onBack = onBack,
+                onEdit = onEdit,
+                onDelete = onDelete,
+                onHandshakeDepthClick = { showDepthSheet = true },
+            )
+        },
     ) { paddingValues ->
         if (contact == null) {
             if (!isLoading) {
@@ -156,6 +186,36 @@ private fun ContactDetailContent(
             }
         }
     }
+}
+
+/** Asks before deleting; for a contact an identity uses, only explains why it cannot be deleted. */
+@Composable
+private fun DeleteContactDialog(isUsedByIdentity: Boolean, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(id = R.string.delete_contact_title)) },
+        text = {
+            Text(
+                text = stringResource(
+                    id = if (isUsedByIdentity) R.string.delete_contact_used_by_identity else R.string.delete_contact_message,
+                ),
+            )
+        },
+        confirmButton = {
+            if (isUsedByIdentity) {
+                TextButton(onClick = onDismiss) { Text(text = stringResource(id = android.R.string.ok)) }
+            } else {
+                TextButton(onClick = onConfirm) {
+                    Text(text = stringResource(id = R.string.delete_contact_confirm), color = MaterialTheme.colorScheme.error)
+                }
+            }
+        },
+        dismissButton = if (isUsedByIdentity) {
+            null
+        } else {
+            { TextButton(onClick = onDismiss) { Text(text = stringResource(id = android.R.string.cancel)) } }
+        },
+    )
 }
 
 @Composable
@@ -352,6 +412,8 @@ fun ContactDetailScreenPreview() {
             contactNames = mapOf(1 to "Alice", 2 to "Bob", 3 to null, 9 to "Me"),
             handshakeDepth = 3,
             onHandshakeDepthChange = {},
+            onEdit = {},
+            onDelete = {},
             onBack = {},
         )
     }

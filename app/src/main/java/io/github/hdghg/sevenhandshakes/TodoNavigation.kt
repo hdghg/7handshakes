@@ -5,20 +5,18 @@ import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TASK_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_EDIT_TASK_SCREEN
-import io.github.hdghg.sevenhandshakes.MyScreens.ADD_GRATITUDE_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.TASK_DETAIL_SCREEN
 
 /**
  * Screens used in [MyAppDestinations]
  */
 private object MyScreens {
-    const val TASKS_SCREEN = "tasks"
     const val FEED_SCREEN = "feed"
     const val TASK_DETAIL_SCREEN = "task"
     const val ADD_EDIT_TASK_SCREEN = "addEditTask"
     const val ADD_GRATITUDE_SCREEN = "addGratitude"
     const val CONTACTS_SCREEN = "contacts"
-    const val ADD_CONTACT_SCREEN = "addContact"
+    const val ADD_EDIT_CONTACT_SCREEN = "addEditContact"
     const val CONTACT_DETAIL_SCREEN = "contact"
     const val IDENTITIES_SCREEN = "identities"
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
@@ -28,9 +26,7 @@ private object MyScreens {
  * Arguments used in [MyAppDestinations] routes
  */
 object MyAppDestinationsArgs {
-    const val USER_MESSAGE_ARG = "userMessage"
     const val TASK_ID_ARG = "taskId"
-    const val TITLE_ARG = "title"
     const val CONTACT_ID_ARG = "contactId"
 }
 
@@ -41,7 +37,9 @@ object MyAppDestinations {
     const val FEED_ROUTE = MyScreens.FEED_SCREEN
     const val ADD_GRATITUDE_ROUTE = MyScreens.ADD_GRATITUDE_SCREEN
     const val CONTACTS_ROUTE = MyScreens.CONTACTS_SCREEN
-    const val ADD_CONTACT_ROUTE = MyScreens.ADD_CONTACT_SCREEN
+
+    /** Adds a contact, or edits the one with the optional [CONTACT_ID_ARG]. */
+    const val ADD_EDIT_CONTACT_ROUTE = "${MyScreens.ADD_EDIT_CONTACT_SCREEN}?$CONTACT_ID_ARG={$CONTACT_ID_ARG}"
     const val CONTACT_DETAIL_ROUTE = "${MyScreens.CONTACT_DETAIL_SCREEN}/{$CONTACT_ID_ARG}"
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
@@ -82,7 +80,11 @@ class MyAppNavigationActions(private val navController: NavHostController) {
     }
 
     fun navigateToAddContact() {
-        navController.navigate(MyAppDestinations.ADD_CONTACT_ROUTE)
+        navController.navigate(MyScreens.ADD_EDIT_CONTACT_SCREEN)
+    }
+
+    fun navigateToEditContact(contactId: Int) {
+        navController.navigate("${MyScreens.ADD_EDIT_CONTACT_SCREEN}?$CONTACT_ID_ARG=$contactId")
     }
 
     fun navigateToContactDetail(contactId: Int) {
@@ -114,7 +116,7 @@ class MyAppNavigationActions(private val navController: NavHostController) {
 
     fun navigateToAddGratitude() {
         navController.navigate(
-            ADD_GRATITUDE_SCREEN,
+            MyScreens.ADD_GRATITUDE_SCREEN,
         )
     }
 }

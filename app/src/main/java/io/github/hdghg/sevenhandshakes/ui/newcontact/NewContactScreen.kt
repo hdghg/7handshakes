@@ -43,12 +43,12 @@ fun NewContactScreen(
     viewModel: NewContactViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { NewContactTopAppBar(onBack = onBack, onComplete = viewModel::complete) },
+        topBar = { NewContactTopAppBar(isEdit = uiState.isEdit, onBack = onBack, onComplete = viewModel::complete) },
     ) { paddingValues ->
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
         val scanQr: () -> Unit = {
@@ -76,15 +76,19 @@ fun NewContactScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
             ) {
+                // The public key identifies the contact, so it is fixed once the contact exists.
                 OutlinedTextField(
                     value = uiState.publicKey,
                     onValueChange = viewModel::updatePublicKey,
                     singleLine = true,
+                    enabled = !uiState.isEdit,
                     modifier = Modifier.weight(1f),
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Button(onClick = scanQr) {
-                    Text("Scan QR")
+                if (!uiState.isEdit) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(onClick = scanQr) {
+                        Text("Scan QR")
+                    }
                 }
             }
             Text(

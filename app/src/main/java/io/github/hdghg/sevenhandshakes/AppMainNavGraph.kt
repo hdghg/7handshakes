@@ -20,6 +20,7 @@ import io.github.hdghg.sevenhandshakes.ui.contactdetail.ContactDetailScreen
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
+import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
@@ -70,7 +71,11 @@ fun AppMainNavGraph(
             arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) { type = NavType.IntType }),
         ) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
-                ContactDetailScreen(onBack = { navController.popBackStack() })
+                ContactDetailScreen(
+                    onBack = { navController.popBackStack() },
+                    onEdit = { contactId -> navActions.navigateToEditContact(contactId) },
+                    onDeleted = { navController.popBackStack() },
+                )
             }
         }
         composable(MyAppDestinations.IDENTITIES_ROUTE) {
@@ -89,7 +94,15 @@ fun AppMainNavGraph(
                 )
             }
         }
-        composable(MyAppDestinations.ADD_CONTACT_ROUTE) {
+        composable(
+            MyAppDestinations.ADD_EDIT_CONTACT_ROUTE,
+            arguments = listOf(
+                navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = NO_CONTACT_ID
+                },
+            ),
+        ) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 NewContactScreen(
                     onBack = { navController.popBackStack() },

@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DEFAULT_HANDSHAKE_DEPTH
+import io.github.hdghg.sevenhandshakes.data.DeleteContactResult
 import io.github.hdghg.sevenhandshakes.data.HandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
@@ -16,6 +17,7 @@ import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -41,6 +43,10 @@ data class ContactDetailUiState(
     val contactNames: Map<Int, String?> = emptyMap(),
     /** How many handshake levels are calculated, shared by all contacts. */
     val handshakeDepth: Int = DEFAULT_HANDSHAKE_DEPTH,
+    /** True when one of the user's identities uses this contact, which then cannot be deleted. */
+    val isUsedByIdentity: Boolean = false,
+    /** True once the contact was deleted; the screen should close. */
+    val isDeleted: Boolean = false,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -48,7 +54,7 @@ data class ContactDetailUiState(
 class ContactDetailViewModel
     @Inject
     constructor(
-        contactRepository: ContactRepository,
+        private val contactRepository: ContactRepository,
         private val reviewRepository: ReviewRepository,
         identityRepository: IdentityRepository,
         selectedIdentityRepository: SelectedIdentityRepository,
@@ -56,6 +62,17 @@ class ContactDetailViewModel
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         private val contactId: Int = checkNotNull(savedStateHandle[MyAppDestinationsArgs.CONTACT_ID_ARG])
+
+        private val isDeleted = MutableStateFlow(false)
+
+        /** The contact, and whether an identity uses it. */
+        private val contactInfo: Flow<Pair<ContactRecord?, Boolean>> =
+            combine(
+                contactRepository.getContactStream(contactId),
+                identityRepository.getIdentitiesStream(),
+            ) { contact, identities ->
+                contact to identities.any { it.identity.contactId == contactId }
+            }
 
         private val myContactId: Flow<Int?> =
             combine(
@@ -80,24 +97,36 @@ class ContactDetailViewModel
 
         val uiState: StateFlow<ContactDetailUiState> =
             combine(
-                contactRepository.getContactStream(contactId),
+                contactInfo,
                 handshakeRatings,
                 myContactId,
                 contactRepository.getContactsStream(),
                 handshakeDepth,
-            ) { contact, ratings, me, contacts, depth ->
+            ) { (contact, usedByIdentity), ratings, me, contacts, depth ->
                 ContactDetailUiState(
                     contact = contact,
                     handshakeRatings = ratings,
                     myContactId = me,
                     contactNames = contacts.associate { it.id to it.name },
                     handshakeDepth = depth,
+                    isUsedByIdentity = usedByIdentity,
                 )
+            }.combine(isDeleted) { state, deleted ->
+                state.copy(isDeleted = deleted)
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ContactDetailUiState(isLoading = true),
             )
+
+        /** Deletes the contact with its reviews. Does nothing if an identity uses it. */
+        fun deleteContact() {
+            viewModelScope.launch {
+                if (contactRepository.deleteContact(contactId) == DeleteContactResult.Success) {
+                    isDeleted.value = true
+                }
+            }
+        }
 
         fun setHandshakeDepth(depth: Int) {
             viewModelScope.launch { handshakeDepthRepository.setHandshakeDepth(depth) }
