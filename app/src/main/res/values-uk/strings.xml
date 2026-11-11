@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7 рукостискань</string>
+    <string name="open_drawer">Відкрити меню</string>
+    <string name="menu_back">Назад</string>
+    <string name="menu_complete_gratitude">Готово</string>
+    <string name="feed_title">Мої подяки</string>
+    <string name="new_gratitude">Нова подяка</string>
+    <string name="new_gratitude_comment">Ваш коментар</string>
+    <string name="new_gratitude_receiver">Отримувач</string>
+    <string name="new_gratitude_scan_qr">Сканувати QR</string>
+    <string name="new_gratitude_from_contacts">З контактів</string>
+    <string name="qr_scan_failed">Не вдалося відсканувати QR: %1$s</string>
+    <string name="new_gratitude_empty_receiver">Вкажіть отримувача</string>
+    <string name="new_gratitude_cannot_create_contact">Не вдалося створити контакт</string>
+    <string name="new_gratitude_no_identity">Спочатку додайте профіль</string>
+    <string name="new_gratitude_invalid_receiver">Недійсний відкритий ключ Ed25519</string>
+    <string name="new_gratitude_pick_contact">Виберіть отримувача</string>
+    <string name="new_gratitude_no_contacts">У вас немає контактів для вибору.</string>
+    <string name="cancel">Скасувати</string>
+    <string name="feed_show_all">Показати всі відгуки</string>
+    <string name="new_gratitude_stars">Зірки</string>
+    <string name="rate_diamond">Діамант</string>
+    <string name="rate_gold">Золото</string>
+    <string name="rate_silver">Срібло</string>
+    <string name="feed_rate_silver">Срібна зірка: невелика подяка</string>
+    <string name="feed_rate_gold">Золота зірка: звичайна подяка</string>
+    <string name="feed_rate_diamond">Діамантова зірка: особлива подяка</string>
+    <string name="feed_today">Сьогодні</string>
+    <string name="feed_yesterday">Учора</string>
+    <string name="feed_unknown_date">Дата невідома</string>
+    <string name="feed_from_to">%1$s → %2$s</string>
+    <string name="contacts_title">Контакти</string>
+    <string name="contacts_empty">У вас немає контактів.</string>
+    <string name="contact_unknown">Невідомий контакт</string>
+    <string name="contact_email">Ел. пошта</string>
+    <string name="contacts_empty_hidden">Немає контактів з ім’ям або поштою. Натисніть кнопку на верхній панелі, щоб показати невідомі контакти.</string>
+    <string name="contacts_show_unknown">Показати невідомі контакти</string>
+    <string name="contact_favorite">Обране</string>
+    <string name="new_contact">Новий контакт</string>
+    <string name="edit_contact">Редагувати контакт</string>
+    <string name="menu_edit_contact">Редагувати контакт</string>
+    <string name="menu_delete_contact">Видалити контакт</string>
+    <string name="delete_contact_title">Видалити контакт?</string>
+    <string name="delete_contact_message">Контакт і всі відгуки, написані ним або про нього, буде видалено. Цю дію не можна скасувати.</string>
+    <string name="delete_contact_used_by_identity">Цей контакт належить одному з ваших профілів, тому його не можна видалити.</string>
+    <string name="delete_contact_confirm">Видалити</string>
+    <string name="contact_details">Контакт</string>
+    <string name="contact_not_found">Контакт не знайдено</string>
+    <string name="contact_public_key">Відкритий ключ</string>
+    <string name="contact_ignored">Ігнорується</string>
+    <string-array name="handshake_rating_titles">
+        <item>Рейтинг через одне рукостискання</item>
+        <item>Рейтинг через два рукостискання</item>
+        <item>Рейтинг через три рукостискання</item>
+        <item>Рейтинг через чотири рукостискання</item>
+        <item>Рейтинг через п’ять рукостискань</item>
+        <item>Рейтинг через шість рукостискань</item>
+        <item>Рейтинг через сім рукостискань</item>
+    </string-array>
+    <string name="handshake_rating_title_n">Рейтинг через %1$d рукостискань</string>
+    <string name="handshake_rating_calculating">Обчислення…</string>
+    <string name="handshake_rating_waiting">Очікування попереднього рейтингу</string>
+    <string name="contact_reviews_received_count">Отримано: %1$d</string>
+    <string name="contact_reviews_given_count">Надано: %1$d</string>
+    <string name="contact_reviews_show_details">Натисніть, щоб показати отримані, надані та шляхи</string>
+    <string name="contact_reviews_hide_details">Натисніть, щоб приховати отримані, надані та шляхи</string>
+    <string name="handshake_path_me">Ви</string>
+    <string name="handshake_ratings">Рейтинги рукостискань</string>
+    <string name="handshake_ratings_off">Вимкнено. Натисніть кнопку на верхній панелі, щоб вибрати, скільки рукостискань обчислювати.</string>
+    <string name="handshake_depth_title">Глибина рукостискань</string>
+    <string name="handshake_depth_off">Рейтинги рукостискань вимкнено</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="one">До %1$d рукостискання</item>
+        <item quantity="few">До %1$d рукостискань</item>
+        <item quantity="many">До %1$d рукостискань</item>
+        <item quantity="other">До %1$d рукостискання</item>
+    </plurals>
+    <string name="handshake_depth_hint">Застосовується до всіх контактів. Чим більша глибина, тим довше обчислення.</string>
+    <string name="handshake_path_none">Немає шляху</string>
+    <string name="contact_reviews_no_identity">Додайте профіль, щоб бачити відгуки, якими ви обмінялися з цим контактом.</string>
+    <string name="identities_title">Профілі</string>
+    <string name="identities_empty">У вас немає профілів.</string>
+    <string name="identity_unnamed">Профіль без імені</string>
+    <string name="add_identity">Додати профіль</string>
+    <string name="identities_selected">Вибраний профіль</string>
+    <string name="identities_others">Інші профілі</string>
+    <string name="identity_select">Вибрати</string>
+    <string name="identity_private_key">Закритий ключ</string>
+    <string name="identity_private_key_invalid">Недійсний закритий ключ Ed25519</string>
+    <string name="identity_private_key_encrypted">Ключі, захищені парольною фразою, не підтримуються. Спочатку видаліть її: ssh-keygen -p -f &lt;файл ключа&gt;</string>
+    <string name="identity_generate">Створити</string>
+    <string name="identity_public_key">Відкритий ключ</string>
+    <string name="identity_name">Ім’я</string>
+    <string name="identity_name_required">Вкажіть ім’я</string>
+    <string name="menu_save_identity">Зберегти профіль</string>
+    <string name="identity_cannot_save">Введіть дійсний закритий ключ та ім’я</string>
+    <string name="identity_duplicate">Такий профіль уже існує</string>
+    <string name="menu_save_contact">Зберегти контакт</string>
+    <string name="new_contact_public_key">Відкритий ключ</string>
+    <string name="new_contact_name">Ім’я (необов’язково)</string>
+    <string name="new_contact_email">Ел. пошта (необов’язково)</string>
+    <string name="new_contact_invalid_email">Введіть дійсну адресу ел. пошти</string>
+    <string name="new_contact_scan_qr">Сканувати QR</string>
+    <string name="new_contact_favorite">Обране</string>
+    <string name="new_contact_ignored">Ігнорується</string>
+    <string name="new_contact_empty_public_key">Вкажіть відкритий ключ</string>
+    <string name="new_contact_duplicate">Контакт із таким відкритим ключем уже існує</string>
+</resources>

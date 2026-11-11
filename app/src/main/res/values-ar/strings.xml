@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7 مصافحات</string>
+    <string name="open_drawer">فتح القائمة</string>
+    <string name="menu_back">رجوع</string>
+    <string name="menu_complete_gratitude">إتمام</string>
+    <string name="feed_title">رسائل الشكر</string>
+    <string name="new_gratitude">شكر جديد</string>
+    <string name="new_gratitude_comment">تعليقك</string>
+    <string name="new_gratitude_receiver">المستلم</string>
+    <string name="new_gratitude_scan_qr">مسح QR</string>
+    <string name="new_gratitude_from_contacts">من جهات الاتصال</string>
+    <string name="qr_scan_failed">فشل مسح رمز QR: %1$s</string>
+    <string name="new_gratitude_empty_receiver">لا يمكن ترك المستلم فارغًا</string>
+    <string name="new_gratitude_cannot_create_contact">تعذّر إنشاء جهة الاتصال</string>
+    <string name="new_gratitude_no_identity">أضف هوية أولًا</string>
+    <string name="new_gratitude_invalid_receiver">ليس مفتاحًا عامًا صالحًا من نوع Ed25519</string>
+    <string name="new_gratitude_pick_contact">اختر المستلم</string>
+    <string name="new_gratitude_no_contacts">ليست لديك جهات اتصال للاختيار منها.</string>
+    <string name="cancel">إلغاء</string>
+    <string name="feed_show_all">عرض كل التقييمات</string>
+    <string name="new_gratitude_stars">النجوم</string>
+    <string name="rate_diamond">ماسية</string>
+    <string name="rate_gold">ذهبية</string>
+    <string name="rate_silver">فضية</string>
+    <string name="feed_rate_silver">نجمة فضية: شكر بسيط</string>
+    <string name="feed_rate_gold">نجمة ذهبية: شكر معتاد</string>
+    <string name="feed_rate_diamond">نجمة ماسية: شكر استثنائي</string>
+    <string name="feed_today">اليوم</string>
+    <string name="feed_yesterday">أمس</string>
+    <string name="feed_unknown_date">التاريخ غير معروف</string>
+    <string name="feed_from_to">%1$s ← %2$s</string>
+    <string name="contacts_title">جهات الاتصال</string>
+    <string name="contacts_empty">ليست لديك جهات اتصال.</string>
+    <string name="contact_unknown">جهة اتصال غير معروفة</string>
+    <string name="contact_email">البريد الإلكتروني</string>
+    <string name="contacts_empty_hidden">لا توجد جهات اتصال لها اسم أو بريد إلكتروني. استخدم الزر في الشريط العلوي لعرض جهات الاتصال غير المعروفة.</string>
+    <string name="contacts_show_unknown">عرض جهات الاتصال غير المعروفة</string>
+    <string name="contact_favorite">مفضلة</string>
+    <string name="new_contact">جهة اتصال جديدة</string>
+    <string name="edit_contact">تعديل جهة الاتصال</string>
+    <string name="menu_edit_contact">تعديل جهة الاتصال</string>
+    <string name="menu_delete_contact">حذف جهة الاتصال</string>
+    <string name="delete_contact_title">حذف جهة الاتصال؟</string>
+    <string name="delete_contact_message">سيتم حذف جهة الاتصال وكل التقييمات التي كتبتها أو كُتبت لها. لا يمكن التراجع عن ذلك.</string>
+    <string name="delete_contact_used_by_identity">تنتمي جهة الاتصال هذه إلى إحدى هوياتك، لذا لا يمكن حذفها.</string>
+    <string name="delete_contact_confirm">حذف</string>
+    <string name="contact_details">جهة الاتصال</string>
+    <string name="contact_not_found">لم يتم العثور على جهة الاتصال</string>
+    <string name="contact_public_key">المفتاح العام</string>
+    <string name="contact_ignored">متجاهَلة</string>
+    <string-array name="handshake_rating_titles">
+        <item>التقييم عبر مصافحة واحدة</item>
+        <item>التقييم عبر مصافحتين</item>
+        <item>التقييم عبر ثلاث مصافحات</item>
+        <item>التقييم عبر أربع مصافحات</item>
+        <item>التقييم عبر خمس مصافحات</item>
+        <item>التقييم عبر ست مصافحات</item>
+        <item>التقييم عبر سبع مصافحات</item>
+    </string-array>
+    <string name="handshake_rating_title_n">التقييم بعمق %1$d</string>
+    <string name="handshake_rating_calculating">جارٍ الحساب…</string>
+    <string name="handshake_rating_waiting">في انتظار التقييم السابق</string>
+    <string name="contact_reviews_received_count">المستلمة: %1$d</string>
+    <string name="contact_reviews_given_count">المقدَّمة: %1$d</string>
+    <string name="contact_reviews_show_details">انقر لعرض المستلمة والمقدَّمة والمسارات</string>
+    <string name="contact_reviews_hide_details">انقر لإخفاء المستلمة والمقدَّمة والمسارات</string>
+    <string name="handshake_path_me">أنت</string>
+    <string name="handshake_ratings">تقييمات المصافحة</string>
+    <string name="handshake_ratings_off">متوقف. استخدم الزر في الشريط العلوي لاختيار عدد المصافحات المراد حسابها.</string>
+    <string name="handshake_depth_title">عمق المصافحة</string>
+    <string name="handshake_depth_off">تقييمات المصافحة متوقفة</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="zero">حتى %1$d مصافحة</item>
+        <item quantity="one">حتى مصافحة واحدة</item>
+        <item quantity="two">حتى مصافحتين</item>
+        <item quantity="few">حتى %1$d مصافحات</item>
+        <item quantity="many">حتى %1$d مصافحة</item>
+        <item quantity="other">حتى %1$d مصافحة</item>
+    </plurals>
+    <string name="handshake_depth_hint">ينطبق على جميع جهات الاتصال. تستغرق المستويات الأعمق وقتًا أطول في الحساب.</string>
+    <string name="handshake_path_none">لا يوجد مسار</string>
+    <string name="contact_reviews_no_identity">أضف هوية لعرض التقييمات المتبادلة مع جهة الاتصال هذه.</string>
+    <string name="identities_title">الهويات</string>
+    <string name="identities_empty">ليست لديك هويات.</string>
+    <string name="identity_unnamed">هوية بلا اسم</string>
+    <string name="add_identity">إضافة هوية</string>
+    <string name="identities_selected">الهوية المحددة</string>
+    <string name="identities_others">هويات أخرى</string>
+    <string name="identity_select">تحديد</string>
+    <string name="identity_private_key">المفتاح الخاص</string>
+    <string name="identity_private_key_invalid">ليس مفتاحًا خاصًا صالحًا من نوع Ed25519</string>
+    <string name="identity_private_key_encrypted">المفاتيح المحمية بعبارة مرور غير مدعومة. أزل عبارة المرور أولًا: ssh-keygen -p -f &lt;ملف المفتاح&gt;</string>
+    <string name="identity_generate">إنشاء</string>
+    <string name="identity_public_key">المفتاح العام</string>
+    <string name="identity_name">الاسم</string>
+    <string name="identity_name_required">الاسم مطلوب</string>
+    <string name="menu_save_identity">حفظ الهوية</string>
+    <string name="identity_cannot_save">أدخل مفتاحًا خاصًا صالحًا واسمًا</string>
+    <string name="identity_duplicate">هذه الهوية موجودة بالفعل</string>
+    <string name="menu_save_contact">حفظ جهة الاتصال</string>
+    <string name="new_contact_public_key">المفتاح العام</string>
+    <string name="new_contact_name">الاسم (اختياري)</string>
+    <string name="new_contact_email">البريد الإلكتروني (اختياري)</string>
+    <string name="new_contact_invalid_email">أدخل عنوان بريد إلكتروني صالحًا</string>
+    <string name="new_contact_scan_qr">مسح QR</string>
+    <string name="new_contact_favorite">مفضلة</string>
+    <string name="new_contact_ignored">متجاهَلة</string>
+    <string name="new_contact_empty_public_key">لا يمكن ترك المفتاح العام فارغًا</string>
+    <string name="new_contact_duplicate">توجد بالفعل جهة اتصال بهذا المفتاح العام</string>
+</resources>

@@ -117,7 +117,7 @@ private fun FeedContent(
         topBar = { FeedTopAppBar(openDrawer, showAll, onShowAllChange) },
         floatingActionButton = {
             SmallFloatingActionButton(onClick = { newGratitude() }) {
-                Icon(Icons.Filled.Add, stringResource(id = R.string.edit_task))
+                Icon(Icons.Filled.Add, stringResource(id = R.string.new_gratitude))
             }
         },
     ) { paddingValues ->

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7 tokalaşma</string>
+    <string name="open_drawer">Menüyü aç</string>
+    <string name="menu_back">Geri</string>
+    <string name="menu_complete_gratitude">Tamamla</string>
+    <string name="feed_title">Teşekkürlerim</string>
+    <string name="new_gratitude">Yeni teşekkür</string>
+    <string name="new_gratitude_comment">Yorumunuz</string>
+    <string name="new_gratitude_receiver">Alıcı</string>
+    <string name="new_gratitude_scan_qr">QR tara</string>
+    <string name="new_gratitude_from_contacts">Kişilerden</string>
+    <string name="qr_scan_failed">QR taranamadı: %1$s</string>
+    <string name="new_gratitude_empty_receiver">Alıcı boş olamaz</string>
+    <string name="new_gratitude_cannot_create_contact">Kişi oluşturulamadı</string>
+    <string name="new_gratitude_no_identity">Önce bir kimlik ekleyin</string>
+    <string name="new_gratitude_invalid_receiver">Geçerli bir Ed25519 açık anahtarı değil</string>
+    <string name="new_gratitude_pick_contact">Alıcı seçin</string>
+    <string name="new_gratitude_no_contacts">Seçilecek kişiniz yok.</string>
+    <string name="cancel">İptal</string>
+    <string name="feed_show_all">Tüm değerlendirmeleri göster</string>
+    <string name="new_gratitude_stars">Yıldızlar</string>
+    <string name="rate_diamond">Elmas</string>
+    <string name="rate_gold">Altın</string>
+    <string name="rate_silver">Gümüş</string>
+    <string name="feed_rate_silver">Gümüş yıldız: küçük bir teşekkür</string>
+    <string name="feed_rate_gold">Altın yıldız: olağan bir teşekkür</string>
+    <string name="feed_rate_diamond">Elmas yıldız: olağanüstü bir teşekkür</string>
+    <string name="feed_today">Bugün</string>
+    <string name="feed_yesterday">Dün</string>
+    <string name="feed_unknown_date">Tarih bilinmiyor</string>
+    <string name="feed_from_to">%1$s → %2$s</string>
+    <string name="contacts_title">Kişiler</string>
+    <string name="contacts_empty">Hiç kişiniz yok.</string>
+    <string name="contact_unknown">Bilinmeyen kişi</string>
+    <string name="contact_email">E-posta</string>
+    <string name="contacts_empty_hidden">Adı veya e-postası olan kişi yok. Bilinmeyen kişileri göstermek için üst çubuktaki düğmeyi kullanın.</string>
+    <string name="contacts_show_unknown">Bilinmeyen kişileri göster</string>
+    <string name="contact_favorite">Favori</string>
+    <string name="new_contact">Yeni kişi</string>
+    <string name="edit_contact">Kişiyi düzenle</string>
+    <string name="menu_edit_contact">Kişiyi düzenle</string>
+    <string name="menu_delete_contact">Kişiyi sil</string>
+    <string name="delete_contact_title">Kişi silinsin mi?</string>
+    <string name="delete_contact_message">Kişi ve onun yazdığı ya da ona yazılan tüm değerlendirmeler silinecek. Bu işlem geri alınamaz.</string>
+    <string name="delete_contact_used_by_identity">Bu kişi kimliklerinizden birine ait olduğu için silinemez.</string>
+    <string name="delete_contact_confirm">Sil</string>
+    <string name="contact_details">Kişi</string>
+    <string name="contact_not_found">Kişi bulunamadı</string>
+    <string name="contact_public_key">Açık anahtar</string>
+    <string name="contact_ignored">Yok sayıldı</string>
+    <string-array name="handshake_rating_titles">
+        <item>Bir tokalaşma puanı</item>
+        <item>İki tokalaşma puanı</item>
+        <item>Üç tokalaşma puanı</item>
+        <item>Dört tokalaşma puanı</item>
+        <item>Beş tokalaşma puanı</item>
+        <item>Altı tokalaşma puanı</item>
+        <item>Yedi tokalaşma puanı</item>
+    </string-array>
+    <string name="handshake_rating_title_n">%1$d tokalaşma puanı</string>
+    <string name="handshake_rating_calculating">Hesaplanıyor…</string>
+    <string name="handshake_rating_waiting">Önceki puan bekleniyor</string>
+    <string name="contact_reviews_received_count">Alınan: %1$d</string>
+    <string name="contact_reviews_given_count">Verilen: %1$d</string>
+    <string name="contact_reviews_show_details">Alınanları, verilenleri ve yolları göstermek için dokunun</string>
+    <string name="contact_reviews_hide_details">Alınanları, verilenleri ve yolları gizlemek için dokunun</string>
+    <string name="handshake_path_me">Siz</string>
+    <string name="handshake_ratings">Tokalaşma puanları</string>
+    <string name="handshake_ratings_off">Kapalı. Kaç tokalaşmanın hesaplanacağını seçmek için üst çubuktaki düğmeyi kullanın.</string>
+    <string name="handshake_depth_title">Tokalaşma derinliği</string>
+    <string name="handshake_depth_off">Tokalaşma puanları kapalı</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="one">En fazla %1$d tokalaşma</item>
+        <item quantity="other">En fazla %1$d tokalaşma</item>
+    </plurals>
+    <string name="handshake_depth_hint">Tüm kişiler için geçerlidir. Daha derin seviyelerin hesaplanması daha uzun sürer.</string>
+    <string name="handshake_path_none">Yol yok</string>
+    <string name="contact_reviews_no_identity">Bu kişiyle paylaşılan değerlendirmeleri görmek için bir kimlik ekleyin.</string>
+    <string name="identities_title">Kimlikler</string>
+    <string name="identities_empty">Hiç kimliğiniz yok.</string>
+    <string name="identity_unnamed">Adsız kimlik</string>
+    <string name="add_identity">Kimlik ekle</string>
+    <string name="identities_selected">Seçili kimlik</string>
+    <string name="identities_others">Diğer kimlikler</string>
+    <string name="identity_select">Seç</string>
+    <string name="identity_private_key">Özel anahtar</string>
+    <string name="identity_private_key_invalid">Geçerli bir Ed25519 özel anahtarı değil</string>
+    <string name="identity_private_key_encrypted">Parola ile korunan anahtarlar desteklenmiyor. Önce parolayı kaldırın: ssh-keygen -p -f &lt;anahtar dosyası&gt;</string>
+    <string name="identity_generate">Oluştur</string>
+    <string name="identity_public_key">Açık anahtar</string>
+    <string name="identity_name">Ad</string>
+    <string name="identity_name_required">Ad gerekli</string>
+    <string name="menu_save_identity">Kimliği kaydet</string>
+    <string name="identity_cannot_save">Geçerli bir özel anahtar ve ad girin</string>
+    <string name="identity_duplicate">Bu kimlik zaten var</string>
+    <string name="menu_save_contact">Kişiyi kaydet</string>
+    <string name="new_contact_public_key">Açık anahtar</string>
+    <string name="new_contact_name">Ad (isteğe bağlı)</string>
+    <string name="new_contact_email">E-posta (isteğe bağlı)</string>
+    <string name="new_contact_invalid_email">Geçerli bir e-posta adresi girin</string>
+    <string name="new_contact_scan_qr">QR tara</string>
+    <string name="new_contact_favorite">Favori</string>
+    <string name="new_contact_ignored">Yok sayıldı</string>
+    <string name="new_contact_empty_public_key">Açık anahtar boş olamaz</string>
+    <string name="new_contact_duplicate">Bu açık anahtara sahip bir kişi zaten var</string>
+</resources>

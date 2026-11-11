@@ -112,13 +112,12 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
     ) {
         Image(
             imageVector = Icons.Filled.Edit,
-            contentDescription =
-                stringResource(id = R.string.tasks_header_image_content_description),
+            contentDescription = null,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
             modifier = Modifier.width(dimensionResource(id = R.dimen.header_image_width)),
         )
         Text(
-            text = stringResource(id = R.string.navigation_view_header_title),
+            text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }

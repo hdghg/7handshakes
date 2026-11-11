@@ -42,6 +42,11 @@ android {
         isIncludeAndroidResources = true
     }
 
+    androidResources {
+        // Lists the translated languages so Android 13+ offers them in the per-app language setting.
+        generateLocaleConfig = true
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true

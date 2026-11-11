@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7 Händedrücke</string>
+    <string name="open_drawer">Menü öffnen</string>
+    <string name="menu_back">Zurück</string>
+    <string name="menu_complete_gratitude">Fertig</string>
+    <string name="feed_title">Meine Danksagungen</string>
+    <string name="new_gratitude">Neue Danksagung</string>
+    <string name="new_gratitude_comment">Dein Kommentar</string>
+    <string name="new_gratitude_receiver">Empfänger</string>
+    <string name="new_gratitude_scan_qr">QR scannen</string>
+    <string name="new_gratitude_from_contacts">Aus Kontakten</string>
+    <string name="qr_scan_failed">QR-Scan fehlgeschlagen: %1$s</string>
+    <string name="new_gratitude_empty_receiver">Der Empfänger darf nicht leer sein</string>
+    <string name="new_gratitude_cannot_create_contact">Kontakt konnte nicht erstellt werden</string>
+    <string name="new_gratitude_no_identity">Füge zuerst eine Identität hinzu</string>
+    <string name="new_gratitude_invalid_receiver">Kein gültiger öffentlicher Ed25519-Schlüssel</string>
+    <string name="new_gratitude_pick_contact">Empfänger wählen</string>
+    <string name="new_gratitude_no_contacts">Du hast keine Kontakte zur Auswahl.</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="feed_show_all">Alle Bewertungen anzeigen</string>
+    <string name="new_gratitude_stars">Sterne</string>
+    <string name="rate_diamond">Diamant</string>
+    <string name="rate_gold">Gold</string>
+    <string name="rate_silver">Silber</string>
+    <string name="feed_rate_silver">Silberstern: kleiner Dank</string>
+    <string name="feed_rate_gold">Goldstern: üblicher Dank</string>
+    <string name="feed_rate_diamond">Diamantstern: außergewöhnlicher Dank</string>
+    <string name="feed_today">Heute</string>
+    <string name="feed_yesterday">Gestern</string>
+    <string name="feed_unknown_date">Datum unbekannt</string>
+    <string name="feed_from_to">%1$s → %2$s</string>
+    <string name="contacts_title">Kontakte</string>
+    <string name="contacts_empty">Du hast keine Kontakte.</string>
+    <string name="contact_unknown">Unbekannter Kontakt</string>
+    <string name="contact_email">E-Mail</string>
+    <string name="contacts_empty_hidden">Keine Kontakte mit Name oder E-Mail. Über die Schaltfläche oben kannst du unbekannte Kontakte anzeigen.</string>
+    <string name="contacts_show_unknown">Unbekannte Kontakte anzeigen</string>
+    <string name="contact_favorite">Favorit</string>
+    <string name="new_contact">Neuer Kontakt</string>
+    <string name="edit_contact">Kontakt bearbeiten</string>
+    <string name="menu_edit_contact">Kontakt bearbeiten</string>
+    <string name="menu_delete_contact">Kontakt löschen</string>
+    <string name="delete_contact_title">Kontakt löschen?</string>
+    <string name="delete_contact_message">Der Kontakt und alle Bewertungen von oder an ihn werden gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="delete_contact_used_by_identity">Dieser Kontakt gehört zu einer deiner Identitäten und kann daher nicht gelöscht werden.</string>
+    <string name="delete_contact_confirm">Löschen</string>
+    <string name="contact_details">Kontakt</string>
+    <string name="contact_not_found">Kontakt nicht gefunden</string>
+    <string name="contact_public_key">Öffentlicher Schlüssel</string>
+    <string name="contact_ignored">Ignoriert</string>
+    <string-array name="handshake_rating_titles">
+        <item>Bewertung über einen Händedruck</item>
+        <item>Bewertung über zwei Händedrücke</item>
+        <item>Bewertung über drei Händedrücke</item>
+        <item>Bewertung über vier Händedrücke</item>
+        <item>Bewertung über fünf Händedrücke</item>
+        <item>Bewertung über sechs Händedrücke</item>
+        <item>Bewertung über sieben Händedrücke</item>
+    </string-array>
+    <string name="handshake_rating_title_n">Bewertung über %1$d Händedrücke</string>
+    <string name="handshake_rating_calculating">Wird berechnet …</string>
+    <string name="handshake_rating_waiting">Wartet auf die vorherige Bewertung</string>
+    <string name="contact_reviews_received_count">Erhalten: %1$d</string>
+    <string name="contact_reviews_given_count">Gegeben: %1$d</string>
+    <string name="contact_reviews_show_details">Tippen, um Erhaltene, Gegebene und Pfade anzuzeigen</string>
+    <string name="contact_reviews_hide_details">Tippen, um Erhaltene, Gegebene und Pfade auszublenden</string>
+    <string name="handshake_path_me">Du</string>
+    <string name="handshake_ratings">Händedruck-Bewertungen</string>
+    <string name="handshake_ratings_off">Ausgeschaltet. Wähle über die Schaltfläche oben, wie viele Händedrücke berechnet werden sollen.</string>
+    <string name="handshake_depth_title">Händedruck-Tiefe</string>
+    <string name="handshake_depth_off">Händedruck-Bewertungen aus</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="one">Bis zu %1$d Händedruck</item>
+        <item quantity="other">Bis zu %1$d Händedrücke</item>
+    </plurals>
+    <string name="handshake_depth_hint">Gilt für alle Kontakte. Tiefere Stufen brauchen länger zur Berechnung.</string>
+    <string name="handshake_path_none">Kein Pfad</string>
+    <string name="contact_reviews_no_identity">Füge eine Identität hinzu, um die mit diesem Kontakt ausgetauschten Bewertungen zu sehen.</string>
+    <string name="identities_title">Identitäten</string>
+    <string name="identities_empty">Du hast keine Identitäten.</string>
+    <string name="identity_unnamed">Unbenannte Identität</string>
+    <string name="add_identity">Identität hinzufügen</string>
+    <string name="identities_selected">Ausgewählte Identität</string>
+    <string name="identities_others">Andere Identitäten</string>
+    <string name="identity_select">Auswählen</string>
+    <string name="identity_private_key">Privater Schlüssel</string>
+    <string name="identity_private_key_invalid">Kein gültiger privater Ed25519-Schlüssel</string>
+    <string name="identity_private_key_encrypted">Mit Passphrase geschützte Schlüssel werden nicht unterstützt. Entferne zuerst die Passphrase: ssh-keygen -p -f &lt;Schlüsseldatei&gt;</string>
+    <string name="identity_generate">Erzeugen</string>
+    <string name="identity_public_key">Öffentlicher Schlüssel</string>
+    <string name="identity_name">Name</string>
+    <string name="identity_name_required">Name ist erforderlich</string>
+    <string name="menu_save_identity">Identität speichern</string>
+    <string name="identity_cannot_save">Gib einen gültigen privaten Schlüssel und einen Namen ein</string>
+    <string name="identity_duplicate">Diese Identität existiert bereits</string>
+    <string name="menu_save_contact">Kontakt speichern</string>
+    <string name="new_contact_public_key">Öffentlicher Schlüssel</string>
+    <string name="new_contact_name">Name (optional)</string>
+    <string name="new_contact_email">E-Mail (optional)</string>
+    <string name="new_contact_invalid_email">Gib eine gültige E-Mail-Adresse ein</string>
+    <string name="new_contact_scan_qr">QR scannen</string>
+    <string name="new_contact_favorite">Favorit</string>
+    <string name="new_contact_ignored">Ignoriert</string>
+    <string name="new_contact_empty_public_key">Der öffentliche Schlüssel darf nicht leer sein</string>
+    <string name="new_contact_duplicate">Ein Kontakt mit diesem öffentlichen Schlüssel existiert bereits</string>
+</resources>

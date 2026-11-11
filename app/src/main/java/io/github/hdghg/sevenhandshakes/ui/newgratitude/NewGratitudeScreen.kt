@@ -85,7 +85,10 @@ fun NewGratitudeScreen(
             QrScanner.scanQr(
                 context = context,
                 onSuccess = viewModel::updateReceiver,
-                onFail = { e -> scope.launch { snackbarHostState.showSnackbar("QR scan failed: ${e.message}") } },
+                onFail = { e ->
+                    val message = context.getString(R.string.qr_scan_failed, e.message.orEmpty())
+                    scope.launch { snackbarHostState.showSnackbar(message) }
+                },
             )
         }
         Column(
@@ -95,7 +98,7 @@ fun NewGratitudeScreen(
             OutlinedTextField(
                 value = uiState.text,
                 onValueChange = viewModel::updateText,
-                label = { Text("Your comment") },
+                label = { Text(stringResource(id = R.string.new_gratitude_comment)) },
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -118,7 +121,7 @@ fun NewGratitudeScreen(
             ) {
                 OutlinedTextField(
                     value = uiState.receiver,
-                    label = { Text("Receiver") },
+                    label = { Text(stringResource(id = R.string.new_gratitude_receiver)) },
                     onValueChange = viewModel::updateReceiver,
                     isError = uiState.isReceiverInvalid,
                     supportingText =
@@ -136,13 +139,13 @@ fun NewGratitudeScreen(
                         onClick = scanQr,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("Scan QR")
+                        Text(stringResource(id = R.string.new_gratitude_scan_qr))
                     }
                     Button(
                         onClick = { showContactPicker = true },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("From contacts")
+                        Text(stringResource(id = R.string.new_gratitude_from_contacts))
                     }
                 }
             }

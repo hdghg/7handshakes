@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7つの握手</string>
+    <string name="open_drawer">メニューを開く</string>
+    <string name="menu_back">戻る</string>
+    <string name="menu_complete_gratitude">完了</string>
+    <string name="feed_title">自分の感謝</string>
+    <string name="new_gratitude">新しい感謝</string>
+    <string name="new_gratitude_comment">コメント</string>
+    <string name="new_gratitude_receiver">受取人</string>
+    <string name="new_gratitude_scan_qr">QRをスキャン</string>
+    <string name="new_gratitude_from_contacts">連絡先から</string>
+    <string name="qr_scan_failed">QRのスキャンに失敗しました：%1$s</string>
+    <string name="new_gratitude_empty_receiver">受取人を入力してください</string>
+    <string name="new_gratitude_cannot_create_contact">連絡先を作成できませんでした</string>
+    <string name="new_gratitude_no_identity">先にIDを追加してください</string>
+    <string name="new_gratitude_invalid_receiver">有効なEd25519公開鍵ではありません</string>
+    <string name="new_gratitude_pick_contact">受取人を選択</string>
+    <string name="new_gratitude_no_contacts">選択できる連絡先がありません。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="feed_show_all">すべてのレビューを表示</string>
+    <string name="new_gratitude_stars">星</string>
+    <string name="rate_diamond">ダイヤモンド</string>
+    <string name="rate_gold">ゴールド</string>
+    <string name="rate_silver">シルバー</string>
+    <string name="feed_rate_silver">シルバースター：ささやかな感謝</string>
+    <string name="feed_rate_gold">ゴールドスター：通常の感謝</string>
+    <string name="feed_rate_diamond">ダイヤモンドスター：特別な感謝</string>
+    <string name="feed_today">今日</string>
+    <string name="feed_yesterday">昨日</string>
+    <string name="feed_unknown_date">日付不明</string>
+    <string name="feed_from_to">%1$s → %2$s</string>
+    <string name="contacts_title">連絡先</string>
+    <string name="contacts_empty">連絡先がありません。</string>
+    <string name="contact_unknown">不明な連絡先</string>
+    <string name="contact_email">メール</string>
+    <string name="contacts_empty_hidden">名前またはメールのある連絡先はありません。上部バーのボタンで不明な連絡先を表示できます。</string>
+    <string name="contacts_show_unknown">不明な連絡先を表示</string>
+    <string name="contact_favorite">お気に入り</string>
+    <string name="new_contact">新しい連絡先</string>
+    <string name="edit_contact">連絡先を編集</string>
+    <string name="menu_edit_contact">連絡先を編集</string>
+    <string name="menu_delete_contact">連絡先を削除</string>
+    <string name="delete_contact_title">連絡先を削除しますか？</string>
+    <string name="delete_contact_message">この連絡先と、この連絡先が書いた・受け取ったすべてのレビューが削除されます。元に戻すことはできません。</string>
+    <string name="delete_contact_used_by_identity">この連絡先はあなたのIDの一つに属しているため、削除できません。</string>
+    <string name="delete_contact_confirm">削除</string>
+    <string name="contact_details">連絡先</string>
+    <string name="contact_not_found">連絡先が見つかりません</string>
+    <string name="contact_public_key">公開鍵</string>
+    <string name="contact_ignored">無視</string>
+    <string-array name="handshake_rating_titles">
+        <item>握手1回の評価</item>
+        <item>握手2回の評価</item>
+        <item>握手3回の評価</item>
+        <item>握手4回の評価</item>
+        <item>握手5回の評価</item>
+        <item>握手6回の評価</item>
+        <item>握手7回の評価</item>
+    </string-array>
+    <string name="handshake_rating_title_n">握手%1$d回の評価</string>
+    <string name="handshake_rating_calculating">計算中…</string>
+    <string name="handshake_rating_waiting">前の評価を待っています</string>
+    <string name="contact_reviews_received_count">受け取った数：%1$d</string>
+    <string name="contact_reviews_given_count">贈った数：%1$d</string>
+    <string name="contact_reviews_show_details">タップして受け取った数・贈った数・経路を表示</string>
+    <string name="contact_reviews_hide_details">タップして受け取った数・贈った数・経路を非表示</string>
+    <string name="handshake_path_me">あなた</string>
+    <string name="handshake_ratings">握手の評価</string>
+    <string name="handshake_ratings_off">オフです。上部バーのボタンで、計算する握手の回数を選択してください。</string>
+    <string name="handshake_depth_title">握手の深さ</string>
+    <string name="handshake_depth_off">握手の評価はオフ</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="other">最大%1$d回の握手</item>
+    </plurals>
+    <string name="handshake_depth_hint">すべての連絡先に適用されます。深いほど計算に時間がかかります。</string>
+    <string name="handshake_path_none">経路なし</string>
+    <string name="contact_reviews_no_identity">IDを追加すると、この連絡先とやり取りしたレビューを表示できます。</string>
+    <string name="identities_title">ID</string>
+    <string name="identities_empty">IDがありません。</string>
+    <string name="identity_unnamed">名前のないID</string>
+    <string name="add_identity">IDを追加</string>
+    <string name="identities_selected">選択中のID</string>
+    <string name="identities_others">その他のID</string>
+    <string name="identity_select">選択</string>
+    <string name="identity_private_key">秘密鍵</string>
+    <string name="identity_private_key_invalid">有効なEd25519秘密鍵ではありません</string>
+    <string name="identity_private_key_encrypted">パスフレーズで保護された鍵には対応していません。先にパスフレーズを削除してください：ssh-keygen -p -f &lt;鍵ファイル&gt;</string>
+    <string name="identity_generate">生成</string>
+    <string name="identity_public_key">公開鍵</string>
+    <string name="identity_name">名前</string>
+    <string name="identity_name_required">名前は必須です</string>
+    <string name="menu_save_identity">IDを保存</string>
+    <string name="identity_cannot_save">有効な秘密鍵と名前を入力してください</string>
+    <string name="identity_duplicate">このIDはすでに存在します</string>
+    <string name="menu_save_contact">連絡先を保存</string>
+    <string name="new_contact_public_key">公開鍵</string>
+    <string name="new_contact_name">名前（任意）</string>
+    <string name="new_contact_email">メール（任意）</string>
+    <string name="new_contact_invalid_email">有効なメールアドレスを入力してください</string>
+    <string name="new_contact_scan_qr">QRをスキャン</string>
+    <string name="new_contact_favorite">お気に入り</string>
+    <string name="new_contact_ignored">無視</string>
+    <string name="new_contact_empty_public_key">公開鍵を入力してください</string>
+    <string name="new_contact_duplicate">この公開鍵の連絡先はすでに存在します</string>
+</resources>

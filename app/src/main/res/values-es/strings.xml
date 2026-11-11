@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">7 apretones de manos</string>
+    <string name="open_drawer">Abrir menú</string>
+    <string name="menu_back">Atrás</string>
+    <string name="menu_complete_gratitude">Completar</string>
+    <string name="feed_title">Mis agradecimientos</string>
+    <string name="new_gratitude">Nuevo agradecimiento</string>
+    <string name="new_gratitude_comment">Tu comentario</string>
+    <string name="new_gratitude_receiver">Destinatario</string>
+    <string name="new_gratitude_scan_qr">Escanear QR</string>
+    <string name="new_gratitude_from_contacts">De contactos</string>
+    <string name="qr_scan_failed">Error al escanear el QR: %1$s</string>
+    <string name="new_gratitude_empty_receiver">El destinatario no puede estar vacío</string>
+    <string name="new_gratitude_cannot_create_contact">No se pudo crear el contacto</string>
+    <string name="new_gratitude_no_identity">Primero añade una identidad</string>
+    <string name="new_gratitude_invalid_receiver">No es una clave pública Ed25519 válida</string>
+    <string name="new_gratitude_pick_contact">Elegir destinatario</string>
+    <string name="new_gratitude_no_contacts">No tienes contactos para elegir.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="feed_show_all">Mostrar todas las reseñas</string>
+    <string name="new_gratitude_stars">Estrellas</string>
+    <string name="rate_diamond">Diamante</string>
+    <string name="rate_gold">Oro</string>
+    <string name="rate_silver">Plata</string>
+    <string name="feed_rate_silver">Estrella de plata: pequeño agradecimiento</string>
+    <string name="feed_rate_gold">Estrella de oro: agradecimiento habitual</string>
+    <string name="feed_rate_diamond">Estrella de diamante: agradecimiento excepcional</string>
+    <string name="feed_today">Hoy</string>
+    <string name="feed_yesterday">Ayer</string>
+    <string name="feed_unknown_date">Fecha desconocida</string>
+    <string name="feed_from_to">%1$s → %2$s</string>
+    <string name="contacts_title">Contactos</string>
+    <string name="contacts_empty">No tienes contactos.</string>
+    <string name="contact_unknown">Contacto desconocido</string>
+    <string name="contact_email">Correo electrónico</string>
+    <string name="contacts_empty_hidden">No hay contactos con nombre o correo. Usa el botón de la barra superior para mostrar los contactos desconocidos.</string>
+    <string name="contacts_show_unknown">Mostrar contactos desconocidos</string>
+    <string name="contact_favorite">Favorito</string>
+    <string name="new_contact">Nuevo contacto</string>
+    <string name="edit_contact">Editar contacto</string>
+    <string name="menu_edit_contact">Editar contacto</string>
+    <string name="menu_delete_contact">Eliminar contacto</string>
+    <string name="delete_contact_title">¿Eliminar contacto?</string>
+    <string name="delete_contact_message">Se eliminarán el contacto y todas las reseñas escritas por él o para él. Esta acción no se puede deshacer.</string>
+    <string name="delete_contact_used_by_identity">Este contacto pertenece a una de tus identidades, por lo que no se puede eliminar.</string>
+    <string name="delete_contact_confirm">Eliminar</string>
+    <string name="contact_details">Contacto</string>
+    <string name="contact_not_found">Contacto no encontrado</string>
+    <string name="contact_public_key">Clave pública</string>
+    <string name="contact_ignored">Ignorado</string>
+    <string-array name="handshake_rating_titles">
+        <item>Valoración a un apretón de manos</item>
+        <item>Valoración a dos apretones de manos</item>
+        <item>Valoración a tres apretones de manos</item>
+        <item>Valoración a cuatro apretones de manos</item>
+        <item>Valoración a cinco apretones de manos</item>
+        <item>Valoración a seis apretones de manos</item>
+        <item>Valoración a siete apretones de manos</item>
+    </string-array>
+    <string name="handshake_rating_title_n">Valoración a %1$d apretones de manos</string>
+    <string name="handshake_rating_calculating">Calculando…</string>
+    <string name="handshake_rating_waiting">Esperando la valoración anterior</string>
+    <string name="contact_reviews_received_count">Recibidas: %1$d</string>
+    <string name="contact_reviews_given_count">Dadas: %1$d</string>
+    <string name="contact_reviews_show_details">Toca para mostrar recibidas, dadas y rutas</string>
+    <string name="contact_reviews_hide_details">Toca para ocultar recibidas, dadas y rutas</string>
+    <string name="handshake_path_me">Tú</string>
+    <string name="handshake_ratings">Valoraciones por apretones de manos</string>
+    <string name="handshake_ratings_off">Desactivado. Usa el botón de la barra superior para elegir cuántos apretones de manos calcular.</string>
+    <string name="handshake_depth_title">Profundidad de apretones de manos</string>
+    <string name="handshake_depth_off">Valoraciones desactivadas</string>
+    <plurals name="handshake_depth_value">
+        <item quantity="one">Hasta %1$d apretón de manos</item>
+        <item quantity="many">Hasta %1$d apretones de manos</item>
+        <item quantity="other">Hasta %1$d apretones de manos</item>
+    </plurals>
+    <string name="handshake_depth_hint">Se aplica a todos los contactos. Los niveles más profundos tardan más en calcularse.</string>
+    <string name="handshake_path_none">Sin ruta</string>
+    <string name="contact_reviews_no_identity">Añade una identidad para ver las reseñas intercambiadas con este contacto.</string>
+    <string name="identities_title">Identidades</string>
+    <string name="identities_empty">No tienes identidades.</string>
+    <string name="identity_unnamed">Identidad sin nombre</string>
+    <string name="add_identity">Añadir identidad</string>
+    <string name="identities_selected">Identidad seleccionada</string>
+    <string name="identities_others">Otras identidades</string>
+    <string name="identity_select">Seleccionar</string>
+    <string name="identity_private_key">Clave privada</string>
+    <string name="identity_private_key_invalid">No es una clave privada Ed25519 válida</string>
+    <string name="identity_private_key_encrypted">No se admiten claves protegidas con frase de contraseña. Quita primero la frase: ssh-keygen -p -f &lt;archivo de clave&gt;</string>
+    <string name="identity_generate">Generar</string>
+    <string name="identity_public_key">Clave pública</string>
+    <string name="identity_name">Nombre</string>
+    <string name="identity_name_required">El nombre es obligatorio</string>
+    <string name="menu_save_identity">Guardar identidad</string>
+    <string name="identity_cannot_save">Introduce una clave privada válida y un nombre</string>
+    <string name="identity_duplicate">Esta identidad ya existe</string>
+    <string name="menu_save_contact">Guardar contacto</string>
+    <string name="new_contact_public_key">Clave pública</string>
+    <string name="new_contact_name">Nombre (opcional)</string>
+    <string name="new_contact_email">Correo electrónico (opcional)</string>
+    <string name="new_contact_invalid_email">Introduce un correo electrónico válido</string>
+    <string name="new_contact_scan_qr">Escanear QR</string>
+    <string name="new_contact_favorite">Favorito</string>
+    <string name="new_contact_ignored">Ignorado</string>
+    <string name="new_contact_empty_public_key">La clave pública no puede estar vacía</string>
+    <string name="new_contact_duplicate">Ya existe un contacto con esta clave pública</string>
+</resources>
