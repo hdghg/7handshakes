@@ -94,12 +94,77 @@ class HandshakeSearchTest {
     }
 
     @Test
-    fun levelsAreSearchedSeparately() {
+    fun higherLevelsAddToLowerLevelWeights() {
+        // 10 -> 11 is the pure edge of each level; the other two weigh the level and all above it.
         val graph = HandshakeGraph(
-            listOf(edge(me, 10, 4, level = 2), edge(10, contact, 4, level = 1), edge(10, contact, 6, level = 2)),
+            listOf(
+                edge(contact, 10, 2, level = 1), edge(contact, 10, 3, level = 2), edge(contact, 10, 4, level = 3),
+                edge(10, 11, 20, level = 1), edge(10, 11, 30, level = 2), edge(10, 11, 40, level = 3),
+                edge(11, me, 9, level = 3),
+            ),
+        )
+        val result = graph.at(3)
+        assertThat(result.receivedPaths.getValue(3).weights).containsExactly(4, 40, 9).inOrder()
+        assertThat(result.receivedPaths.getValue(2).weights).containsExactly(7, 30, 9).inOrder()
+        assertThat(result.receivedPaths.getValue(1).weights).containsExactly(9, 20, 9).inOrder()
+    }
+
+    @Test
+    fun oneEdgeWeighsItsOwnLevelOnly() {
+        // A diamond only path is no gold path; the one gold review makes it a gold path of weight 1.
+        val graph = HandshakeGraph(
+            listOf(edge(me, 10, 4, level = 3), edge(10, contact, 6, level = 3), edge(10, contact, 1, level = 2)),
         )
         val result = graph.at(2)
-        assertThat(result.givenPaths.mapValues { it.value.weight }).containsExactly(2.toByte(), 4)
+        assertThat(result.givenPaths.mapValues { it.value.weight }).containsExactly(3.toByte(), 4, 2.toByte(), 1)
+        assertThat(result.givenPaths.getValue(2).weights).containsExactly(4, 1).inOrder()
+    }
+
+    @Test
+    fun directPathWeighsItsOwnLevelOnly() {
+        val graph = HandshakeGraph(listOf(edge(contact, me, 5, level = 1), edge(contact, me, 2, level = 3)))
+        val result = graph.at(1)
+        assertThat(result.receivedPaths.mapValues { it.value.weight }).containsExactly(3.toByte(), 2, 1.toByte(), 5)
+    }
+
+    @Test
+    fun pureEdgeIsTheOneThatKeepsThePathWidest() {
+        // Pure on the first edge gives min(1, 4) = 1, pure on the second gives min(6, 4) = 4.
+        val graph = HandshakeGraph(
+            listOf(edge(contact, 10, 1, level = 1), edge(contact, 10, 5), edge(10, me, 4, level = 1)),
+        )
+        assertThat(graph.at(2).receivedPaths.getValue(1).weights).containsExactly(6, 4).inOrder()
+    }
+
+    @Test
+    fun pureEdgeMayComeFromANarrowerPath() {
+        // The widest summed path through 10 has no silver edge, so the path through 11 wins for silver.
+        val graph = HandshakeGraph(
+            listOf(
+                edge(contact, 10, 8), edge(10, me, 8),
+                edge(contact, 11, 3), edge(11, me, 2, level = 1), edge(11, me, 1),
+            ),
+        )
+        val silver = graph.at(2).receivedPaths.getValue(1)
+        assertThat(silver.contactIds).containsExactly(contact, 11, me).inOrder()
+        assertThat(silver.weights).containsExactly(3, 2).inOrder()
+    }
+
+    @Test
+    fun edgesTellTheBestLevelInTheirWeight() {
+        // For silver: 10 -> 11 is pure silver, contact -> 10 adds gold, 11 -> me adds gold and diamond.
+        val graph = HandshakeGraph(
+            listOf(
+                edge(contact, 10, 1, level = 1), edge(contact, 10, 5, level = 2),
+                edge(10, 11, 4, level = 1),
+                edge(11, me, 2, level = 2), edge(11, me, 3, level = 3),
+            ),
+        )
+        val result = graph.at(3)
+        val silver = result.receivedPaths.getValue(1)
+        assertThat(silver.weights).containsExactly(6, 4, 5).inOrder()
+        assertThat(silver.levels).containsExactly(2.toByte(), 1.toByte(), 3.toByte()).inOrder()
+        assertThat(result.receivedPaths).doesNotContainKey(3.toByte())
     }
 
     @Test

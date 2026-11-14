@@ -75,7 +75,6 @@
         <item quantity="other">Upp till %1$d handslag</item>
     </plurals>
     <string name="handshake_depth_hint">Gäller alla kontakter. Djupare nivåer tar längre tid att beräkna.</string>
-    <string name="handshake_path_none">Ingen väg</string>
     <string name="contact_reviews_no_identity">Lägg till en identitet för att se omdömen som utbytts med den här kontakten.</string>
     <string name="identities_title">Identiteter</string>
     <string name="identities_empty">Du har inga identiteter.</string>

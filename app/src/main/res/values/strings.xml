@@ -75,7 +75,6 @@
         <item quantity="other">Up to %1$d handshakes</item>
     </plurals>
     <string name="handshake_depth_hint">Applies to all contacts. Deeper levels take longer to calculate.</string>
-    <string name="handshake_path_none">No path</string>
     <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>

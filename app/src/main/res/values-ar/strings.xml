@@ -79,7 +79,6 @@
         <item quantity="other">حتى %1$d مصافحة</item>
     </plurals>
     <string name="handshake_depth_hint">ينطبق على جميع جهات الاتصال. تستغرق المستويات الأعمق وقتًا أطول في الحساب.</string>
-    <string name="handshake_path_none">لا يوجد مسار</string>
     <string name="contact_reviews_no_identity">أضف هوية لعرض التقييمات المتبادلة مع جهة الاتصال هذه.</string>
     <string name="identities_title">الهويات</string>
     <string name="identities_empty">ليست لديك هويات.</string>

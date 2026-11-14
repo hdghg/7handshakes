@@ -75,7 +75,6 @@
         <item quantity="other">En fazla %1$d tokalaşma</item>
     </plurals>
     <string name="handshake_depth_hint">Tüm kişiler için geçerlidir. Daha derin seviyelerin hesaplanması daha uzun sürer.</string>
-    <string name="handshake_path_none">Yol yok</string>
     <string name="contact_reviews_no_identity">Bu kişiyle paylaşılan değerlendirmeleri görmek için bir kimlik ekleyin.</string>
     <string name="identities_title">Kimlikler</string>
     <string name="identities_empty">Hiç kimliğiniz yok.</string>

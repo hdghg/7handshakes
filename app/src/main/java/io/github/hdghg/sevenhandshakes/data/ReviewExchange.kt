@@ -3,13 +3,16 @@ package io.github.hdghg.sevenhandshakes.data
 /**
  * A chain of contacts found by the handshake search, in review direction: each contact reviewed the next.
  * [weights] has one entry per edge: how many reviews of the rate level the edge stands for.
+ * [levels] has the best rate level counted in each edge's weight, or is empty when that is not known.
  */
 data class HandshakePath(
     val contactIds: List<Int>,
     val weights: List<Int>,
+    val levels: List<Byte> = emptyList(),
 ) {
     init {
         require(weights.isNotEmpty() && contactIds.size == weights.size + 1)
+        require(levels.isEmpty() || levels.size == weights.size)
     }
 
     /** A path is worth its weakest edge. */

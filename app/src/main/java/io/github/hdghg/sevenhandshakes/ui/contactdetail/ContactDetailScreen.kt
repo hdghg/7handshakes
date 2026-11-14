@@ -50,6 +50,7 @@ import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
+import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 
 @Composable
@@ -318,6 +319,7 @@ private fun RateColumn(
                         received = exchange.receivedPaths[level],
                         given = exchange.givenPaths[level],
                         handshakes = handshakes,
+                        lineColor = rateStarColor(level),
                         labelOf = { id -> displayNameOrUnknown(contactNames[id]) },
                         modifier = Modifier.padding(top = 8.dp),
                     )
@@ -411,7 +413,7 @@ fun ContactDetailScreenPreview() {
                 ReviewExchange(
                     receivedPaths = mapOf(
                         3.toByte() to HandshakePath(listOf(1, 2, 9), listOf(4, 1)),
-                        1.toByte() to HandshakePath(listOf(1, 3, 9), listOf(2, 5)),
+                        1.toByte() to HandshakePath(listOf(1, 3, 9), listOf(2, 5), levels = listOf(1, 3)),
                     ),
                     givenPaths = mapOf(3.toByte() to HandshakePath(listOf(9, 3, 1), listOf(2, 2))),
                 ),

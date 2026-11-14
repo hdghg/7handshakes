@@ -20,6 +20,13 @@ private val SilverStar = listOf(Color(0xFFE3E6EA), Color(0xFF9EA5AE))
 private val GoldStar = listOf(Color(0xFFFFE27A), Color(0xFFE0A800))
 private val DiamondStar = listOf(Color(0xFFE8FDFF), Color(0xFF7FDBFF), Color(0xFFB9A8FF))
 
+/** Flat colour matching the star of [rate], for lines and other marks drawn next to it. */
+fun rateStarColor(rate: Byte): Color = when (rateLevelOf(rate).toInt()) {
+    3 -> DiamondStar[1]
+    2 -> GoldStar[1]
+    else -> SilverStar[1]
+}
+
 /** One star whose material shows the rate: 1 silver, 2 gold, 3 diamond. */
 @Composable
 fun RateStar(rate: Byte, modifier: Modifier = Modifier) {

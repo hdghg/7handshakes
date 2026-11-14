@@ -74,7 +74,6 @@
         <item quantity="other">最多 %1$d 次握手</item>
     </plurals>
     <string name="handshake_depth_hint">适用于所有联系人。层级越深，计算时间越长。</string>
-    <string name="handshake_path_none">无路径</string>
     <string name="contact_reviews_no_identity">添加身份后即可查看与该联系人互相给出的评价。</string>
     <string name="identities_title">身份</string>
     <string name="identities_empty">你还没有身份。</string>

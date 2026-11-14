@@ -77,7 +77,6 @@
         <item quantity="other">До %1$d рукостискання</item>
     </plurals>
     <string name="handshake_depth_hint">Застосовується до всіх контактів. Чим більша глибина, тим довше обчислення.</string>
-    <string name="handshake_path_none">Немає шляху</string>
     <string name="contact_reviews_no_identity">Додайте профіль, щоб бачити відгуки, якими ви обмінялися з цим контактом.</string>
     <string name="identities_title">Профілі</string>
     <string name="identities_empty">У вас немає профілів.</string>

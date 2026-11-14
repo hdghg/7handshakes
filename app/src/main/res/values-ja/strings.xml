@@ -74,7 +74,6 @@
         <item quantity="other">最大%1$d回の握手</item>
     </plurals>
     <string name="handshake_depth_hint">すべての連絡先に適用されます。深いほど計算に時間がかかります。</string>
-    <string name="handshake_path_none">経路なし</string>
     <string name="contact_reviews_no_identity">IDを追加すると、この連絡先とやり取りしたレビューを表示できます。</string>
     <string name="identities_title">ID</string>
     <string name="identities_empty">IDがありません。</string>

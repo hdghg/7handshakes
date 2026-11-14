@@ -22,21 +22,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
+import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 
 private val VertexHeight = 20.dp
 private val EdgeHeight = 22.dp
 private val WeightWidth = 24.dp
 private val RailWidth = 14.dp
+private val LineStroke = 2.dp
+private val MissingLineStroke = 0.5.dp
 
 /**
  * Vertical chain of contacts for one rate level, read top to bottom in review direction:
  * the contact at the top, the [received] path down to you in the middle, then the [given] path
  * down to the contact again at the bottom. Each edge shows how many reviews it stands for;
- * the weakest edge, which sets the path's total, is highlighted.
+ * the weakest edge, which sets the path's total, is highlighted. A missing half is drawn as
+ * one thin line of weight 0.
  *
+ * Each edge is drawn in the star color of the best rate level counted in its weight.
+ *
+ * @param lineColor color of the lines, where a path does not say its levels or is missing: the star color of the rate level.
  * @param handshakes edges per path, so a missing half keeps you in the middle.
  * @param labelOf name shown for a contact id on the path.
  */
@@ -45,41 +53,49 @@ internal fun HandshakePathDiagram(
     received: HandshakePath?,
     given: HandshakePath?,
     handshakes: Int,
+    lineColor: Color,
     labelOf: @Composable (Int) -> String,
     modifier: Modifier = Modifier,
 ) {
+    fun HandshakePath.edgeColor(edge: Int): Color = levels.getOrNull(edge)?.let(::rateStarColor) ?: lineColor
     Column(modifier = modifier.fillMaxWidth()) {
         if (received == null) {
-            MissingHalf(handshakes)
+            MissingHalf(handshakes, lineColor)
         } else {
             received.weights.forEachIndexed { i, weight ->
                 val id = received.contactIds[i]
                 Vertex(
                     label = labelOf(id),
                     kind = if (i == 0) VertexKind.End else VertexKind.Middle,
-                    lineAbove = i > 0,
-                    lineBelow = true,
+                    colorAbove = received.edgeColor(maxOf(i - 1, 0)),
+                    colorBelow = received.edgeColor(i),
+                    strokeAbove = if (i > 0) LineStroke else null,
+                    strokeBelow = LineStroke,
                 )
-                Edge(weight = weight, weakest = weight == received.weight)
+                Edge(weight = weight, weakest = weight == received.weight, lineColor = received.edgeColor(i))
             }
         }
         Vertex(
             label = stringResource(id = R.string.handshake_path_me),
             kind = VertexKind.Me,
-            lineAbove = received != null,
-            lineBelow = given != null,
+            colorAbove = received?.run { edgeColor(weights.lastIndex) } ?: lineColor,
+            colorBelow = given?.edgeColor(0) ?: lineColor,
+            strokeAbove = if (received != null) LineStroke else MissingLineStroke,
+            strokeBelow = if (given != null) LineStroke else MissingLineStroke,
         )
         if (given == null) {
-            MissingHalf(handshakes)
+            MissingHalf(handshakes, lineColor)
         } else {
             given.weights.forEachIndexed { i, weight ->
                 val id = given.contactIds[i + 1]
-                Edge(weight = weight, weakest = weight == given.weight)
+                Edge(weight = weight, weakest = weight == given.weight, lineColor = given.edgeColor(i))
                 Vertex(
                     label = labelOf(id),
                     kind = if (i == given.weights.lastIndex) VertexKind.End else VertexKind.Middle,
-                    lineAbove = true,
-                    lineBelow = i < given.weights.lastIndex,
+                    colorAbove = given.edgeColor(i),
+                    colorBelow = given.edgeColor(minOf(i + 1, given.weights.lastIndex)),
+                    strokeAbove = LineStroke,
+                    strokeBelow = if (i < given.weights.lastIndex) LineStroke else null,
                 )
             }
         }
@@ -88,9 +104,16 @@ internal fun HandshakePathDiagram(
 
 private enum class VertexKind { Me, End, Middle }
 
+/** @param strokeAbove width of the line entering the dot from above, null for none; same for [strokeBelow]. */
 @Composable
-private fun Vertex(label: String, kind: VertexKind, lineAbove: Boolean, lineBelow: Boolean) {
-    val lineColor = MaterialTheme.colorScheme.outlineVariant
+private fun Vertex(
+    label: String,
+    kind: VertexKind,
+    colorAbove: Color,
+    colorBelow: Color,
+    strokeAbove: Dp?,
+    strokeBelow: Dp?,
+) {
     val dotColor = when (kind) {
         VertexKind.Me -> MaterialTheme.colorScheme.primary
         VertexKind.End -> MaterialTheme.colorScheme.onSurface
@@ -101,9 +124,8 @@ private fun Vertex(label: String, kind: VertexKind, lineAbove: Boolean, lineBelo
         Canvas(modifier = Modifier.width(RailWidth).fillMaxHeight()) {
             val x = size.width / 2
             val y = size.height / 2
-            val stroke = 2.dp.toPx()
-            if (lineAbove) drawLine(lineColor, Offset(x, 0f), Offset(x, y), stroke)
-            if (lineBelow) drawLine(lineColor, Offset(x, y), Offset(x, size.height), stroke)
+            strokeAbove?.let { drawLine(colorAbove, Offset(x, 0f), Offset(x, y), it.toPx()) }
+            strokeBelow?.let { drawLine(colorBelow, Offset(x, y), Offset(x, size.height), it.toPx()) }
             drawCircle(dotColor, radius = (if (kind == VertexKind.Me) 5 else 4).dp.toPx(), center = Offset(x, y))
         }
         Text(
@@ -124,8 +146,7 @@ private fun Vertex(label: String, kind: VertexKind, lineAbove: Boolean, lineBelo
 
 /** A downward edge with its weight on the left. */
 @Composable
-private fun Edge(weight: Int, weakest: Boolean) {
-    val lineColor = MaterialTheme.colorScheme.outlineVariant
+private fun Edge(weight: Int, weakest: Boolean, lineColor: Color) {
     val weightColor = if (weakest) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(EdgeHeight)) {
         Text(
@@ -139,8 +160,7 @@ private fun Edge(weight: Int, weakest: Boolean) {
         )
         Canvas(modifier = Modifier.width(RailWidth).fillMaxHeight()) {
             val x = size.width / 2
-            val stroke = 2.dp.toPx()
-            drawLine(lineColor, Offset(x, 0f), Offset(x, size.height), stroke)
+            drawLine(lineColor, Offset(x, 0f), Offset(x, size.height), LineStroke.toPx())
             drawArrowHead(x, size.height / 2 + 3.dp.toPx(), 3.dp.toPx(), if (weakest) weightColor else lineColor)
         }
     }
@@ -156,19 +176,27 @@ private fun DrawScope.drawArrowHead(x: Float, tipY: Float, half: Float, color: C
     drawPath(path, color)
 }
 
-/** Takes the space of a whole half path, so you stay in the middle of the column. */
+/**
+ * A half with no path: one thin line of weight 0. Takes the space of a whole half path,
+ * so you stay in the middle of the column.
+ */
 @Composable
-private fun MissingHalf(handshakes: Int) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height((VertexHeight + EdgeHeight) * handshakes),
+private fun MissingHalf(handshakes: Int, lineColor: Color) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.height((VertexHeight + EdgeHeight) * handshakes),
     ) {
         Text(
-            text = stringResource(id = R.string.handshake_path_none),
+            text = "0",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.End,
+            maxLines = 1,
+            modifier = Modifier.width(WeightWidth),
         )
+        Canvas(modifier = Modifier.width(RailWidth).fillMaxHeight()) {
+            val x = size.width / 2
+            drawLine(lineColor, Offset(x, 0f), Offset(x, size.height), MissingLineStroke.toPx())
+        }
     }
 }
