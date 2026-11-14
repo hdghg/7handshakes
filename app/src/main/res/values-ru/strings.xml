@@ -85,6 +85,12 @@
     <string name="identities_selected">Выбранный профиль</string>
     <string name="identities_others">Другие профили</string>
     <string name="identity_select">Выбрать</string>
+    <string name="identity_show_qr">Показать закрытый ключ как QR-код</string>
+    <string name="identity_unlock_title">Подтвердите, что это вы</string>
+    <string name="identity_unlock_subtitle">Разблокируйте, чтобы показать закрытый ключ</string>
+    <string name="identity_no_screen_lock">Настройте блокировку экрана на этом устройстве, чтобы передать закрытый ключ</string>
+    <string name="identity_qr_warning">Любой, кто отсканирует этот код, получит полный контроль над этим профилем. Показывайте его только своему устройству.</string>
+    <string name="close">Закрыть</string>
     <string name="identity_private_key">Закрытый ключ</string>
     <string name="identity_private_key_invalid">Неверный закрытый ключ Ed25519</string>
     <string name="identity_private_key_encrypted">Ключи, защищённые парольной фразой, не поддерживаются. Сначала удалите её: ssh-keygen -p -f &lt;файл ключа&gt;</string>

@@ -82,6 +82,12 @@
     <string name="identities_selected">当前身份</string>
     <string name="identities_others">其他身份</string>
     <string name="identity_select">选择</string>
+    <string name="identity_show_qr">以二维码显示私钥</string>
+    <string name="identity_unlock_title">验证是您本人</string>
+    <string name="identity_unlock_subtitle">解锁以显示私钥</string>
+    <string name="identity_no_screen_lock">请先在此设备上设置屏幕锁定，才能分享私钥</string>
+    <string name="identity_qr_warning">任何扫描此二维码的人都将完全控制该身份。请只向您自己的设备展示。</string>
+    <string name="close">关闭</string>
     <string name="identity_private_key">私钥</string>
     <string name="identity_private_key_invalid">不是有效的 Ed25519 私钥</string>
     <string name="identity_private_key_encrypted">不支持受密码短语保护的密钥。请先移除密码短语：ssh-keygen -p -f &lt;密钥文件&gt;</string>

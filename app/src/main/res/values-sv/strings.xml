@@ -83,6 +83,12 @@
     <string name="identities_selected">Vald identitet</string>
     <string name="identities_others">Andra identiteter</string>
     <string name="identity_select">Välj</string>
+    <string name="identity_show_qr">Visa privat nyckel som QR-kod</string>
+    <string name="identity_unlock_title">Bekräfta att det är du</string>
+    <string name="identity_unlock_subtitle">Lås upp för att visa den privata nyckeln</string>
+    <string name="identity_no_screen_lock">Ställ in ett skärmlås på den här enheten för att dela en privat nyckel</string>
+    <string name="identity_qr_warning">Alla som skannar den här koden får full kontroll över identiteten. Visa den bara för din egen enhet.</string>
+    <string name="close">Stäng</string>
     <string name="identity_private_key">Privat nyckel</string>
     <string name="identity_private_key_invalid">Inte en giltig privat Ed25519-nyckel</string>
     <string name="identity_private_key_encrypted">Lösenfrasskyddade nycklar stöds inte. Ta bort lösenfrasen först: ssh-keygen -p -f &lt;nyckelfil&gt;</string>

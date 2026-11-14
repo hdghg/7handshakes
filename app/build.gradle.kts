@@ -81,6 +81,8 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.bouncycastle.bcprov)
     implementation(libs.play.services.code.scanner)
+    implementation(libs.zxing.core)
+    implementation(libs.androidx.biometric)
     implementation(libs.androidx.test.espresso.idling.resources)
 
     implementation(libs.androidx.dataStore.preferences)

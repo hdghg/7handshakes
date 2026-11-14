@@ -84,6 +84,12 @@
     <string name="identities_selected">Identidad seleccionada</string>
     <string name="identities_others">Otras identidades</string>
     <string name="identity_select">Seleccionar</string>
+    <string name="identity_show_qr">Mostrar la clave privada como código QR</string>
+    <string name="identity_unlock_title">Verifica tu identidad</string>
+    <string name="identity_unlock_subtitle">Desbloquea para mostrar la clave privada</string>
+    <string name="identity_no_screen_lock">Configura un bloqueo de pantalla en este dispositivo para compartir una clave privada</string>
+    <string name="identity_qr_warning">Cualquiera que escanee este código obtiene el control total de esta identidad. Muéstralo solo a tu propio dispositivo.</string>
+    <string name="close">Cerrar</string>
     <string name="identity_private_key">Clave privada</string>
     <string name="identity_private_key_invalid">No es una clave privada Ed25519 válida</string>
     <string name="identity_private_key_encrypted">No se admiten claves protegidas con frase de contraseña. Quita primero la frase: ssh-keygen -p -f &lt;archivo de clave&gt;</string>

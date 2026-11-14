@@ -82,6 +82,12 @@
     <string name="identities_selected">選択中のID</string>
     <string name="identities_others">その他のID</string>
     <string name="identity_select">選択</string>
+    <string name="identity_show_qr">秘密鍵をQRコードで表示</string>
+    <string name="identity_unlock_title">本人確認</string>
+    <string name="identity_unlock_subtitle">秘密鍵を表示するにはロックを解除してください</string>
+    <string name="identity_no_screen_lock">秘密鍵を共有するには、このデバイスで画面ロックを設定してください</string>
+    <string name="identity_qr_warning">このコードをスキャンした人は、このIDを完全に操作できます。自分のデバイスにのみ見せてください。</string>
+    <string name="close">閉じる</string>
     <string name="identity_private_key">秘密鍵</string>
     <string name="identity_private_key_invalid">有効なEd25519秘密鍵ではありません</string>
     <string name="identity_private_key_encrypted">パスフレーズで保護された鍵には対応していません。先にパスフレーズを削除してください：ssh-keygen -p -f &lt;鍵ファイル&gt;</string>

@@ -83,6 +83,12 @@
     <string name="identities_selected">Seçili kimlik</string>
     <string name="identities_others">Diğer kimlikler</string>
     <string name="identity_select">Seç</string>
+    <string name="identity_show_qr">Özel anahtarı QR kodu olarak göster</string>
+    <string name="identity_unlock_title">Kimliğinizi doğrulayın</string>
+    <string name="identity_unlock_subtitle">Özel anahtarı göstermek için kilidi açın</string>
+    <string name="identity_no_screen_lock">Özel anahtar paylaşmak için bu cihazda ekran kilidi ayarlayın</string>
+    <string name="identity_qr_warning">Bu kodu tarayan herkes bu kimliğin tam denetimini ele geçirir. Yalnızca kendi cihazınıza gösterin.</string>
+    <string name="close">Kapat</string>
     <string name="identity_private_key">Özel anahtar</string>
     <string name="identity_private_key_invalid">Geçerli bir Ed25519 özel anahtarı değil</string>
     <string name="identity_private_key_encrypted">Parola ile korunan anahtarlar desteklenmiyor. Önce parolayı kaldırın: ssh-keygen -p -f &lt;anahtar dosyası&gt;</string>

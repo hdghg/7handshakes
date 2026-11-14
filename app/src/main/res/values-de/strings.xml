@@ -83,6 +83,12 @@
     <string name="identities_selected">Ausgewählte Identität</string>
     <string name="identities_others">Andere Identitäten</string>
     <string name="identity_select">Auswählen</string>
+    <string name="identity_show_qr">Privaten Schlüssel als QR-Code anzeigen</string>
+    <string name="identity_unlock_title">Identität bestätigen</string>
+    <string name="identity_unlock_subtitle">Entsperren, um den privaten Schlüssel anzuzeigen</string>
+    <string name="identity_no_screen_lock">Richte eine Displaysperre auf diesem Gerät ein, um einen privaten Schlüssel zu teilen</string>
+    <string name="identity_qr_warning">Jeder, der diesen Code scannt, erhält die volle Kontrolle über diese Identität. Zeige ihn nur deinem eigenen Gerät.</string>
+    <string name="close">Schließen</string>
     <string name="identity_private_key">Privater Schlüssel</string>
     <string name="identity_private_key_invalid">Kein gültiger privater Ed25519-Schlüssel</string>
     <string name="identity_private_key_encrypted">Mit Passphrase geschützte Schlüssel werden nicht unterstützt. Entferne zuerst die Passphrase: ssh-keygen -p -f &lt;Schlüsseldatei&gt;</string>

@@ -2,15 +2,14 @@ package io.github.hdghg.sevenhandshakes.ui.newcontact
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.NewContactTopAppBar
 import io.github.hdghg.sevenhandshakes.util.QrScanner
 import kotlinx.coroutines.launch
@@ -111,33 +111,30 @@ private fun NewContactContent(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState()),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            // The public key identifies the contact, so it is fixed once the contact exists.
+            OutlinedTextField(
+                value = uiState.publicKey,
+                onValueChange = onPublicKeyChange,
+                label = { Text(stringResource(id = R.string.new_contact_public_key)) },
+                isError = uiState.isPublicKeyError,
+                supportingText = if (uiState.isPublicKeyError) {
+                    { Text(stringResource(id = R.string.new_contact_empty_public_key)) }
+                } else {
+                    null
+                },
+                readOnly = uiState.isEdit,
+                singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-            ) {
-                // The public key identifies the contact, so it is fixed once the contact exists.
-                OutlinedTextField(
-                    value = uiState.publicKey,
-                    onValueChange = onPublicKeyChange,
-                    label = { Text(stringResource(id = R.string.new_contact_public_key)) },
-                    isError = uiState.isPublicKeyError,
-                    supportingText = if (uiState.isPublicKeyError) {
-                        { Text(stringResource(id = R.string.new_contact_empty_public_key)) }
-                    } else {
-                        null
-                    },
-                    readOnly = uiState.isEdit,
-                    singleLine = true,
-                    modifier = Modifier.weight(1f),
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+            )
+            if (!uiState.isEdit) {
+                FieldSourceButton(
+                    icon = Icons.Filled.QrCodeScanner,
+                    text = stringResource(id = R.string.new_contact_scan_qr),
+                    onClick = onScanQr,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
-                if (!uiState.isEdit) {
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Button(onClick = onScanQr) {
-                        Text(stringResource(id = R.string.new_contact_scan_qr))
-                    }
-                }
             }
             OutlinedTextField(
                 value = uiState.name,

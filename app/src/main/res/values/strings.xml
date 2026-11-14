@@ -83,6 +83,12 @@
     <string name="identities_selected">Selected Identity</string>
     <string name="identities_others">Other Identities</string>
     <string name="identity_select">Select</string>
+    <string name="identity_show_qr">Show private key as QR code</string>
+    <string name="identity_unlock_title">Verify it\'s you</string>
+    <string name="identity_unlock_subtitle">Unlock to show the private key</string>
+    <string name="identity_no_screen_lock">Set up a screen lock on this device to share a private key</string>
+    <string name="identity_qr_warning">Anyone who scans this code gets full control of this identity. Show it only to your own device.</string>
+    <string name="close">Close</string>
     <string name="identity_private_key">Private key</string>
     <string name="identity_private_key_invalid">Not a valid Ed25519 private key</string>
     <string name="identity_private_key_encrypted">Passphrase-protected keys are not supported. Remove the passphrase first: ssh-keygen -p -f &lt;key file&gt;</string>

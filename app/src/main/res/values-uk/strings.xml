@@ -85,6 +85,12 @@
     <string name="identities_selected">Вибраний профіль</string>
     <string name="identities_others">Інші профілі</string>
     <string name="identity_select">Вибрати</string>
+    <string name="identity_show_qr">Показати закритий ключ як QR-код</string>
+    <string name="identity_unlock_title">Підтвердьте, що це ви</string>
+    <string name="identity_unlock_subtitle">Розблокуйте, щоб показати закритий ключ</string>
+    <string name="identity_no_screen_lock">Налаштуйте блокування екрана на цьому пристрої, щоб передати закритий ключ</string>
+    <string name="identity_qr_warning">Будь-хто, хто відсканує цей код, отримає повний контроль над цим профілем. Показуйте його лише своєму пристрою.</string>
+    <string name="close">Закрити</string>
     <string name="identity_private_key">Закритий ключ</string>
     <string name="identity_private_key_invalid">Недійсний закритий ключ Ed25519</string>
     <string name="identity_private_key_encrypted">Ключі, захищені парольною фразою, не підтримуються. Спочатку видаліть її: ssh-keygen -p -f &lt;файл ключа&gt;</string>

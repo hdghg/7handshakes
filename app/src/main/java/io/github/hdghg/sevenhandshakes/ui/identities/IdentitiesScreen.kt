@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes.ui.identities
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
@@ -21,9 +25,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,6 +44,8 @@ import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityRecord
 import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityWithContact
 import io.github.hdghg.sevenhandshakes.ui.IdentitiesTopAppBar
+import io.github.hdghg.sevenhandshakes.util.DeviceUnlock
+import kotlinx.coroutines.launch
 
 @Composable
 fun IdentitiesScreen(
@@ -45,6 +56,13 @@ fun IdentitiesScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    // Not saved across recreation on purpose: the private key is shown again only after a new unlock.
+    var sharedIdentity by remember { mutableStateOf<IdentityWithContact?>(null) }
+    val unlockTitle = stringResource(id = R.string.identity_unlock_title)
+    val unlockSubtitle = stringResource(id = R.string.identity_unlock_subtitle)
+    val noScreenLock = stringResource(id = R.string.identity_no_screen_lock)
     IdentitiesContent(
         selected = uiState.selected,
         others = uiState.others,
@@ -52,9 +70,26 @@ fun IdentitiesScreen(
         openDrawer = openDrawer,
         addIdentity = addIdentity,
         selectIdentity = viewModel::selectIdentity,
+        sharePrivateKey = { identity ->
+            DeviceUnlock.confirm(
+                context = context,
+                title = unlockTitle,
+                subtitle = unlockSubtitle,
+                onSuccess = { sharedIdentity = identity },
+                onUnavailable = { scope.launch { snackbarHostState.showSnackbar(noScreenLock) } },
+            )
+        },
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
+
+    sharedIdentity?.let { identity ->
+        PrivateKeyQrDialog(
+            name = identity.contact.name ?: stringResource(id = R.string.identity_unnamed),
+            privateKey = identity.identity.privateKey,
+            onDismiss = { sharedIdentity = null },
+        )
+    }
 }
 
 @Composable
@@ -65,6 +100,7 @@ private fun IdentitiesContent(
     openDrawer: () -> Unit,
     addIdentity: () -> Unit,
     selectIdentity: (Int) -> Unit,
+    sharePrivateKey: (IdentityWithContact) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -92,7 +128,7 @@ private fun IdentitiesContent(
                         SectionHeader(stringResource(id = R.string.identities_selected))
                     }
                     item(key = selected.identity.id) {
-                        IdentityItem(selected)
+                        IdentityItem(selected, isSelected = true, onSharePrivateKey = { sharePrivateKey(selected) })
                     }
                 }
                 if (others.isNotEmpty()) {
@@ -100,7 +136,7 @@ private fun IdentitiesContent(
                         SectionHeader(stringResource(id = R.string.identities_others))
                     }
                     items(others, key = { it.identity.id }) { item ->
-                        IdentityItem(item) {
+                        IdentityItem(item, onSharePrivateKey = { sharePrivateKey(item) }) {
                             TextButton(onClick = { selectIdentity(item.identity.id) }) {
                                 Text(stringResource(id = R.string.identity_select))
                             }
@@ -112,12 +148,18 @@ private fun IdentitiesContent(
     }
 }
 
+/** Marks the selected identity. A mid green that reads on both light and dark backgrounds. */
+private val SelectedIdentityColor = Color(0xFF43A047)
+
 /**
- * Shows the linked contact's name and public key. The private key is never displayed.
+ * Shows the linked contact's name and public key. The private key is not displayed here;
+ * [onSharePrivateKey] asks to show it as a QR code. The selected identity is highlighted in green.
  */
 @Composable
 private fun IdentityItem(
     item: IdentityWithContact,
+    onSharePrivateKey: () -> Unit,
+    isSelected: Boolean = false,
     action: @Composable () -> Unit = {},
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
@@ -125,11 +167,13 @@ private fun IdentityItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .background(if (isSelected) SelectedIdentityColor.copy(alpha = 0.16f) else Color.Transparent)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
         Icon(
             imageVector = Icons.Filled.AccountCircle,
             contentDescription = null,
+            tint = if (isSelected) SelectedIdentityColor else LocalContentColor.current,
             modifier = Modifier.padding(end = margin),
         )
         Column(modifier = Modifier.weight(1f)) {
@@ -145,6 +189,9 @@ private fun IdentityItem(
             )
         }
         action()
+        IconButton(onClick = onSharePrivateKey) {
+            Icon(Icons.Filled.QrCode2, stringResource(id = R.string.identity_show_qr))
+        }
     }
 }
 
@@ -180,6 +227,7 @@ fun IdentitiesScreenPreview() {
             openDrawer = {},
             addIdentity = {},
             selectIdentity = {},
+            sharePrivateKey = {},
         )
     }
 }

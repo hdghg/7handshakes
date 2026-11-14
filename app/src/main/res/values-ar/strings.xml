@@ -87,6 +87,12 @@
     <string name="identities_selected">الهوية المحددة</string>
     <string name="identities_others">هويات أخرى</string>
     <string name="identity_select">تحديد</string>
+    <string name="identity_show_qr">عرض المفتاح الخاص كرمز QR</string>
+    <string name="identity_unlock_title">تأكيد هويتك</string>
+    <string name="identity_unlock_subtitle">افتح القفل لعرض المفتاح الخاص</string>
+    <string name="identity_no_screen_lock">قم بإعداد قفل الشاشة على هذا الجهاز لمشاركة مفتاح خاص</string>
+    <string name="identity_qr_warning">أي شخص يمسح هذا الرمز يحصل على تحكم كامل في هذه الهوية. اعرضه على جهازك فقط.</string>
+    <string name="close">إغلاق</string>
     <string name="identity_private_key">المفتاح الخاص</string>
     <string name="identity_private_key_invalid">ليس مفتاحًا خاصًا صالحًا من نوع Ed25519</string>
     <string name="identity_private_key_encrypted">المفاتيح المحمية بعبارة مرور غير مدعومة. أزل عبارة المرور أولًا: ssh-keygen -p -f &lt;ملف المفتاح&gt;</string>

@@ -6,23 +6,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -55,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
@@ -112,42 +111,42 @@ fun NewGratitudeScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            OutlinedTextField(
+                value = uiState.receiver,
+                label = { Text(stringResource(id = R.string.new_gratitude_receiver)) },
+                onValueChange = viewModel::updateReceiver,
+                isError = uiState.isReceiverInvalid,
+                supportingText =
+                    if (uiState.isReceiverInvalid) {
+                        { Text(stringResource(id = R.string.new_gratitude_invalid_receiver)) }
+                    } else {
+                        null
+                    },
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+            )
+            // Two equal ways to fill the receiver.
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                OutlinedTextField(
-                    value = uiState.receiver,
-                    label = { Text(stringResource(id = R.string.new_gratitude_receiver)) },
-                    onValueChange = viewModel::updateReceiver,
-                    isError = uiState.isReceiverInvalid,
-                    supportingText =
-                        if (uiState.isReceiverInvalid) {
-                            { Text(stringResource(id = R.string.new_gratitude_invalid_receiver)) }
-                        } else {
-                            null
-                        },
+                FieldSourceButton(
+                    icon = Icons.Filled.QrCodeScanner,
+                    text = stringResource(id = R.string.new_gratitude_scan_qr),
+                    onClick = scanQr,
                     modifier = Modifier.weight(1f),
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                // Stacked so the receiver field keeps a usable width on phones.
-                Column(modifier = Modifier.width(IntrinsicSize.Max)) {
-                    Button(
-                        onClick = scanQr,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(id = R.string.new_gratitude_scan_qr))
-                    }
-                    Button(
-                        onClick = { showContactPicker = true },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(id = R.string.new_gratitude_from_contacts))
-                    }
-                }
+                FieldSourceButton(
+                    icon = Icons.Filled.Contacts,
+                    text = stringResource(id = R.string.new_gratitude_from_contacts),
+                    onClick = { showContactPicker = true },
+                    modifier = Modifier.weight(1f),
+                )
             }
             if (showContactPicker) {
                 ContactPickerDialog(
