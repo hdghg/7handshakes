@@ -77,6 +77,7 @@
     <string name="contact_reviews_no_identity">添加身份后即可查看与该联系人互相给出的评价。</string>
     <string name="export_title">导出</string>
     <string name="export_all">导出全部</string>
+    <string name="export_failed">无法导出数据。</string>
     <string name="identities_title">身份</string>
     <string name="identities_empty">你还没有身份。</string>
     <string name="identity_unnamed">未命名身份</string>

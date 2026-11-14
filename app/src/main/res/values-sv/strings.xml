@@ -78,6 +78,7 @@
     <string name="contact_reviews_no_identity">Lägg till en identitet för att se omdömen som utbytts med den här kontakten.</string>
     <string name="export_title">Exportera</string>
     <string name="export_all">Exportera allt</string>
+    <string name="export_failed">Det gick inte att exportera data.</string>
     <string name="identities_title">Identiteter</string>
     <string name="identities_empty">Du har inga identiteter.</string>
     <string name="identity_unnamed">Namnlös identitet</string>

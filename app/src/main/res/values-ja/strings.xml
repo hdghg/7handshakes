@@ -77,6 +77,7 @@
     <string name="contact_reviews_no_identity">IDを追加すると、この連絡先とやり取りしたレビューを表示できます。</string>
     <string name="export_title">エクスポート</string>
     <string name="export_all">すべてエクスポート</string>
+    <string name="export_failed">データをエクスポートできませんでした。</string>
     <string name="identities_title">ID</string>
     <string name="identities_empty">IDがありません。</string>
     <string name="identity_unnamed">名前のないID</string>

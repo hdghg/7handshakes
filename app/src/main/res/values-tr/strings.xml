@@ -78,6 +78,7 @@
     <string name="contact_reviews_no_identity">Bu kişiyle paylaşılan değerlendirmeleri görmek için bir kimlik ekleyin.</string>
     <string name="export_title">Dışa aktar</string>
     <string name="export_all">Tümünü dışa aktar</string>
+    <string name="export_failed">Veriler dışa aktarılamadı.</string>
     <string name="identities_title">Kimlikler</string>
     <string name="identities_empty">Hiç kimliğiniz yok.</string>
     <string name="identity_unnamed">Adsız kimlik</string>
