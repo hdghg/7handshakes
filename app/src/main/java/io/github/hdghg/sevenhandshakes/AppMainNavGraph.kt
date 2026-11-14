@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.hdghg.sevenhandshakes.ui.contactdetail.ContactDetailScreen
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
+import io.github.hdghg.sevenhandshakes.ui.export.ExportScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
@@ -83,6 +84,13 @@ fun AppMainNavGraph(
                 IdentitiesScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     addIdentity = { navActions.navigateToAddEditIdentity() },
+                )
+            }
+        }
+        composable(MyAppDestinations.EXPORT_ROUTE) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ExportScreen(
+                    openDrawer = { coroutineScope.launch { drawerState.open() } },
                 )
             }
         }

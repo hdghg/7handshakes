@@ -80,6 +80,8 @@
     </plurals>
     <string name="handshake_depth_hint">ينطبق على جميع جهات الاتصال. تستغرق المستويات الأعمق وقتًا أطول في الحساب.</string>
     <string name="contact_reviews_no_identity">أضف هوية لعرض التقييمات المتبادلة مع جهة الاتصال هذه.</string>
+    <string name="export_title">تصدير</string>
+    <string name="export_all">تصدير الكل</string>
     <string name="identities_title">الهويات</string>
     <string name="identities_empty">ليست لديك هويات.</string>
     <string name="identity_unnamed">هوية بلا اسم</string>

@@ -76,6 +76,8 @@
     </plurals>
     <string name="handshake_depth_hint">Gilt für alle Kontakte. Tiefere Stufen brauchen länger zur Berechnung.</string>
     <string name="contact_reviews_no_identity">Füge eine Identität hinzu, um die mit diesem Kontakt ausgetauschten Bewertungen zu sehen.</string>
+    <string name="export_title">Export</string>
+    <string name="export_all">Alle exportieren</string>
     <string name="identities_title">Identitäten</string>
     <string name="identities_empty">Du hast keine Identitäten.</string>
     <string name="identity_unnamed">Unbenannte Identität</string>

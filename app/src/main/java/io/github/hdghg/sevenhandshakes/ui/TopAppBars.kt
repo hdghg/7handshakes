@@ -109,6 +109,19 @@ fun IdentitiesTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
+fun ExportTopAppBar(openDrawer: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.export_title)) },
+        navigationIcon = {
+            IconButton(onClick = openDrawer) {
+                Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun AddEditIdentityTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.add_identity)) },

@@ -76,6 +76,8 @@
     </plurals>
     <string name="handshake_depth_hint">Applies to all contacts. Deeper levels take longer to calculate.</string>
     <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
+    <string name="export_title">Export</string>
+    <string name="export_all">Export all</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>

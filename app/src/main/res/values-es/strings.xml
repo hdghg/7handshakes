@@ -77,6 +77,8 @@
     </plurals>
     <string name="handshake_depth_hint">Se aplica a todos los contactos. Los niveles más profundos tardan más en calcularse.</string>
     <string name="contact_reviews_no_identity">Añade una identidad para ver las reseñas intercambiadas con este contacto.</string>
+    <string name="export_title">Exportar</string>
+    <string name="export_all">Exportar todo</string>
     <string name="identities_title">Identidades</string>
     <string name="identities_empty">No tienes identidades.</string>
     <string name="identity_unnamed">Identidad sin nombre</string>

@@ -51,6 +51,7 @@ fun AppModalDrawer(
                 navigateToExample = { navigationActions.navigateToFeed(fromDrawer = true) },
                 navigateToContacts = { navigationActions.navigateToContacts() },
                 navigateToIdentities = { navigationActions.navigateToIdentities() },
+                navigateToExport = { navigationActions.navigateToExport() },
                 closeDrawer = { coroutineScope.launch { drawerState.close() } },
             )
         },
@@ -65,6 +66,7 @@ private fun AppDrawer(
     navigateToExample: () -> Unit,
     navigateToContacts: () -> Unit,
     navigateToIdentities: () -> Unit,
+    navigateToExport: () -> Unit,
     closeDrawer: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,6 +94,14 @@ private fun AppDrawer(
                 isSelected = currentRoute == MyAppDestinations.IDENTITIES_ROUTE,
                 action = {
                     navigateToIdentities()
+                    closeDrawer()
+                },
+            )
+            DrawerButton(
+                label = stringResource(id = R.string.export_title),
+                isSelected = currentRoute == MyAppDestinations.EXPORT_ROUTE,
+                action = {
+                    navigateToExport()
                     closeDrawer()
                 },
             )
