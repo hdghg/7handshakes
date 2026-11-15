@@ -54,6 +54,8 @@
     <string name="review_receiver">To</string>
     <string name="review_text">Text</string>
     <string name="review_share">Share review</string>
+    <string name="review_share_qr">Share as QR code</string>
+    <string name="review_qr_description">QR code of the review link</string>
     <string name="review_link_invalid">This link does not hold a valid review.</string>
     <string name="review_link_save">Save review</string>
     <string name="contact_public_key">Public key</string>

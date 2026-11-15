@@ -54,6 +54,8 @@
     <string name="review_receiver">被评价人</string>
     <string name="review_text">内容</string>
     <string name="review_share">分享评价</string>
+    <string name="review_share_qr">以二维码分享</string>
+    <string name="review_qr_description">评价链接的二维码</string>
     <string name="review_link_invalid">此链接不包含有效的评价。</string>
     <string name="review_link_save">保存评价</string>
     <string name="contact_public_key">公钥</string>

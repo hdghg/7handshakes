@@ -54,6 +54,8 @@
     <string name="review_receiver">Кому</string>
     <string name="review_text">Текст</string>
     <string name="review_share">Поделиться отзывом</string>
+    <string name="review_share_qr">Поделиться QR-кодом</string>
+    <string name="review_qr_description">QR-код со ссылкой на отзыв</string>
     <string name="review_link_invalid">В этой ссылке нет действительного отзыва.</string>
     <string name="review_link_save">Сохранить отзыв</string>
     <string name="contact_public_key">Открытый ключ</string>

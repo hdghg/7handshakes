@@ -13,12 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.Review
+import io.github.hdghg.sevenhandshakes.ui.QrCode
 import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.ui.ReviewDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
@@ -48,12 +54,37 @@ fun ReviewDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val shareLink = uiState.shareLink
+    var showQr by rememberSaveable { mutableStateOf(false) }
+    if (showQr && shareLink != null) {
+        ReviewQrDialog(link = shareLink, onDismiss = { showQr = false })
+    }
     ReviewDetailContent(
         review = uiState.review,
         isLoading = uiState.isLoading,
         onBack = onBack,
-        onShare = uiState.shareLink?.let { link -> { shareLink(context, link) } },
+        onShare = shareLink?.let { link -> { shareLink(context, link) } },
+        onShareQr = shareLink?.let { { showQr = true } },
         modifier = modifier,
+    )
+}
+
+/** Shows [link] as a QR code to scan on another device; it opens there as the link itself would. */
+@Composable
+private fun ReviewQrDialog(link: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(id = R.string.review_details)) },
+        text = {
+            QrCode(
+                content = link,
+                contentDescription = stringResource(id = R.string.review_qr_description),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(text = stringResource(id = R.string.close)) }
+        },
     )
 }
 
@@ -76,12 +107,13 @@ private fun ReviewDetailContent(
     isLoading: Boolean,
     onBack: () -> Unit,
     onShare: (() -> Unit)?,
+    onShareQr: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { ReviewDetailTopAppBar(onBack = onBack, onShare = onShare) },
+        topBar = { ReviewDetailTopAppBar(onBack = onBack, onShare = onShare, onShareQr = onShareQr) },
     ) { paddingValues ->
         if (review == null) {
             if (!isLoading) {
@@ -202,6 +234,7 @@ fun ReviewDetailScreenPreview() {
             isLoading = false,
             onBack = {},
             onShare = {},
+            onShareQr = {},
         )
     }
 }

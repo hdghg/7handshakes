@@ -54,6 +54,8 @@
     <string name="review_receiver">Alan</string>
     <string name="review_text">Metin</string>
     <string name="review_share">Değerlendirmeyi paylaş</string>
+    <string name="review_share_qr">QR kodu olarak paylaş</string>
+    <string name="review_qr_description">Değerlendirme bağlantısını içeren QR kodu</string>
     <string name="review_link_invalid">Bu bağlantı geçerli bir değerlendirme içermiyor.</string>
     <string name="review_link_save">Değerlendirmeyi kaydet</string>
     <string name="contact_public_key">Açık anahtar</string>

@@ -54,6 +54,8 @@
     <string name="review_receiver">Para</string>
     <string name="review_text">Texto</string>
     <string name="review_share">Compartir reseña</string>
+    <string name="review_share_qr">Compartir como código QR</string>
+    <string name="review_qr_description">Código QR con el enlace a la reseña</string>
     <string name="review_link_invalid">Este enlace no contiene una reseña válida.</string>
     <string name="review_link_save">Guardar reseña</string>
     <string name="contact_public_key">Clave pública</string>
