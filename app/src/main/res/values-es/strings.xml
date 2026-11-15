@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">Eliminar</string>
     <string name="contact_details">Contacto</string>
     <string name="contact_not_found">Contacto no encontrado</string>
+    <string name="review_details">Reseña</string>
+    <string name="review_not_found">Reseña no encontrada</string>
+    <string name="review_date_time">Fecha y hora</string>
+    <string name="review_giver">De</string>
+    <string name="review_receiver">Para</string>
+    <string name="review_text">Texto</string>
     <string name="contact_public_key">Clave pública</string>
     <string name="contact_ignored">Ignorado</string>
     <string-array name="handshake_rating_titles">

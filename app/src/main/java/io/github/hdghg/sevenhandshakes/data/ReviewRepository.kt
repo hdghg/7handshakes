@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface ReviewRepository {
     fun getGratitudesStream(): Flow<List<ReviewRecord>>
 
+    /** Emits the review with this id in the review table, or null when there is none. */
+    fun getReviewStream(id: Int): Flow<ReviewRecord?>
+
     /**
      * Emits handshake ratings between [contactId] and the selected identity's contact [myContactId]:
      * index 0 is one handshake, index 1 two handshakes, up to [depth] handshakes.

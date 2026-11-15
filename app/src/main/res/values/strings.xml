@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">Delete</string>
     <string name="contact_details">Contact</string>
     <string name="contact_not_found">Contact not found</string>
+    <string name="review_details">Review</string>
+    <string name="review_not_found">Review not found</string>
+    <string name="review_date_time">Date and time</string>
+    <string name="review_giver">From</string>
+    <string name="review_receiver">To</string>
+    <string name="review_text">Text</string>
     <string name="contact_public_key">Public key</string>
     <string name="contact_ignored">Ignored</string>
     <string-array name="handshake_rating_titles">

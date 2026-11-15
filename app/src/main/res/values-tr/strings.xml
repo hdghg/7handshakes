@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">Sil</string>
     <string name="contact_details">Kişi</string>
     <string name="contact_not_found">Kişi bulunamadı</string>
+    <string name="review_details">Değerlendirme</string>
+    <string name="review_not_found">Değerlendirme bulunamadı</string>
+    <string name="review_date_time">Tarih ve saat</string>
+    <string name="review_giver">Gönderen</string>
+    <string name="review_receiver">Alan</string>
+    <string name="review_text">Metin</string>
     <string name="contact_public_key">Açık anahtar</string>
     <string name="contact_ignored">Yok sayıldı</string>
     <string-array name="handshake_rating_titles">

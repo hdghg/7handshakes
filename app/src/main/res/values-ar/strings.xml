@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">حذف</string>
     <string name="contact_details">جهة الاتصال</string>
     <string name="contact_not_found">لم يتم العثور على جهة الاتصال</string>
+    <string name="review_details">التقييم</string>
+    <string name="review_not_found">لم يتم العثور على التقييم</string>
+    <string name="review_date_time">التاريخ والوقت</string>
+    <string name="review_giver">من</string>
+    <string name="review_receiver">إلى</string>
+    <string name="review_text">النص</string>
     <string name="contact_public_key">المفتاح العام</string>
     <string name="contact_ignored">متجاهَلة</string>
     <string-array name="handshake_rating_titles">

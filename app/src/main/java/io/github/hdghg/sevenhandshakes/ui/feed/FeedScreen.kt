@@ -5,6 +5,7 @@ import android.text.format.DateFormat
 import android.text.format.DateUtils
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,6 +49,7 @@ import java.util.Date
 fun FeedScreen(
     openDrawer: () -> Unit,
     newGratitude: () -> Unit,
+    openReview: (Review) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FeedViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -59,6 +61,7 @@ fun FeedScreen(
         onShowAllChange = viewModel::setShowAll,
         openDrawer = openDrawer,
         newGratitude = newGratitude,
+        openReview = openReview,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -108,6 +111,7 @@ private fun FeedContent(
     onShowAllChange: (Boolean) -> Unit,
     openDrawer: () -> Unit,
     newGratitude: () -> Unit,
+    openReview: (Review) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -132,7 +136,7 @@ private fun FeedContent(
                     DayHeader(day.dayStart)
                 }
                 items(day.reviews, key = { it.id }) { review ->
-                    FeedItem(review)
+                    FeedItem(review, onClick = { openReview(review) })
                 }
             }
         }
@@ -157,7 +161,7 @@ private fun DayHeader(dayStart: Long?) {
 }
 
 @Composable
-private fun FeedItem(review: Review) {
+private fun FeedItem(review: Review, onClick: () -> Unit) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     val context = LocalContext.current
     // Follows the device's locale and its 12/24-hour setting.
@@ -166,6 +170,7 @@ private fun FeedItem(review: Review) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
         RateStar(rate = review.rate, modifier = Modifier.padding(end = margin))
@@ -213,6 +218,7 @@ fun FeedScreenPreview() {
             onShowAllChange = {},
             openDrawer = {},
             newGratitude = {},
+            openReview = {},
         )
     }
 }

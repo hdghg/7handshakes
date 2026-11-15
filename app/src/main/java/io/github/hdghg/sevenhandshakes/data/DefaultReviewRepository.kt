@@ -34,6 +34,8 @@ class DefaultReviewRepository
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }
 
+        override fun getReviewStream(id: Int): Flow<ReviewRecord?> = reviewDao.observeById(id)
+
         override fun getHandshakeRatingsStream(
             contactId: Int,
             myContactId: Int,

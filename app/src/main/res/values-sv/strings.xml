@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">Radera</string>
     <string name="contact_details">Kontakt</string>
     <string name="contact_not_found">Kontakten hittades inte</string>
+    <string name="review_details">Omdöme</string>
+    <string name="review_not_found">Omdömet hittades inte</string>
+    <string name="review_date_time">Datum och tid</string>
+    <string name="review_giver">Från</string>
+    <string name="review_receiver">Till</string>
+    <string name="review_text">Text</string>
     <string name="contact_public_key">Publik nyckel</string>
     <string name="contact_ignored">Ignorerad</string>
     <string-array name="handshake_rating_titles">

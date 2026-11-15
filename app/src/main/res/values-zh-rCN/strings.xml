@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">删除</string>
     <string name="contact_details">联系人</string>
     <string name="contact_not_found">未找到联系人</string>
+    <string name="review_details">评价</string>
+    <string name="review_not_found">未找到评价</string>
+    <string name="review_date_time">日期和时间</string>
+    <string name="review_giver">评价人</string>
+    <string name="review_receiver">被评价人</string>
+    <string name="review_text">内容</string>
     <string name="contact_public_key">公钥</string>
     <string name="contact_ignored">已忽略</string>
     <string-array name="handshake_rating_titles">

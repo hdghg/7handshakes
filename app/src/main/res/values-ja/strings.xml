@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">削除</string>
     <string name="contact_details">連絡先</string>
     <string name="contact_not_found">連絡先が見つかりません</string>
+    <string name="review_details">レビュー</string>
+    <string name="review_not_found">レビューが見つかりません</string>
+    <string name="review_date_time">日時</string>
+    <string name="review_giver">送り主</string>
+    <string name="review_receiver">受け取り手</string>
+    <string name="review_text">本文</string>
     <string name="contact_public_key">公開鍵</string>
     <string name="contact_ignored">無視</string>
     <string-array name="handshake_rating_titles">

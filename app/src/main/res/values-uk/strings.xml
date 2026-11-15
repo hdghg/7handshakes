@@ -47,6 +47,12 @@
     <string name="delete_contact_confirm">Видалити</string>
     <string name="contact_details">Контакт</string>
     <string name="contact_not_found">Контакт не знайдено</string>
+    <string name="review_details">Відгук</string>
+    <string name="review_not_found">Відгук не знайдено</string>
+    <string name="review_date_time">Дата і час</string>
+    <string name="review_giver">Від кого</string>
+    <string name="review_receiver">Кому</string>
+    <string name="review_text">Текст</string>
     <string name="contact_public_key">Відкритий ключ</string>
     <string name="contact_ignored">Ігнорується</string>
     <string-array name="handshake_rating_titles">

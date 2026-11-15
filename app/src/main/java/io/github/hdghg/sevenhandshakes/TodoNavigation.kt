@@ -5,6 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.FILE_URI_ARG
+import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.REVIEW_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TASK_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_EDIT_TASK_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.TASK_DETAIL_SCREEN
@@ -20,6 +21,7 @@ private object MyScreens {
     const val CONTACTS_SCREEN = "contacts"
     const val ADD_EDIT_CONTACT_SCREEN = "addEditContact"
     const val CONTACT_DETAIL_SCREEN = "contact"
+    const val REVIEW_DETAIL_SCREEN = "review"
     const val IDENTITIES_SCREEN = "identities"
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
     const val EXPORT_SCREEN = "export"
@@ -33,6 +35,9 @@ private object MyScreens {
 object MyAppDestinationsArgs {
     const val TASK_ID_ARG = "taskId"
     const val CONTACT_ID_ARG = "contactId"
+
+    /** Id of a review in the review table. */
+    const val REVIEW_ID_ARG = "reviewId"
 
     /** Content uri of the file picked for import. */
     const val FILE_URI_ARG = "fileUri"
@@ -49,6 +54,7 @@ object MyAppDestinations {
     /** Adds a contact, or edits the one with the optional [CONTACT_ID_ARG]. */
     const val ADD_EDIT_CONTACT_ROUTE = "${MyScreens.ADD_EDIT_CONTACT_SCREEN}?$CONTACT_ID_ARG={$CONTACT_ID_ARG}"
     const val CONTACT_DETAIL_ROUTE = "${MyScreens.CONTACT_DETAIL_SCREEN}/{$CONTACT_ID_ARG}"
+    const val REVIEW_DETAIL_ROUTE = "${MyScreens.REVIEW_DETAIL_SCREEN}/{$REVIEW_ID_ARG}"
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
@@ -124,6 +130,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
 
     fun navigateToContactDetail(contactId: Int) {
         navController.navigate("${MyScreens.CONTACT_DETAIL_SCREEN}/$contactId")
+    }
+
+    fun navigateToReviewDetail(reviewId: Int) {
+        navController.navigate("${MyScreens.REVIEW_DETAIL_SCREEN}/$reviewId")
     }
 
     fun navigateToFeed(fromDrawer: Boolean) {

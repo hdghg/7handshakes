@@ -27,6 +27,7 @@ import io.github.hdghg.sevenhandshakes.ui.importselection.ImportSelectionScreen
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
+import io.github.hdghg.sevenhandshakes.ui.reviewdetail.ReviewDetailScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
 import io.github.hdghg.sevenhandshakes.ui.addeditidentity.AddEditIdentityScreen
 import kotlinx.coroutines.CoroutineScope
@@ -62,7 +63,16 @@ fun AppMainNavGraph(
                 FeedScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newGratitude = { navActions.navigateToAddGratitude() },
+                    openReview = { review -> navActions.navigateToReviewDetail(review.id) },
                 )
+            }
+        }
+        composable(
+            MyAppDestinations.REVIEW_DETAIL_ROUTE,
+            arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_ID_ARG) { type = NavType.IntType }),
+        ) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ReviewDetailScreen(onBack = { navController.popBackStack() })
             }
         }
         composable(MyAppDestinations.CONTACTS_ROUTE) {

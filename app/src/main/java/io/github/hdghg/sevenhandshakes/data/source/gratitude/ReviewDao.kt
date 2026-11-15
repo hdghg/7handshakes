@@ -12,6 +12,10 @@ interface ReviewDao {
     @Query("SELECT * FROM review")
     fun observeAll(): Flow<List<ReviewRecord>>
 
+    /** Emits null when there is no review with this id. */
+    @Query("SELECT * FROM review WHERE id = :id")
+    fun observeById(id: Int): Flow<ReviewRecord?>
+
     /** Per-author, per-target, per-rate counts of all reviews: the edges of the handshake graph. */
     @Query(
         "SELECT sourceContactId, targetContactId, gratitude, COUNT(*) AS count FROM review " +
