@@ -16,6 +16,10 @@ interface ReviewDao {
     @Query("SELECT * FROM review WHERE id = :id")
     fun observeById(id: Int): Flow<ReviewRecord?>
 
+    /** The id of the author's review with this uuid, or null if there is none. */
+    @Query("SELECT id FROM review WHERE uuid = :uuid AND sourceContactId = :sourceContactId")
+    suspend fun getId(uuid: String, sourceContactId: Int): Int?
+
     /** Per-author, per-target, per-rate counts of all reviews: the edges of the handshake graph. */
     @Query(
         "SELECT sourceContactId, targetContactId, gratitude, COUNT(*) AS count FROM review " +

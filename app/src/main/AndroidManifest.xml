@@ -70,6 +70,16 @@
                 <data android:pathPattern=".*\\..*\\..*\\.yml" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.yml" />
             </intent-filter>
+            <!--
+                Opens a review link (see ReviewLink), from a browser or any app that shows links.
+                The scheme and host must match ReviewLink.SCHEME and ReviewLink.HOST.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="hs7" android:host="review" />
+            </intent-filter>
         </activity>
         <!-- Lets the share menu hand export files to other apps -->
         <provider

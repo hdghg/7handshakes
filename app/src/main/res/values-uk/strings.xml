@@ -53,6 +53,9 @@
     <string name="review_giver">Від кого</string>
     <string name="review_receiver">Кому</string>
     <string name="review_text">Текст</string>
+    <string name="review_share">Поділитися відгуком</string>
+    <string name="review_link_invalid">У цьому посиланні немає дійсного відгуку.</string>
+    <string name="review_link_save">Зберегти відгук</string>
     <string name="contact_public_key">Відкритий ключ</string>
     <string name="contact_ignored">Ігнорується</string>
     <string-array name="handshake_rating_titles">

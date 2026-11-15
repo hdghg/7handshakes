@@ -72,6 +72,21 @@ object Ed25519Keys {
         Base64.toBase64String(SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(params).encoded)
     }
 
+    /** The 32 bytes of [publicKey] itself, or null if [publicKey] is not a valid Ed25519 public key. */
+    fun rawPublicKey(publicKey: String): ByteArray? = parsePublicKey(publicKey)?.encoded
+
+    /** The app's text form of the public key whose 32 bytes are [raw], or null if [raw] is not a public key. */
+    fun publicKeyOfRaw(raw: ByteArray): String? {
+        if (raw.size != Ed25519PublicKeyParameters.KEY_SIZE) return null
+        val params = try {
+            Ed25519PublicKeyParameters(raw, 0)
+        } catch (e: IllegalArgumentException) {
+            // Not every 32 bytes are a point on the curve.
+            return null
+        }
+        return Base64.toBase64String(SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(params).encoded)
+    }
+
     /**
      * Re-encodes [privateKey] in the app's standard form, so one key always has one text value.
      * Returns null if [privateKey] is not a valid Base64 PKCS#8 Ed25519 private key.

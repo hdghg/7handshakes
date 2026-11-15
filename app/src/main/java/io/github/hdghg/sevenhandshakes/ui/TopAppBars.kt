@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -96,12 +97,20 @@ fun ContactDetailTopAppBar(
 }
 
 @Composable
-fun ReviewDetailTopAppBar(onBack: () -> Unit) {
+fun ReviewDetailTopAppBar(onBack: () -> Unit, onShare: (() -> Unit)? = null) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.review_details)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        actions = {
+            // Absent when the review cannot be shared.
+            if (onShare != null) {
+                IconButton(onClick = onShare) {
+                    Icon(Icons.Filled.Share, stringResource(id = R.string.review_share))
+                }
             }
         },
         modifier = Modifier.fillMaxWidth(),

@@ -28,6 +28,7 @@ import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
 import io.github.hdghg.sevenhandshakes.ui.reviewdetail.ReviewDetailScreen
+import io.github.hdghg.sevenhandshakes.ui.reviewlink.ReviewLinkScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
 import io.github.hdghg.sevenhandshakes.ui.addeditidentity.AddEditIdentityScreen
 import kotlinx.coroutines.CoroutineScope
@@ -48,6 +49,10 @@ fun AppMainNavGraph(
     fileToImport: Uri? = null,
     /** Called once the import screen for [fileToImport] is open, so it is not opened twice. */
     onFileToImportOpened: () -> Unit = {},
+    /** A review link another app asked to open; its screen is opened for it. */
+    reviewLink: String? = null,
+    /** Called once the screen for [reviewLink] is open, so it is not opened twice. */
+    onReviewLinkOpened: () -> Unit = {},
 ) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
@@ -73,6 +78,17 @@ fun AppMainNavGraph(
         ) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 ReviewDetailScreen(onBack = { navController.popBackStack() })
+            }
+        }
+        composable(
+            MyAppDestinations.REVIEW_LINK_ROUTE,
+            arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_LINK_ARG) { type = NavType.StringType }),
+        ) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ReviewLinkScreen(
+                    onBack = { navController.popBackStack() },
+                    openReview = { reviewId -> navActions.navigateFromReviewLinkToDetail(reviewId) },
+                )
             }
         }
         composable(MyAppDestinations.CONTACTS_ROUTE) {
@@ -168,6 +184,12 @@ fun AppMainNavGraph(
         if (fileToImport != null) {
             navActions.navigateToImportSelection(fileToImport)
             onFileToImportOpened()
+        }
+    }
+    LaunchedEffect(reviewLink) {
+        if (reviewLink != null) {
+            navActions.navigateToReviewLink(reviewLink)
+            onReviewLinkOpened()
         }
     }
 }

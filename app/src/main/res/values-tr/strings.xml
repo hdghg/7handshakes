@@ -53,6 +53,9 @@
     <string name="review_giver">Gönderen</string>
     <string name="review_receiver">Alan</string>
     <string name="review_text">Metin</string>
+    <string name="review_share">Değerlendirmeyi paylaş</string>
+    <string name="review_link_invalid">Bu bağlantı geçerli bir değerlendirme içermiyor.</string>
+    <string name="review_link_save">Değerlendirmeyi kaydet</string>
     <string name="contact_public_key">Açık anahtar</string>
     <string name="contact_ignored">Yok sayıldı</string>
     <string-array name="handshake_rating_titles">

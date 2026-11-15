@@ -53,6 +53,9 @@
     <string name="review_giver">Von</string>
     <string name="review_receiver">An</string>
     <string name="review_text">Text</string>
+    <string name="review_share">Bewertung teilen</string>
+    <string name="review_link_invalid">Dieser Link enthält keine gültige Bewertung.</string>
+    <string name="review_link_save">Bewertung speichern</string>
     <string name="contact_public_key">Öffentlicher Schlüssel</string>
     <string name="contact_ignored">Ignoriert</string>
     <string-array name="handshake_rating_titles">

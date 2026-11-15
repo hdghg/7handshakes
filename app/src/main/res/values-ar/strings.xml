@@ -53,6 +53,9 @@
     <string name="review_giver">من</string>
     <string name="review_receiver">إلى</string>
     <string name="review_text">النص</string>
+    <string name="review_share">مشاركة التقييم</string>
+    <string name="review_link_invalid">هذا الرابط لا يحتوي على تقييم صالح.</string>
+    <string name="review_link_save">حفظ التقييم</string>
     <string name="contact_public_key">المفتاح العام</string>
     <string name="contact_ignored">متجاهَلة</string>
     <string-array name="handshake_rating_titles">

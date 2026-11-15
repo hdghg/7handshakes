@@ -1,7 +1,11 @@
 package io.github.hdghg.sevenhandshakes.ui.reviewdetail
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +34,7 @@ import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.ui.ReviewDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.util.UuidV7
+import timber.log.Timber
 
 /** The giver parts with one star and the receiver gains one. */
 private const val STAR_GIVEN = "−1"
@@ -42,12 +47,27 @@ fun ReviewDetailScreen(
     viewModel: ReviewDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     ReviewDetailContent(
         review = uiState.review,
         isLoading = uiState.isLoading,
         onBack = onBack,
+        onShare = uiState.shareLink?.let { link -> { shareLink(context, link) } },
         modifier = modifier,
     )
+}
+
+/** Opens the system share menu for [link], sent as plain text. */
+private fun shareLink(context: Context, link: String) {
+    val send = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, link)
+    }
+    try {
+        context.startActivity(Intent.createChooser(send, null))
+    } catch (e: ActivityNotFoundException) {
+        Timber.w(e, "No app to share a review link with")
+    }
 }
 
 @Composable
@@ -55,12 +75,13 @@ private fun ReviewDetailContent(
     review: Review?,
     isLoading: Boolean,
     onBack: () -> Unit,
+    onShare: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { ReviewDetailTopAppBar(onBack = onBack) },
+        topBar = { ReviewDetailTopAppBar(onBack = onBack, onShare = onShare) },
     ) { paddingValues ->
         if (review == null) {
             if (!isLoading) {
@@ -73,37 +94,48 @@ private fun ReviewDetailContent(
             }
             return@Scaffold
         }
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(all = margin),
-        ) {
-            Field(label = stringResource(id = R.string.review_date_time)) {
-                Text(text = dateTimeLabel(review.createdAt), style = MaterialTheme.typography.bodyLarge)
-            }
-            Field(label = stringResource(id = R.string.review_giver)) {
-                Participant(
-                    name = displayNameOrUnknown(review.sourceName),
-                    starChange = STAR_GIVEN,
-                    starChangeColor = MaterialTheme.colorScheme.error,
-                    rate = review.rate,
-                )
-            }
-            Field(label = stringResource(id = R.string.review_receiver)) {
-                Participant(
-                    name = displayNameOrUnknown(review.targetName),
-                    starChange = STAR_RECEIVED,
-                    starChangeColor = MaterialTheme.colorScheme.secondary,
-                    rate = review.rate,
-                )
-            }
-            Field(label = stringResource(id = R.string.review_text)) {
-                SelectionContainer {
-                    Text(text = review.text, style = MaterialTheme.typography.bodyLarge)
-                }
+        ReviewDetailBody(review = review, modifier = Modifier.padding(paddingValues))
+    }
+}
+
+/** The fields of [review] in a scrolling column, with [footer] below them. */
+@Composable
+internal fun ReviewDetailBody(
+    review: Review,
+    modifier: Modifier = Modifier,
+    footer: @Composable ColumnScope.() -> Unit = {},
+) {
+    val margin = dimensionResource(id = R.dimen.horizontal_margin)
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(all = margin),
+    ) {
+        Field(label = stringResource(id = R.string.review_date_time)) {
+            Text(text = dateTimeLabel(review.createdAt), style = MaterialTheme.typography.bodyLarge)
+        }
+        Field(label = stringResource(id = R.string.review_giver)) {
+            Participant(
+                name = displayNameOrUnknown(review.sourceName),
+                starChange = STAR_GIVEN,
+                starChangeColor = MaterialTheme.colorScheme.error,
+                rate = review.rate,
+            )
+        }
+        Field(label = stringResource(id = R.string.review_receiver)) {
+            Participant(
+                name = displayNameOrUnknown(review.targetName),
+                starChange = STAR_RECEIVED,
+                starChangeColor = MaterialTheme.colorScheme.secondary,
+                rate = review.rate,
+            )
+        }
+        Field(label = stringResource(id = R.string.review_text)) {
+            SelectionContainer {
+                Text(text = review.text, style = MaterialTheme.typography.bodyLarge)
             }
         }
+        footer()
     }
 }
 
@@ -169,6 +201,7 @@ fun ReviewDetailScreenPreview() {
             ),
             isLoading = false,
             onBack = {},
+            onShare = {},
         )
     }
 }

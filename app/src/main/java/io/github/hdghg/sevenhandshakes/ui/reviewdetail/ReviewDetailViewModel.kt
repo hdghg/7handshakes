@@ -8,6 +8,8 @@ import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
+import io.github.hdghg.sevenhandshakes.data.share.ReviewLink
+import io.github.hdghg.sevenhandshakes.data.share.SharedReview
 import io.github.hdghg.sevenhandshakes.util.UuidV7
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +21,8 @@ data class ReviewDetailUiState(
     /** Null while loading, and when there is no such review. */
     val review: Review? = null,
     val isLoading: Boolean = false,
+    /** A [ReviewLink] to the review, or null when it has none; see [ReviewLink.encode]. */
+    val shareLink: String? = null,
 )
 
 @HiltViewModel
@@ -37,7 +41,23 @@ class ReviewDetailViewModel
                 contactRepository.getContactsStream(),
             ) { record, contacts ->
                 val namesById = contacts.associate { it.id to it.displayName }
+                val author = contacts.firstOrNull { it.id == record?.sourceContactId }
+                val receiver = contacts.firstOrNull { it.id == record?.targetContactId }
                 ReviewDetailUiState(
+                    shareLink = if (record != null && author != null && receiver != null) {
+                        ReviewLink.encode(
+                            SharedReview(
+                                uuid = record.uuid,
+                                authorPublicKey = author.publicKey,
+                                receiverPublicKey = receiver.publicKey,
+                                rating = record.gratitude,
+                                text = record.text,
+                                signature = record.signature,
+                            ),
+                        )
+                    } else {
+                        null
+                    },
                     review = record?.let {
                         Review(
                             id = it.id,

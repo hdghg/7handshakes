@@ -11,30 +11,36 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.IntentCompat
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.hdghg.sevenhandshakes.data.share.ReviewLink
 import timber.log.Timber
 
 /**
  * Main activity for the app. A FragmentActivity because the device unlock prompt needs one.
  *
  * Another app can open a YAML file with it, or share one to it (see the manifest);
- * the import screen is then shown for that file.
+ * the import screen is then shown for that file. It also opens review links; see [ReviewLink].
  */
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     /** A file another app asked to open or shared, until the import screen has been opened for it. */
     private var fileToImport by mutableStateOf<Uri?>(null)
 
+    /** A review link another app asked to open, until its screen has been opened. */
+    private var reviewLink by mutableStateOf<String?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("MainActivity created (restored=%b)", savedInstanceState != null)
         // When the activity is recreated the same intent comes again; its screen is already on the back stack.
-        if (savedInstanceState == null) fileToImport = fileToOpen(intent)
+        if (savedInstanceState == null) open(intent)
         enableEdgeToEdge()
         setContent {
             MainTheme {
                 AppMainNavGraph(
                     fileToImport = fileToImport,
                     onFileToImportOpened = { fileToImport = null },
+                    reviewLink = reviewLink,
+                    onReviewLinkOpened = { reviewLink = null },
                 )
             }
         }
@@ -43,7 +49,17 @@ class MainActivity : FragmentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        fileToImport = fileToOpen(intent)
+        open(intent)
+    }
+
+    private fun open(intent: Intent?) {
+        val link = intent?.data?.takeIf { intent.action == Intent.ACTION_VIEW && it.scheme == ReviewLink.SCHEME }
+        if (link != null) {
+            Timber.d("Asked to open a review link")
+            reviewLink = link.toString()
+        } else {
+            fileToImport = fileToOpen(intent)
+        }
     }
 
     /** The file of an "open with" or a "share" request, or null if [intent] is neither. */

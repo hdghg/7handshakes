@@ -53,6 +53,9 @@
     <string name="review_giver">Från</string>
     <string name="review_receiver">Till</string>
     <string name="review_text">Text</string>
+    <string name="review_share">Dela omdöme</string>
+    <string name="review_link_invalid">Länken innehåller inget giltigt omdöme.</string>
+    <string name="review_link_save">Spara omdöme</string>
     <string name="contact_public_key">Publik nyckel</string>
     <string name="contact_ignored">Ignorerad</string>
     <string-array name="handshake_rating_titles">
