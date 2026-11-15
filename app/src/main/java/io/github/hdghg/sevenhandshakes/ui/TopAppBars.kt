@@ -2,12 +2,16 @@
 
 package io.github.hdghg.sevenhandshakes.ui
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.QrCode
@@ -15,6 +19,8 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +29,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.hdghg.sevenhandshakes.MainTheme
@@ -74,6 +85,7 @@ fun ContactDetailTopAppBar(
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onHandshakeDepthClick: () -> Unit,
+    share: ShareActions? = null,
 ) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.contact_details)) },
@@ -83,6 +95,8 @@ fun ContactDetailTopAppBar(
             }
         },
         actions = {
+            // Absent when the contact cannot be shared.
+            if (share != null) ShareMenuButton(stringResource(id = R.string.contact_share), share)
             IconButton(onClick = onEdit) {
                 Icon(Icons.Filled.Edit, stringResource(id = R.string.menu_edit_contact))
             }
@@ -98,7 +112,7 @@ fun ContactDetailTopAppBar(
 }
 
 @Composable
-fun ReviewDetailTopAppBar(onBack: () -> Unit, onShare: (() -> Unit)? = null, onShareQr: (() -> Unit)? = null) {
+fun ReviewDetailTopAppBar(onBack: () -> Unit, share: ShareActions? = null) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.review_details)) },
         navigationIcon = {
@@ -107,16 +121,56 @@ fun ReviewDetailTopAppBar(onBack: () -> Unit, onShare: (() -> Unit)? = null, onS
             }
         },
         actions = {
-            // Both absent when the review cannot be shared.
-            if (onShareQr != null) {
-                IconButton(onClick = onShareQr) {
-                    Icon(Icons.Filled.QrCode, stringResource(id = R.string.review_share_qr))
-                }
+            // Absent when the review cannot be shared.
+            if (share != null) ShareMenuButton(stringResource(id = R.string.review_share), share)
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+/** A share icon that opens a menu of the ways to share: as a QR code, as a link, as a file. */
+@Composable
+private fun ShareMenuButton(description: String, actions: ShareActions) {
+    var expanded by remember { mutableStateOf(false) }
+    // The box anchors the menu to the button.
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(Icons.Filled.Share, description)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            ShareMenuItem(Icons.Filled.QrCode, R.string.review_share_qr) {
+                expanded = false
+                actions.asQr()
             }
-            if (onShare != null) {
-                IconButton(onClick = onShare) {
-                    Icon(Icons.Filled.Share, stringResource(id = R.string.review_share))
-                }
+            ShareMenuItem(Icons.Filled.Link, R.string.share_as_link) {
+                expanded = false
+                actions.asLink()
+            }
+            ShareMenuItem(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.share_as_file) {
+                expanded = false
+                actions.asFile()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ShareMenuItem(icon: ImageVector, @StringRes text: Int, onClick: () -> Unit) {
+    DropdownMenuItem(
+        text = { Text(text = stringResource(id = text)) },
+        leadingIcon = { Icon(icon, contentDescription = null) },
+        onClick = onClick,
+    )
+}
+
+/** A top bar with nothing but [title] and the back arrow. */
+@Composable
+fun BackTopAppBar(title: String, onBack: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
             }
         },
         modifier = Modifier.fillMaxWidth(),

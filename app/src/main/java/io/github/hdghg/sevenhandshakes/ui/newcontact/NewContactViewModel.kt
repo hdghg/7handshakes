@@ -9,6 +9,7 @@ import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.AddContactResult
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
+import io.github.hdghg.sevenhandshakes.data.share.ContactLink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -89,6 +90,26 @@ class NewContactViewModel
                 return
             }
             _uiState.update { it.copy(publicKey = newKey) }
+        }
+
+        /**
+         * Takes what a scanned QR code holds: a public key as it is, or a contact link (see [ContactLink]).
+         * A link also fills the name and the email, unless the user already typed one.
+         */
+        fun qrScanned(scanned: String) {
+            val contact = ContactLink.decode(scanned)
+            if (contact == null) {
+                updatePublicKey(scanned)
+                return
+            }
+            if (contactId != null) return
+            _uiState.update {
+                it.copy(
+                    publicKey = contact.publicKey,
+                    name = it.name.ifBlank { contact.name.orEmpty() },
+                    email = it.email.ifBlank { contact.email.orEmpty() },
+                )
+            }
         }
 
         fun updateName(newName: String) {

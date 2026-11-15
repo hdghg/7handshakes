@@ -14,6 +14,8 @@ import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
+import io.github.hdghg.sevenhandshakes.data.share.ContactLink
+import io.github.hdghg.sevenhandshakes.data.share.SharedContact
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +49,8 @@ data class ContactDetailUiState(
     val isUsedByIdentity: Boolean = false,
     /** True once the contact was deleted; the screen should close. */
     val isDeleted: Boolean = false,
+    /** A [ContactLink] to the contact, or null when it has none; see [ContactLink.encode]. */
+    val shareLink: String? = null,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -105,6 +109,9 @@ class ContactDetailViewModel
             ) { (contact, usedByIdentity), ratings, me, contacts, depth ->
                 ContactDetailUiState(
                     contact = contact,
+                    shareLink = contact?.let {
+                        ContactLink.encode(SharedContact(publicKey = it.publicKey, name = it.name, email = it.email))
+                    },
                     handshakeRatings = ratings,
                     myContactId = me,
                     contactNames = contacts.associate { it.id to it.displayName },

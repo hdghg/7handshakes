@@ -17,7 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import io.github.hdghg.sevenhandshakes.data.share.ContactLink
 import io.github.hdghg.sevenhandshakes.ui.contactdetail.ContactDetailScreen
+import io.github.hdghg.sevenhandshakes.ui.contactlink.ContactLinkScreen
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.export.ExportScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
@@ -49,10 +51,10 @@ fun AppMainNavGraph(
     fileToImport: Uri? = null,
     /** Called once the import screen for [fileToImport] is open, so it is not opened twice. */
     onFileToImportOpened: () -> Unit = {},
-    /** A review link another app asked to open; its screen is opened for it. */
-    reviewLink: String? = null,
-    /** Called once the screen for [reviewLink] is open, so it is not opened twice. */
-    onReviewLinkOpened: () -> Unit = {},
+    /** A review or contact link (see Hs7Link) another app asked to open; its screen is opened for it. */
+    linkToOpen: String? = null,
+    /** Called once the screen for [linkToOpen] is open, so it is not opened twice. */
+    onLinkOpened: () -> Unit = {},
 ) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
@@ -109,6 +111,17 @@ fun AppMainNavGraph(
                     onBack = { navController.popBackStack() },
                     onEdit = { contactId -> navActions.navigateToEditContact(contactId) },
                     onDeleted = { navController.popBackStack() },
+                )
+            }
+        }
+        composable(
+            MyAppDestinations.CONTACT_LINK_ROUTE,
+            arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_LINK_ARG) { type = NavType.StringType }),
+        ) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ContactLinkScreen(
+                    onBack = { navController.popBackStack() },
+                    openContact = { contactId -> navActions.navigateFromContactLinkToDetail(contactId) },
                 )
             }
         }
@@ -186,10 +199,15 @@ fun AppMainNavGraph(
             onFileToImportOpened()
         }
     }
-    LaunchedEffect(reviewLink) {
-        if (reviewLink != null) {
-            navActions.navigateToReviewLink(reviewLink)
-            onReviewLinkOpened()
+    LaunchedEffect(linkToOpen) {
+        if (linkToOpen != null) {
+            if (ContactLink.isContactLink(linkToOpen)) {
+                navActions.navigateToContactLink(linkToOpen)
+            } else {
+                // Anything else is shown as a review link, which says so if it holds no review.
+                navActions.navigateToReviewLink(linkToOpen)
+            }
+            onLinkOpened()
         }
     }
 }

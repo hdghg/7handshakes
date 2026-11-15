@@ -5,10 +5,7 @@ import io.github.hdghg.sevenhandshakes.data.ReviewSignature
 import io.github.hdghg.sevenhandshakes.data.isValidReviewText
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import io.github.hdghg.sevenhandshakes.util.UuidV7
-import org.bouncycastle.util.encoders.Base64
 import java.nio.ByteBuffer
-import java.nio.charset.CharacterCodingException
-import java.nio.charset.CodingErrorAction
 import java.util.UUID
 
 /** A review as it travels between devices: contacts are named by public key, not by database id. */
@@ -31,7 +28,7 @@ class SharedReview(
  * hs7://review/<payload>
  * ```
  *
- * The payload is URL-safe Base64 without padding of these bytes:
+ * The payload (see [Hs7Link]) is these bytes:
  *
  * ```
  * 1 byte    format version, 1
@@ -47,10 +44,8 @@ class SharedReview(
  * (see [ReviewSignature]), so a link that was made up or changed on the way is not accepted.
  */
 object ReviewLink {
-    const val SCHEME = "hs7"
     const val HOST = "review"
 
-    private const val PREFIX = "$SCHEME://$HOST/"
     private const val VERSION: Byte = 1
     private const val UUID_SIZE = 16
     private const val KEY_SIZE = 32
@@ -82,7 +77,7 @@ object ReviewLink {
             .put(review.signature)
             .put(text)
             .array()
-        return PREFIX + Base64.toBase64String(bytes).trimEnd('=').replace('+', '-').replace('/', '_')
+        return Hs7Link.of(HOST, bytes)
     }
 
     /**
@@ -91,14 +86,7 @@ object ReviewLink {
      * allows, and the author's signature over all of it.
      */
     fun decode(link: String): SharedReview? {
-        val trimmed = link.trim()
-        if (!trimmed.startsWith(PREFIX)) return null
-        val payload = trimmed.substring(PREFIX.length).replace('-', '+').replace('_', '/')
-        val bytes = try {
-            Base64.decode(payload + "=".repeat((4 - payload.length % 4) % 4))
-        } catch (e: RuntimeException) {
-            return null
-        }
+        val bytes = Hs7Link.payloadOf(link, HOST) ?: return null
         if (bytes.size < HEADER_SIZE) return null
         val buffer = ByteBuffer.wrap(bytes)
         if (buffer.get() != VERSION) return null
@@ -109,16 +97,7 @@ object ReviewLink {
         val rating = buffer.get()
         if (rating !in RATE_LEVELS) return null
         val signature = ByteArray(SIGNATURE_SIZE).also(buffer::get)
-        val text = try {
-            // Bytes that are not UTF-8 are refused rather than replaced.
-            Charsets.UTF_8.newDecoder()
-                .onMalformedInput(CodingErrorAction.REPORT)
-                .onUnmappableCharacter(CodingErrorAction.REPORT)
-                .decode(buffer)
-                .toString()
-        } catch (e: CharacterCodingException) {
-            return null
-        }
+        val text = Hs7Link.utf8(buffer) ?: return null
         if (!isValidReviewText(text)) return null
         if (!ReviewSignature.isValid(uuid, author, receiver, rating, text, signature)) return null
         return SharedReview(uuid, author, receiver, rating, text, signature)

@@ -12,6 +12,7 @@ import io.github.hdghg.sevenhandshakes.data.cleanReviewText
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
+import io.github.hdghg.sevenhandshakes.data.share.ContactLink
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -92,6 +93,14 @@ class NewGratitudeViewModel
                     isReceiverInvalid = newReceiver.isNotBlank() && !Ed25519Keys.isValidPublicKey(newReceiver),
                 )
             }
+        }
+
+        /**
+         * Takes what a scanned QR code holds as the receiver: a public key as it is,
+         * or the public key of a contact link (see [ContactLink]).
+         */
+        fun receiverScanned(scanned: String) {
+            updateReceiver(ContactLink.decode(scanned)?.publicKey ?: scanned)
         }
 
         fun setStars(count: Int) {

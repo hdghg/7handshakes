@@ -55,9 +55,14 @@
     <string name="review_text">Texto</string>
     <string name="review_share">Compartir reseña</string>
     <string name="review_share_qr">Compartir como código QR</string>
+    <string name="share_as_link">Compartir como enlace</string>
+    <string name="share_as_file">Compartir como archivo</string>
     <string name="review_qr_description">Código QR con el enlace a la reseña</string>
     <string name="review_link_invalid">Este enlace no contiene una reseña válida.</string>
     <string name="review_link_save">Guardar reseña</string>
+    <string name="contact_share">Compartir contacto</string>
+    <string name="contact_qr_description">Código QR con el enlace al contacto</string>
+    <string name="contact_link_invalid">Este enlace no contiene un contacto válido.</string>
     <string name="contact_public_key">Clave pública</string>
     <string name="contact_ignored">Ignorado</string>
     <string-array name="handshake_rating_titles">

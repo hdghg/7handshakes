@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -48,10 +49,15 @@ import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
+import io.github.hdghg.sevenhandshakes.ui.Field
+import io.github.hdghg.sevenhandshakes.ui.LinkQrDialog
 import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.ShareActions
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
+import io.github.hdghg.sevenhandshakes.ui.shareAsFile
+import io.github.hdghg.sevenhandshakes.ui.shareLinkAsText
 
 @Composable
 fun ContactDetailScreen(
@@ -76,6 +82,17 @@ fun ContactDetailScreen(
             onDismiss = { showDeleteDialog = false },
         )
     }
+    val context = LocalContext.current
+    val shareLink = uiState.shareLink
+    var showQr by rememberSaveable { mutableStateOf(false) }
+    if (showQr && shareLink != null) {
+        LinkQrDialog(
+            title = stringResource(id = R.string.contact_details),
+            link = shareLink,
+            qrDescription = stringResource(id = R.string.contact_qr_description),
+            onDismiss = { showQr = false },
+        )
+    }
     ContactDetailContent(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
@@ -86,6 +103,13 @@ fun ContactDetailScreen(
         onHandshakeDepthChange = viewModel::setHandshakeDepth,
         onEdit = { uiState.contact?.let { onEdit(it.id) } },
         onDelete = { if (uiState.contact != null) showDeleteDialog = true },
+        share = shareLink?.let { link ->
+            ShareActions(
+                asQr = { showQr = true },
+                asLink = { shareLinkAsText(context, link) },
+                asFile = ::shareAsFile,
+            )
+        },
         onBack = onBack,
         modifier = modifier,
     )
@@ -102,6 +126,7 @@ private fun ContactDetailContent(
     onHandshakeDepthChange: (Int) -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
+    share: ShareActions?,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -121,6 +146,7 @@ private fun ContactDetailContent(
                 onBack = onBack,
                 onEdit = onEdit,
                 onDelete = onDelete,
+                share = share,
                 onHandshakeDepthClick = { showDepthSheet = true },
             )
         },
@@ -226,19 +252,6 @@ private fun DeleteContactDialog(isUsedByIdentity: Boolean, onConfirm: () -> Unit
             { TextButton(onClick = onDismiss) { Text(text = stringResource(id = android.R.string.cancel)) } }
         },
     )
-}
-
-@Composable
-private fun Field(label: String, content: @Composable () -> Unit) {
-    val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    Column(modifier = Modifier.fillMaxWidth().padding(bottom = margin)) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        content()
-    }
 }
 
 /**
@@ -424,6 +437,7 @@ fun ContactDetailScreenPreview() {
             onHandshakeDepthChange = {},
             onEdit = {},
             onDelete = {},
+            share = ShareActions(asQr = {}, asLink = {}, asFile = {}),
             onBack = {},
         )
     }

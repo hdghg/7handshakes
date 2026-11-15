@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
+import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_LINK_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.FILE_URI_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.REVIEW_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.REVIEW_LINK_ARG
@@ -24,6 +25,7 @@ private object MyScreens {
     const val CONTACT_DETAIL_SCREEN = "contact"
     const val REVIEW_DETAIL_SCREEN = "review"
     const val REVIEW_LINK_SCREEN = "reviewLink"
+    const val CONTACT_LINK_SCREEN = "contactLink"
     const val IDENTITIES_SCREEN = "identities"
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
     const val EXPORT_SCREEN = "export"
@@ -44,6 +46,9 @@ object MyAppDestinationsArgs {
     /** A review link another app asked to open; see ReviewLink. */
     const val REVIEW_LINK_ARG = "link"
 
+    /** A contact link another app asked to open; see ContactLink. */
+    const val CONTACT_LINK_ARG = "contactLink"
+
     /** Content uri of the file picked for import. */
     const val FILE_URI_ARG = "fileUri"
 }
@@ -61,6 +66,7 @@ object MyAppDestinations {
     const val CONTACT_DETAIL_ROUTE = "${MyScreens.CONTACT_DETAIL_SCREEN}/{$CONTACT_ID_ARG}"
     const val REVIEW_DETAIL_ROUTE = "${MyScreens.REVIEW_DETAIL_SCREEN}/{$REVIEW_ID_ARG}"
     const val REVIEW_LINK_ROUTE = "${MyScreens.REVIEW_LINK_SCREEN}?$REVIEW_LINK_ARG={$REVIEW_LINK_ARG}"
+    const val CONTACT_LINK_ROUTE = "${MyScreens.CONTACT_LINK_SCREEN}?$CONTACT_LINK_ARG={$CONTACT_LINK_ARG}"
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
@@ -150,6 +156,17 @@ class MyAppNavigationActions(private val navController: NavHostController) {
     fun navigateFromReviewLinkToDetail(reviewId: Int) {
         navController.navigate("${MyScreens.REVIEW_DETAIL_SCREEN}/$reviewId") {
             popUpTo(MyAppDestinations.REVIEW_LINK_ROUTE) { inclusive = true }
+        }
+    }
+
+    fun navigateToContactLink(link: String) {
+        navController.navigate("${MyScreens.CONTACT_LINK_SCREEN}?$CONTACT_LINK_ARG=${Uri.encode(link)}")
+    }
+
+    /** Shows the contact a link held in place of the link's own screen, so Back does not return to that. */
+    fun navigateFromContactLinkToDetail(contactId: Int) {
+        navController.navigate("${MyScreens.CONTACT_DETAIL_SCREEN}/$contactId") {
+            popUpTo(MyAppDestinations.CONTACT_LINK_ROUTE) { inclusive = true }
         }
     }
 

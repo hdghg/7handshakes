@@ -55,9 +55,14 @@
     <string name="review_text">Text</string>
     <string name="review_share">Dela omdöme</string>
     <string name="review_share_qr">Dela som QR-kod</string>
+    <string name="share_as_link">Dela som länk</string>
+    <string name="share_as_file">Dela som fil</string>
     <string name="review_qr_description">QR-kod med länk till omdömet</string>
     <string name="review_link_invalid">Länken innehåller inget giltigt omdöme.</string>
     <string name="review_link_save">Spara omdöme</string>
+    <string name="contact_share">Dela kontakt</string>
+    <string name="contact_qr_description">QR-kod med länk till kontakten</string>
+    <string name="contact_link_invalid">Länken innehåller ingen giltig kontakt.</string>
     <string name="contact_public_key">Publik nyckel</string>
     <string name="contact_ignored">Ignorerad</string>
     <string-array name="handshake_rating_titles">

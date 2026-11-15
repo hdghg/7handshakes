@@ -1,8 +1,5 @@
 package io.github.hdghg.sevenhandshakes.ui.reviewdetail
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -13,12 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,12 +30,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.Review
-import io.github.hdghg.sevenhandshakes.ui.QrCode
+import io.github.hdghg.sevenhandshakes.ui.Field
+import io.github.hdghg.sevenhandshakes.ui.LinkQrDialog
 import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.ShareActions
 import io.github.hdghg.sevenhandshakes.ui.ReviewDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
+import io.github.hdghg.sevenhandshakes.ui.shareAsFile
+import io.github.hdghg.sevenhandshakes.ui.shareLinkAsText
 import io.github.hdghg.sevenhandshakes.util.UuidV7
-import timber.log.Timber
 
 /** The giver parts with one star and the receiver gains one. */
 private const val STAR_GIVEN = "−1"
@@ -57,48 +55,26 @@ fun ReviewDetailScreen(
     val shareLink = uiState.shareLink
     var showQr by rememberSaveable { mutableStateOf(false) }
     if (showQr && shareLink != null) {
-        ReviewQrDialog(link = shareLink, onDismiss = { showQr = false })
+        LinkQrDialog(
+            title = stringResource(id = R.string.review_details),
+            link = shareLink,
+            qrDescription = stringResource(id = R.string.review_qr_description),
+            onDismiss = { showQr = false },
+        )
     }
     ReviewDetailContent(
         review = uiState.review,
         isLoading = uiState.isLoading,
         onBack = onBack,
-        onShare = shareLink?.let { link -> { shareLink(context, link) } },
-        onShareQr = shareLink?.let { { showQr = true } },
-        modifier = modifier,
-    )
-}
-
-/** Shows [link] as a QR code to scan on another device; it opens there as the link itself would. */
-@Composable
-private fun ReviewQrDialog(link: String, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(id = R.string.review_details)) },
-        text = {
-            QrCode(
-                content = link,
-                contentDescription = stringResource(id = R.string.review_qr_description),
-                modifier = Modifier.fillMaxWidth(),
+        share = shareLink?.let { link ->
+            ShareActions(
+                asQr = { showQr = true },
+                asLink = { shareLinkAsText(context, link) },
+                asFile = ::shareAsFile,
             )
         },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text(text = stringResource(id = R.string.close)) }
-        },
+        modifier = modifier,
     )
-}
-
-/** Opens the system share menu for [link], sent as plain text. */
-private fun shareLink(context: Context, link: String) {
-    val send = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, link)
-    }
-    try {
-        context.startActivity(Intent.createChooser(send, null))
-    } catch (e: ActivityNotFoundException) {
-        Timber.w(e, "No app to share a review link with")
-    }
 }
 
 @Composable
@@ -106,14 +82,13 @@ private fun ReviewDetailContent(
     review: Review?,
     isLoading: Boolean,
     onBack: () -> Unit,
-    onShare: (() -> Unit)?,
-    onShareQr: (() -> Unit)?,
+    share: ShareActions?,
     modifier: Modifier = Modifier,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { ReviewDetailTopAppBar(onBack = onBack, onShare = onShare, onShareQr = onShareQr) },
+        topBar = { ReviewDetailTopAppBar(onBack = onBack, share = share) },
     ) { paddingValues ->
         if (review == null) {
             if (!isLoading) {
@@ -203,19 +178,6 @@ private fun Participant(name: String, starChange: String, starChangeColor: Color
     }
 }
 
-@Composable
-private fun Field(label: String, content: @Composable () -> Unit) {
-    val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    Column(modifier = Modifier.fillMaxWidth().padding(bottom = margin)) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        content()
-    }
-}
-
 @Preview
 @Composable
 fun ReviewDetailScreenPreview() {
@@ -233,8 +195,7 @@ fun ReviewDetailScreenPreview() {
             ),
             isLoading = false,
             onBack = {},
-            onShare = {},
-            onShareQr = {},
+            share = ShareActions(asQr = {}, asLink = {}, asFile = {}),
         )
     }
 }

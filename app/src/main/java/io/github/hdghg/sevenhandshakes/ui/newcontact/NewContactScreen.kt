@@ -57,7 +57,7 @@ fun NewContactScreen(
         onScanQr = {
             QrScanner.scanQr(
                 context = context,
-                onSuccess = viewModel::updatePublicKey,
+                onSuccess = viewModel::qrScanned,
                 onFail = { e ->
                     val message = context.getString(R.string.qr_scan_failed, e.message.orEmpty())
                     scope.launch { snackbarHostState.showSnackbar(message) }

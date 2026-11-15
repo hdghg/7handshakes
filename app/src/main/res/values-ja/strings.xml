@@ -55,9 +55,14 @@
     <string name="review_text">本文</string>
     <string name="review_share">レビューを共有</string>
     <string name="review_share_qr">QRコードで共有</string>
+    <string name="share_as_link">リンクで共有</string>
+    <string name="share_as_file">ファイルで共有</string>
     <string name="review_qr_description">レビューへのリンクのQRコード</string>
     <string name="review_link_invalid">このリンクには有効なレビューが含まれていません。</string>
     <string name="review_link_save">レビューを保存</string>
+    <string name="contact_share">連絡先を共有</string>
+    <string name="contact_qr_description">連絡先へのリンクのQRコード</string>
+    <string name="contact_link_invalid">このリンクには有効な連絡先が含まれていません。</string>
     <string name="contact_public_key">公開鍵</string>
     <string name="contact_ignored">無視</string>
     <string-array name="handshake_rating_titles">

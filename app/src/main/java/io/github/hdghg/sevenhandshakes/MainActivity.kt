@@ -11,22 +11,22 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.IntentCompat
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.hdghg.sevenhandshakes.data.share.ReviewLink
+import io.github.hdghg.sevenhandshakes.data.share.Hs7Link
 import timber.log.Timber
 
 /**
  * Main activity for the app. A FragmentActivity because the device unlock prompt needs one.
  *
  * Another app can open a YAML file with it, or share one to it (see the manifest);
- * the import screen is then shown for that file. It also opens review links; see [ReviewLink].
+ * the import screen is then shown for that file. It also opens review and contact links; see [Hs7Link].
  */
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     /** A file another app asked to open or shared, until the import screen has been opened for it. */
     private var fileToImport by mutableStateOf<Uri?>(null)
 
-    /** A review link another app asked to open, until its screen has been opened. */
-    private var reviewLink by mutableStateOf<String?>(null)
+    /** A review or contact link another app asked to open, until its screen has been opened. */
+    private var linkToOpen by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +39,8 @@ class MainActivity : FragmentActivity() {
                 AppMainNavGraph(
                     fileToImport = fileToImport,
                     onFileToImportOpened = { fileToImport = null },
-                    reviewLink = reviewLink,
-                    onReviewLinkOpened = { reviewLink = null },
+                    linkToOpen = linkToOpen,
+                    onLinkOpened = { linkToOpen = null },
                 )
             }
         }
@@ -53,10 +53,10 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun open(intent: Intent?) {
-        val link = intent?.data?.takeIf { intent.action == Intent.ACTION_VIEW && it.scheme == ReviewLink.SCHEME }
+        val link = intent?.data?.takeIf { intent.action == Intent.ACTION_VIEW && it.scheme == Hs7Link.SCHEME }
         if (link != null) {
-            Timber.d("Asked to open a review link")
-            reviewLink = link.toString()
+            Timber.d("Asked to open a %s link", link.host)
+            linkToOpen = link.toString()
         } else {
             fileToImport = fileToOpen(intent)
         }

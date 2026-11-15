@@ -85,7 +85,7 @@ fun NewGratitudeScreen(
         val scanQr: () -> Unit = {
             QrScanner.scanQr(
                 context = context,
-                onSuccess = viewModel::updateReceiver,
+                onSuccess = viewModel::receiverScanned,
                 onFail = { e ->
                     val message = context.getString(R.string.qr_scan_failed, e.message.orEmpty())
                     scope.launch { snackbarHostState.showSnackbar(message) }
