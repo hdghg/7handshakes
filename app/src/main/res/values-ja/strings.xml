@@ -80,6 +80,17 @@
     <string name="export_failed">データをエクスポートできませんでした。</string>
     <string name="import_title">インポート</string>
     <string name="import_action">インポート</string>
+    <string name="import_invalid_file">このファイルはインポートできません。</string>
+    <string name="import_selection_title">ファイルをインポート</string>
+    <string name="import_file_size">サイズ：%1$s</string>
+    <string name="import_file_contacts">連絡先：%1$d</string>
+    <string name="import_file_reviews">レビュー：%1$d</string>
+    <string name="import_contacts">連絡先をインポート</string>
+    <string name="import_reviews">レビューをインポート</string>
+    <string name="import_all">すべてインポート</string>
+    <string name="import_failed">インポートに失敗しました。</string>
+    <string name="import_result_contacts">連絡先：追加 %1$d、更新 %2$d、変更なし %3$d、拒否 %4$d</string>
+    <string name="import_result_reviews">レビュー：追加 %1$d、登録済み %2$d、拒否 %3$d</string>
     <string name="identities_title">ID</string>
     <string name="identities_empty">IDがありません。</string>
     <string name="identity_unnamed">名前のないID</string>

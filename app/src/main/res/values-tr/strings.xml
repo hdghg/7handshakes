@@ -81,6 +81,17 @@
     <string name="export_failed">Veriler dışa aktarılamadı.</string>
     <string name="import_title">İçe aktar</string>
     <string name="import_action">İçe aktar</string>
+    <string name="import_invalid_file">Bu dosya içe aktarılamıyor.</string>
+    <string name="import_selection_title">Dosyayı içe aktar</string>
+    <string name="import_file_size">Boyut: %1$s</string>
+    <string name="import_file_contacts">Kişiler: %1$d</string>
+    <string name="import_file_reviews">Değerlendirmeler: %1$d</string>
+    <string name="import_contacts">Kişileri içe aktar</string>
+    <string name="import_reviews">Değerlendirmeleri içe aktar</string>
+    <string name="import_all">Tümünü içe aktar</string>
+    <string name="import_failed">İçe aktarma başarısız oldu.</string>
+    <string name="import_result_contacts">Kişiler: %1$d eklendi, %2$d güncellendi, %3$d değişmedi, %4$d reddedildi</string>
+    <string name="import_result_reviews">Değerlendirmeler: %1$d eklendi, %2$d zaten vardı, %3$d reddedildi</string>
     <string name="identities_title">Kimlikler</string>
     <string name="identities_empty">Hiç kimliğiniz yok.</string>
     <string name="identity_unnamed">Adsız kimlik</string>

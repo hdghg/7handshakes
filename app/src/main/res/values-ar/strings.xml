@@ -85,6 +85,17 @@
     <string name="export_failed">تعذّر تصدير البيانات.</string>
     <string name="import_title">استيراد</string>
     <string name="import_action">استيراد</string>
+    <string name="import_invalid_file">لا يمكن استيراد هذا الملف.</string>
+    <string name="import_selection_title">استيراد ملف</string>
+    <string name="import_file_size">الحجم: %1$s</string>
+    <string name="import_file_contacts">جهات الاتصال: %1$d</string>
+    <string name="import_file_reviews">التقييمات: %1$d</string>
+    <string name="import_contacts">استيراد جهات الاتصال</string>
+    <string name="import_reviews">استيراد التقييمات</string>
+    <string name="import_all">استيراد الكل</string>
+    <string name="import_failed">فشل الاستيراد.</string>
+    <string name="import_result_contacts">جهات الاتصال: أُضيفت %1$d، حُدّثت %2$d، بلا تغيير %3$d، رُفضت %4$d</string>
+    <string name="import_result_reviews">التقييمات: أُضيفت %1$d، موجودة مسبقًا %2$d، رُفضت %3$d</string>
     <string name="identities_title">الهويات</string>
     <string name="identities_empty">ليست لديك هويات.</string>
     <string name="identity_unnamed">هوية بلا اسم</string>

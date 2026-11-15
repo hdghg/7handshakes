@@ -81,6 +81,17 @@
     <string name="export_failed">Det gick inte att exportera data.</string>
     <string name="import_title">Importera</string>
     <string name="import_action">Importera</string>
+    <string name="import_invalid_file">Den här filen kan inte importeras.</string>
+    <string name="import_selection_title">Importera fil</string>
+    <string name="import_file_size">Storlek: %1$s</string>
+    <string name="import_file_contacts">Kontakter: %1$d</string>
+    <string name="import_file_reviews">Omdömen: %1$d</string>
+    <string name="import_contacts">Importera kontakter</string>
+    <string name="import_reviews">Importera omdömen</string>
+    <string name="import_all">Importera allt</string>
+    <string name="import_failed">Importen misslyckades.</string>
+    <string name="import_result_contacts">Kontakter: %1$d tillagda, %2$d uppdaterade, %3$d oförändrade, %4$d avvisade</string>
+    <string name="import_result_reviews">Omdömen: %1$d tillagda, %2$d fanns redan, %3$d avvisade</string>
     <string name="identities_title">Identiteter</string>
     <string name="identities_empty">Du har inga identiteter.</string>
     <string name="identity_unnamed">Namnlös identitet</string>

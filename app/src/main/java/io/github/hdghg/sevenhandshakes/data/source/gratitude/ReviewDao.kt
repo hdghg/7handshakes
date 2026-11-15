@@ -2,6 +2,7 @@ package io.github.hdghg.sevenhandshakes.data.source.gratitude
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -23,4 +24,8 @@ interface ReviewDao {
 
     @Insert
     suspend fun insert(record: ReviewRecord)
+
+    /** Returns the new row id, or -1 if the author already has a review with this uuid. Nothing is saved then. */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIfAbsent(record: ReviewRecord): Long
 }

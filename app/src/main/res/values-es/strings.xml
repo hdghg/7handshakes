@@ -82,6 +82,17 @@
     <string name="export_failed">No se pudieron exportar los datos.</string>
     <string name="import_title">Importar</string>
     <string name="import_action">Importar</string>
+    <string name="import_invalid_file">Este archivo no se puede importar.</string>
+    <string name="import_selection_title">Importar archivo</string>
+    <string name="import_file_size">Tamaño: %1$s</string>
+    <string name="import_file_contacts">Contactos: %1$d</string>
+    <string name="import_file_reviews">Reseñas: %1$d</string>
+    <string name="import_contacts">Importar contactos</string>
+    <string name="import_reviews">Importar reseñas</string>
+    <string name="import_all">Importar todo</string>
+    <string name="import_failed">La importación ha fallado.</string>
+    <string name="import_result_contacts">Contactos: %1$d añadidos, %2$d actualizados, %3$d sin cambios, %4$d rechazados</string>
+    <string name="import_result_reviews">Reseñas: %1$d añadidas, %2$d ya existentes, %3$d rechazadas</string>
     <string name="identities_title">Identidades</string>
     <string name="identities_empty">No tienes identidades.</string>
     <string name="identity_unnamed">Identidad sin nombre</string>

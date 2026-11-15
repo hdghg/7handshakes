@@ -17,7 +17,8 @@ data class ReviewRecord(
     val text: String,
     val gratitude: Byte,
     /**
-     * signed uuid + sourceContactId + rate + text
+     * The author's signature of the uuid, both public keys, the rate and the text;
+     * see [io.github.hdghg.sevenhandshakes.data.ReviewSignature].
      */
     val signature: ByteArray,
 ) {

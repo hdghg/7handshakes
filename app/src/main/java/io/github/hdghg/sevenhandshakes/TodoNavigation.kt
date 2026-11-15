@@ -1,8 +1,10 @@
 package io.github.hdghg.sevenhandshakes
 
+import android.net.Uri
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
+import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.FILE_URI_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.TASK_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyScreens.ADD_EDIT_TASK_SCREEN
 import io.github.hdghg.sevenhandshakes.MyScreens.TASK_DETAIL_SCREEN
@@ -22,6 +24,7 @@ private object MyScreens {
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
     const val EXPORT_SCREEN = "export"
     const val IMPORT_SCREEN = "import"
+    const val IMPORT_SELECTION_SCREEN = "importSelection"
 }
 
 /**
@@ -30,6 +33,9 @@ private object MyScreens {
 object MyAppDestinationsArgs {
     const val TASK_ID_ARG = "taskId"
     const val CONTACT_ID_ARG = "contactId"
+
+    /** Content uri of the file picked for import. */
+    const val FILE_URI_ARG = "fileUri"
 }
 
 /**
@@ -47,6 +53,7 @@ object MyAppDestinations {
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
     const val IMPORT_ROUTE = MyScreens.IMPORT_SCREEN
+    const val IMPORT_SELECTION_ROUTE = "${MyScreens.IMPORT_SELECTION_SCREEN}?$FILE_URI_ARG={$FILE_URI_ARG}"
 }
 
 /**
@@ -97,6 +104,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    fun navigateToImportSelection(fileUri: Uri) {
+        navController.navigate("${MyScreens.IMPORT_SELECTION_SCREEN}?$FILE_URI_ARG=${Uri.encode(fileUri.toString())}")
     }
 
     fun navigateToAddEditIdentity() {

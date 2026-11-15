@@ -80,6 +80,17 @@
     <string name="export_failed">无法导出数据。</string>
     <string name="import_title">导入</string>
     <string name="import_action">导入</string>
+    <string name="import_invalid_file">无法导入此文件。</string>
+    <string name="import_selection_title">导入文件</string>
+    <string name="import_file_size">大小：%1$s</string>
+    <string name="import_file_contacts">联系人：%1$d</string>
+    <string name="import_file_reviews">评价：%1$d</string>
+    <string name="import_contacts">导入联系人</string>
+    <string name="import_reviews">导入评价</string>
+    <string name="import_all">导入全部</string>
+    <string name="import_failed">导入失败。</string>
+    <string name="import_result_contacts">联系人：新增 %1$d，更新 %2$d，未变 %3$d，拒绝 %4$d</string>
+    <string name="import_result_reviews">评价：新增 %1$d，已存在 %2$d，拒绝 %3$d</string>
     <string name="identities_title">身份</string>
     <string name="identities_empty">你还没有身份。</string>
     <string name="identity_unnamed">未命名身份</string>

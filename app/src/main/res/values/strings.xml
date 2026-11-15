@@ -81,6 +81,17 @@
     <string name="export_failed">Could not export the data.</string>
     <string name="import_title">Import</string>
     <string name="import_action">Import</string>
+    <string name="import_invalid_file">This file cannot be imported.</string>
+    <string name="import_selection_title">Import file</string>
+    <string name="import_file_size">Size: %1$s</string>
+    <string name="import_file_contacts">Contacts: %1$d</string>
+    <string name="import_file_reviews">Reviews: %1$d</string>
+    <string name="import_contacts">Import contacts</string>
+    <string name="import_reviews">Import reviews</string>
+    <string name="import_all">Import all</string>
+    <string name="import_failed">Import failed.</string>
+    <string name="import_result_contacts">Contacts: %1$d added, %2$d updated, %3$d unchanged, %4$d rejected</string>
+    <string name="import_result_reviews">Reviews: %1$d added, %2$d already present, %3$d rejected</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>

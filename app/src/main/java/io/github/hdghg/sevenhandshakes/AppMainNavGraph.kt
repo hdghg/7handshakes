@@ -22,6 +22,7 @@ import io.github.hdghg.sevenhandshakes.ui.export.ExportScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
 import io.github.hdghg.sevenhandshakes.ui.importdata.ImportScreen
+import io.github.hdghg.sevenhandshakes.ui.importselection.ImportSelectionScreen
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
@@ -99,7 +100,16 @@ fun AppMainNavGraph(
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 ImportScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
+                    openImportSelection = { fileUri -> navActions.navigateToImportSelection(fileUri) },
                 )
+            }
+        }
+        composable(
+            MyAppDestinations.IMPORT_SELECTION_ROUTE,
+            arguments = listOf(navArgument(MyAppDestinationsArgs.FILE_URI_ARG) { type = NavType.StringType }),
+        ) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ImportSelectionScreen(onBack = { navController.popBackStack() })
             }
         }
         composable(MyAppDestinations.ADD_EDIT_IDENTITY_ROUTE) {

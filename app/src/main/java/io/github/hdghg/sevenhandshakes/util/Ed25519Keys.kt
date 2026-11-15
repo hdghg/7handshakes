@@ -48,14 +48,28 @@ object Ed25519Keys {
      * True if [publicKey] is a Base64 X.509 SubjectPublicKeyInfo Ed25519 public key
      * (the app's public key format). Surrounding whitespace is ignored.
      */
-    fun isValidPublicKey(publicKey: String): Boolean {
-        val bytes = decodeBase64(publicKey.trim()) ?: return false
+    fun isValidPublicKey(publicKey: String): Boolean = parsePublicKey(publicKey) != null
+
+    /**
+     * Parses [publicKey] for verifying signatures. Returns null if it is not a Base64 X.509
+     * SubjectPublicKeyInfo Ed25519 public key. Whitespace and line breaks are ignored.
+     */
+    fun parsePublicKey(publicKey: String): Ed25519PublicKeyParameters? {
+        val bytes = decodeBase64(publicKey.filterNot { it.isWhitespace() }) ?: return null
         val params = try {
             PublicKeyFactory.createKey(bytes)
         } catch (e: Exception) {
-            return false
+            return null
         }
-        return params is Ed25519PublicKeyParameters
+        return params as? Ed25519PublicKeyParameters
+    }
+
+    /**
+     * Re-encodes [publicKey] in the app's standard form, so one key always has one text value.
+     * Returns null if [publicKey] is not a valid Ed25519 public key.
+     */
+    fun canonicalPublicKey(publicKey: String): String? = parsePublicKey(publicKey)?.let { params ->
+        Base64.toBase64String(SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(params).encoded)
     }
 
     /**

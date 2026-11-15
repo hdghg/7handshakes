@@ -31,7 +31,9 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -98,6 +100,8 @@ fun NewGratitudeScreen(
                 value = uiState.text,
                 onValueChange = viewModel::updateText,
                 label = { Text(stringResource(id = R.string.new_gratitude_comment)) },
+                // A review is one run of text, so the keyboard offers Done in place of a line break.
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 modifier =
                     Modifier
                         .fillMaxWidth()

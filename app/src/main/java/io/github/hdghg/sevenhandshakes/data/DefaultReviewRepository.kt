@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
-import org.bouncycastle.crypto.signers.Ed25519Signer
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -74,20 +73,28 @@ class DefaultReviewRepository
                 sourceContactId,
                 contactId,
             )
+            // The screen cleans the text as it is typed, so this only fails on a programming error.
+            require(isValidReviewText(reviewText)) { "The review text is too long or holds a forbidden character" }
             // Identity keys are validated when saved, so this only fails on a corrupted record.
             val privateKey = requireNotNull(Ed25519Keys.parsePrivateKey(authorPrivateKey)) {
                 "Identity of contact $sourceContactId has an unreadable private key"
             }
 
-            val message = reviewText.toByteArray(Charsets.UTF_8)
-            val signer = Ed25519Signer()
-            signer.init(true, privateKey)
-            signer.update(message, 0, message.size)
-            val signature = signer.generateSignature()
+            val receiver = requireNotNull(contactDao.getById(contactId)) { "Contact $contactId does not exist" }
+            val uuid = UuidV7.generate().toString()
+            val signature = ReviewSignature.sign(
+                uuid = uuid,
+                authorPublicKey = requireNotNull(Ed25519Keys.publicKeyOf(authorPrivateKey)),
+                // A contact typed in by hand may hold text that is not a key; it is then signed as it is.
+                receiverPublicKey = Ed25519Keys.canonicalPublicKey(receiver.publicKey) ?: receiver.publicKey.trim(),
+                rating = gratitude,
+                text = reviewText,
+                authorPrivateKey = privateKey,
+            )
 
             val r = ReviewRecord(
                 id = 0,
-                uuid = UuidV7.generate().toString(),
+                uuid = uuid,
                 sourceContactId = sourceContactId,
                 targetContactId = contactId,
                 text = reviewText,

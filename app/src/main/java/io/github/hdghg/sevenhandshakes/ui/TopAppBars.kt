@@ -135,6 +135,19 @@ fun ImportTopAppBar(openDrawer: () -> Unit) {
 }
 
 @Composable
+fun ImportSelectionTopAppBar(onBack: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.import_selection_title)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun AddEditIdentityTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.add_identity)) },

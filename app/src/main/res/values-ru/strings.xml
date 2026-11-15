@@ -83,6 +83,17 @@
     <string name="export_failed">Не удалось экспортировать данные.</string>
     <string name="import_title">Импорт</string>
     <string name="import_action">Импортировать</string>
+    <string name="import_invalid_file">Этот файл нельзя импортировать.</string>
+    <string name="import_selection_title">Импорт файла</string>
+    <string name="import_file_size">Размер: %1$s</string>
+    <string name="import_file_contacts">Контакты: %1$d</string>
+    <string name="import_file_reviews">Отзывы: %1$d</string>
+    <string name="import_contacts">Импортировать контакты</string>
+    <string name="import_reviews">Импортировать отзывы</string>
+    <string name="import_all">Импортировать всё</string>
+    <string name="import_failed">Не удалось выполнить импорт.</string>
+    <string name="import_result_contacts">Контакты: добавлено %1$d, обновлено %2$d, без изменений %3$d, отклонено %4$d</string>
+    <string name="import_result_reviews">Отзывы: добавлено %1$d, уже есть %2$d, отклонено %3$d</string>
     <string name="identities_title">Профили</string>
     <string name="identities_empty">У вас нет профилей.</string>
     <string name="identity_unnamed">Профиль без имени</string>

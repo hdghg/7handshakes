@@ -7,6 +7,8 @@ import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.InsertResult
+import io.github.hdghg.sevenhandshakes.data.REVIEW_TEXT_BYTES_MAX
+import io.github.hdghg.sevenhandshakes.data.cleanReviewText
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
@@ -63,14 +65,16 @@ class NewGratitudeViewModel
                     initialValue = emptyList(),
                 )
 
+        /** Typed or pasted line breaks and other characters a review may not hold are taken out. */
         fun updateText(newText: String) {
-            val size = newText.toByteArray().size
+            val text = cleanReviewText(newText)
+            val size = text.toByteArray().size
             if (size > BYTES_TEXT_MAX) {
                 return
             }
             _uiState.update {
                 it.copy(
-                    text = newText,
+                    text = text,
                     bytesSpentText = size,
                 )
             }
@@ -154,7 +158,7 @@ class NewGratitudeViewModel
         }
 
         companion object {
-            const val BYTES_TEXT_MAX = 200
+            const val BYTES_TEXT_MAX = REVIEW_TEXT_BYTES_MAX
             const val BYTES_RECEIVER_MAX = 64
         }
     }
