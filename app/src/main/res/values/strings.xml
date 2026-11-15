@@ -79,6 +79,8 @@
     <string name="export_title">Export</string>
     <string name="export_all">Export all</string>
     <string name="export_failed">Could not export the data.</string>
+    <string name="import_title">Import</string>
+    <string name="import_action">Import</string>
     <string name="identities_title">Identities</string>
     <string name="identities_empty">You have no identities.</string>
     <string name="identity_unnamed">Unnamed identity</string>

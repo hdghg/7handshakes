@@ -81,6 +81,8 @@
     <string name="export_title">Экспорт</string>
     <string name="export_all">Экспортировать всё</string>
     <string name="export_failed">Не удалось экспортировать данные.</string>
+    <string name="import_title">Импорт</string>
+    <string name="import_action">Импортировать</string>
     <string name="identities_title">Профили</string>
     <string name="identities_empty">У вас нет профилей.</string>
     <string name="identity_unnamed">Профиль без имени</string>

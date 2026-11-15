@@ -21,6 +21,7 @@ private object MyScreens {
     const val IDENTITIES_SCREEN = "identities"
     const val ADD_EDIT_IDENTITY_SCREEN = "addEditIdentity"
     const val EXPORT_SCREEN = "export"
+    const val IMPORT_SCREEN = "import"
 }
 
 /**
@@ -45,6 +46,7 @@ object MyAppDestinations {
     const val IDENTITIES_ROUTE = MyScreens.IDENTITIES_SCREEN
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
+    const val IMPORT_ROUTE = MyScreens.IMPORT_SCREEN
 }
 
 /**
@@ -79,6 +81,16 @@ class MyAppNavigationActions(private val navController: NavHostController) {
 
     fun navigateToExport() {
         navController.navigate(MyAppDestinations.EXPORT_ROUTE) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    fun navigateToImport() {
+        navController.navigate(MyAppDestinations.IMPORT_ROUTE) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }

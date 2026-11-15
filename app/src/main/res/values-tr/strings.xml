@@ -79,6 +79,8 @@
     <string name="export_title">Dışa aktar</string>
     <string name="export_all">Tümünü dışa aktar</string>
     <string name="export_failed">Veriler dışa aktarılamadı.</string>
+    <string name="import_title">İçe aktar</string>
+    <string name="import_action">İçe aktar</string>
     <string name="identities_title">Kimlikler</string>
     <string name="identities_empty">Hiç kimliğiniz yok.</string>
     <string name="identity_unnamed">Adsız kimlik</string>

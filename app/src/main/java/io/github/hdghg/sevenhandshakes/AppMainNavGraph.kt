@@ -21,6 +21,7 @@ import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.export.ExportScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
+import io.github.hdghg.sevenhandshakes.ui.importdata.ImportScreen
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NO_CONTACT_ID
 import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
@@ -90,6 +91,13 @@ fun AppMainNavGraph(
         composable(MyAppDestinations.EXPORT_ROUTE) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 ExportScreen(
+                    openDrawer = { coroutineScope.launch { drawerState.open() } },
+                )
+            }
+        }
+        composable(MyAppDestinations.IMPORT_ROUTE) {
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                ImportScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                 )
             }

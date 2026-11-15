@@ -80,6 +80,8 @@
     <string name="export_title">Exportar</string>
     <string name="export_all">Exportar todo</string>
     <string name="export_failed">No se pudieron exportar los datos.</string>
+    <string name="import_title">Importar</string>
+    <string name="import_action">Importar</string>
     <string name="identities_title">Identidades</string>
     <string name="identities_empty">No tienes identidades.</string>
     <string name="identity_unnamed">Identidad sin nombre</string>

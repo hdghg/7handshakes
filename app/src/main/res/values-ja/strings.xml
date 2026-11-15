@@ -78,6 +78,8 @@
     <string name="export_title">エクスポート</string>
     <string name="export_all">すべてエクスポート</string>
     <string name="export_failed">データをエクスポートできませんでした。</string>
+    <string name="import_title">インポート</string>
+    <string name="import_action">インポート</string>
     <string name="identities_title">ID</string>
     <string name="identities_empty">IDがありません。</string>
     <string name="identity_unnamed">名前のないID</string>

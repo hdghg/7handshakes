@@ -83,6 +83,8 @@
     <string name="export_title">تصدير</string>
     <string name="export_all">تصدير الكل</string>
     <string name="export_failed">تعذّر تصدير البيانات.</string>
+    <string name="import_title">استيراد</string>
+    <string name="import_action">استيراد</string>
     <string name="identities_title">الهويات</string>
     <string name="identities_empty">ليست لديك هويات.</string>
     <string name="identity_unnamed">هوية بلا اسم</string>

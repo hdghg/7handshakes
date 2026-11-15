@@ -79,6 +79,8 @@
     <string name="export_title">Exportera</string>
     <string name="export_all">Exportera allt</string>
     <string name="export_failed">Det gick inte att exportera data.</string>
+    <string name="import_title">Importera</string>
+    <string name="import_action">Importera</string>
     <string name="identities_title">Identiteter</string>
     <string name="identities_empty">Du har inga identiteter.</string>
     <string name="identity_unnamed">Namnlös identitet</string>
