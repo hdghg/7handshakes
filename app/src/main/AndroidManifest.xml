@@ -19,6 +19,57 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--
+                Offers the app when another app opens a YAML file. MainActivity then shows the import screen.
+                Apps do not agree on the MIME type of YAML, hence the list.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/yaml" />
+                <data android:mimeType="application/x-yaml" />
+                <data android:mimeType="text/yaml" />
+                <data android:mimeType="text/x-yaml" />
+                <data android:mimeType="text/vnd.yaml" />
+            </intent-filter>
+            <!--
+                Lists the app in the share menu for a YAML file. A shared file has no uri to match
+                a file name against, so only the MIME type tells: a YAML file shared as plain text
+                or as unknown binary data does not list the app.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/yaml" />
+                <data android:mimeType="application/x-yaml" />
+                <data android:mimeType="text/yaml" />
+                <data android:mimeType="text/x-yaml" />
+                <data android:mimeType="text/vnd.yaml" />
+            </intent-filter>
+            <!--
+                Many apps hand a YAML file over as plain text or as unknown binary data.
+                Those are recognised by the file name, when the sending app puts it in the uri.
+                pathSuffix needs Android 12; the patterns do the same for older versions, where
+                ".*" stops at the first dot, so there is one pattern per number of dots in the path.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathSuffix=".yaml" />
+                <data android:pathSuffix=".yml" />
+                <data android:pathPattern=".*\\.yaml" />
+                <data android:pathPattern=".*\\..*\\.yaml" />
+                <data android:pathPattern=".*\\..*\\..*\\.yaml" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.yaml" />
+                <data android:pathPattern=".*\\.yml" />
+                <data android:pathPattern=".*\\..*\\.yml" />
+                <data android:pathPattern=".*\\..*\\..*\\.yml" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.yml" />
+            </intent-filter>
         </activity>
         <!-- Lets the share menu hand export files to other apps -->
         <provider

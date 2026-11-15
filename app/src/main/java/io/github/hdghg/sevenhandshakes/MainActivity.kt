@@ -1,26 +1,60 @@
 package io.github.hdghg.sevenhandshakes
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.content.IntentCompat
+import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 /**
  * Main activity for the app. A FragmentActivity because the device unlock prompt needs one.
+ *
+ * Another app can open a YAML file with it, or share one to it (see the manifest);
+ * the import screen is then shown for that file.
  */
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+    /** A file another app asked to open or shared, until the import screen has been opened for it. */
+    private var fileToImport by mutableStateOf<Uri?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("MainActivity created (restored=%b)", savedInstanceState != null)
+        // When the activity is recreated the same intent comes again; its screen is already on the back stack.
+        if (savedInstanceState == null) fileToImport = fileToOpen(intent)
         enableEdgeToEdge()
         setContent {
             MainTheme {
-                AppMainNavGraph()
+                AppMainNavGraph(
+                    fileToImport = fileToImport,
+                    onFileToImportOpened = { fileToImport = null },
+                )
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        fileToImport = fileToOpen(intent)
+    }
+
+    /** The file of an "open with" or a "share" request, or null if [intent] is neither. */
+    private fun fileToOpen(intent: Intent?): Uri? {
+        val file = when (intent?.action) {
+            Intent.ACTION_VIEW -> intent.data
+            // Shared text has no file; nothing is opened for it.
+            Intent.ACTION_SEND -> IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+            else -> return null
+        }
+        Timber.d("Asked to %s a file of type %s (file given: %b)", intent.action, intent.type, file != null)
+        return file
     }
 }

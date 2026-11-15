@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes
 
+import android.net.Uri
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
@@ -42,6 +43,10 @@ fun AppMainNavGraph(
     navActions: MyAppNavigationActions = remember(navController) {
         MyAppNavigationActions(navController)
     },
+    /** A file another app asked to open; the import screen is opened for it. */
+    fileToImport: Uri? = null,
+    /** Called once the import screen for [fileToImport] is open, so it is not opened twice. */
+    onFileToImportOpened: () -> Unit = {},
 ) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
@@ -145,6 +150,14 @@ fun AppMainNavGraph(
                     },
                 )
             }
+        }
+    }
+
+    // Placed after NavHost, which sets up the graph that navigating needs.
+    LaunchedEffect(fileToImport) {
+        if (fileToImport != null) {
+            navActions.navigateToImportSelection(fileToImport)
+            onFileToImportOpened()
         }
     }
 }
