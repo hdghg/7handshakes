@@ -54,6 +54,8 @@ protobufPlugin = "0.9.4"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
 room = "2.6.1"
+# Classic SnakeYAML, not snakeyaml-engine: the engine needs java.util.Optional (API 24); minSdk is 21
+snakeyaml = "2.4"
 spotless = "5.12.5"
 timber = "5.0.1"
 # @keep
@@ -118,7 +120,8 @@ androidx-window-manager = { module = "androidx.window:window", version.ref = "an
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidxWork" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidxBiometric" }
-bouncycastle-bcprov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+bouncycastle-bcprov ={ group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }

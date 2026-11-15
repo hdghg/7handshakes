@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
-import io.github.hdghg.sevenhandshakes.data.exportToYaml
+import io.github.hdghg.sevenhandshakes.data.writeShareYaml
 import io.github.hdghg.sevenhandshakes.di.IoDispatcher
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
@@ -73,15 +73,13 @@ class ExportViewModel
         }
 
         private suspend fun writeExportFile(): Uri {
-            val yaml = exportToYaml(
-                contacts = contactRepository.getContactsStream().first(),
-                reviews = reviewRepository.getGratitudesStream().first(),
-            )
+            val contacts = contactRepository.getContactsStream().first()
+            val reviews = reviewRepository.getGratitudesStream().first()
             return withContext(ioDispatcher) {
                 // Must match the directory shared in res/xml/file_paths.xml.
                 val directory = File(context.cacheDir, EXPORT_DIRECTORY).apply { mkdirs() }
                 val file = File(directory, EXPORT_FILE_NAME)
-                file.writeText(yaml)
+                file.bufferedWriter().use { writeShareYaml(contacts, reviews, it) }
                 FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             }
         }

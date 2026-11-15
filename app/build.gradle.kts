@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
     implementation(libs.bouncycastle.bcprov)
+    implementation(libs.snakeyaml)
     implementation(libs.play.services.code.scanner)
     implementation(libs.zxing.core)
     implementation(libs.androidx.biometric)

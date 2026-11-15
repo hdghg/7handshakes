@@ -4,6 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
 import org.junit.Test
+import org.yaml.snakeyaml.Yaml
+import java.io.StringReader
+import java.io.StringWriter
 
 class DataExportTest {
     private fun contact(id: Int, name: String?, email: String?, publicKey: String) =
@@ -19,9 +22,12 @@ class DataExportTest {
         signature = signature,
     )
 
+    private fun shareYaml(contacts: List<ContactRecord>, reviews: List<ReviewRecord>): String =
+        StringWriter().also { writeShareYaml(contacts, reviews, it) }.toString()
+
     @Test
     fun writesContactsAndReviews() {
-        val yaml = exportToYaml(
+        val yaml = shareYaml(
             contacts = listOf(
                 contact(2, name = null, email = null, publicKey = "keyB"),
                 contact(1, name = "Alice", email = "alice@example.com", publicKey = "keyA"),
@@ -31,6 +37,7 @@ class DataExportTest {
 
         assertThat(yaml).isEqualTo(
             """
+            format: "share/v1"
             contacts:
               - id: 1
                 name: "Alice"
@@ -54,19 +61,39 @@ class DataExportTest {
 
     @Test
     fun emptyTables() {
-        assertThat(exportToYaml(emptyList(), emptyList())).isEqualTo("contacts: []\nreviews: []\n")
+        assertThat(shareYaml(emptyList(), emptyList())).isEqualTo("format: \"share/v1\"\ncontacts: []\nreviews: []\n")
     }
 
     @Test
-    fun escapesText() {
-        val yaml = exportToYaml(
-            contacts = emptyList(),
-            reviews = listOf(
-                review(1, from = 1, to = 2, text = "a \"b\" \\ c\nd: #e\u0001", rate = 1, signature = byteArrayOf()),
-            ),
+    fun textIsReadBackUnchanged() {
+        val texts = listOf(
+            "a \"b\" \\ c\nd: #e\u0001",
+            "- not a list",
+            "null",
+            "123",
+            "  spaces around  ",
+            "Tack så mycket 谢谢 🙏",
+            "long ".repeat(100),
+            "",
+        )
+        val yaml = shareYaml(
+            contacts = listOf(contact(1, name = "true", email = "~", publicKey = "key")),
+            reviews = texts.mapIndexed { index, text ->
+                review(index + 1, from = 1, to = 1, text = text, rate = 1, signature = byteArrayOf())
+            },
         )
 
-        assertThat(yaml).contains("    message: \"a \\\"b\\\" \\\\ c\\nd: #e\\u0001\"\n")
-        assertThat(yaml).contains("    signature: \"\"\n")
+        val document = Yaml().load<Map<String, Any?>>(yaml)
+        val contacts = document["contacts"] as List<*>
+        assertThat(contacts.single()).isEqualTo(mapOf("id" to 1, "name" to "true", "email" to "~", "publicKey" to "key"))
+        val reviews = document["reviews"] as List<*>
+        assertThat(reviews.map { (it as Map<*, *>)["message"] }).isEqualTo(texts)
+    }
+
+    @Test
+    fun exportIsRecognisedAsShareFormat() {
+        val yaml = shareYaml(emptyList(), emptyList())
+
+        assertThat(readYamlFormat(StringReader(yaml))).isEqualTo(YamlFormat.SHARE_V1)
     }
 }
