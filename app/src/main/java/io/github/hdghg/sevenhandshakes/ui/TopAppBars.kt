@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
@@ -128,7 +129,7 @@ fun ReviewDetailTopAppBar(onBack: () -> Unit, share: ShareActions? = null) {
     )
 }
 
-/** A share icon that opens a menu of the ways to share: as a QR code, as a link, as a file. */
+/** A share icon that opens a menu of the ways to share: as a QR code, as a link, as formatted text on the clipboard, as a file. */
 @Composable
 private fun ShareMenuButton(description: String, actions: ShareActions) {
     var expanded by remember { mutableStateOf(false) }
@@ -145,6 +146,10 @@ private fun ShareMenuButton(description: String, actions: ShareActions) {
             ShareMenuItem(Icons.Filled.Link, R.string.share_as_link) {
                 expanded = false
                 actions.asLink()
+            }
+            ShareMenuItem(Icons.Filled.ContentCopy, R.string.copy_as_rich_text) {
+                expanded = false
+                actions.asRichText()
             }
             ShareMenuItem(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.share_as_file) {
                 expanded = false

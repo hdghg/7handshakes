@@ -56,6 +56,8 @@
     <string name="review_share">مشاركة التقييم</string>
     <string name="review_share_qr">مشاركة كرمز QR</string>
     <string name="share_as_link">مشاركة كرابط</string>
+    <string name="copy_as_rich_text">نسخ كنص منسّق</string>
+    <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
     <string name="share_as_file">مشاركة كملف</string>
     <string name="review_qr_description">رمز QR لرابط التقييم</string>
     <string name="review_link_invalid">هذا الرابط لا يحتوي على تقييم صالح.</string>

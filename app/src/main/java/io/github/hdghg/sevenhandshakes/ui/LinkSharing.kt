@@ -1,8 +1,13 @@
 package io.github.hdghg.sevenhandshakes.ui
 
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.text.TextUtils
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -19,6 +24,8 @@ class ShareActions(
     val asQr: () -> Unit,
     /** Sends the link as text. */
     val asLink: () -> Unit,
+    /** Copies the link to the clipboard as formatted text: a few words that open the link when tapped. */
+    val asRichText: () -> Unit,
     /** Sends a file. */
     val asFile: () -> Unit,
 )
@@ -39,6 +46,23 @@ fun shareLinkAsText(context: Context, link: String) {
         context.startActivity(Intent.createChooser(send, null))
     } catch (e: ActivityNotFoundException) {
         Timber.w(e, "No app to share a link with")
+    }
+}
+
+/**
+ * Copies [link] to the clipboard as formatted text, to paste into a message: [label] as a link to tap.
+ *
+ * Not every app pastes formatted text. One that does not gets [label] with [link] on the line below it.
+ */
+fun copyLinkAsRichText(context: Context, link: String, label: String) {
+    val plain = "$label\n$link"
+    // The link holds only URL-safe characters, so it needs no escaping.
+    val html = "<a href=\"$link\">${TextUtils.htmlEncode(label)}</a>"
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    clipboard.setPrimaryClip(ClipData.newHtmlText(label, plain, html))
+    // From Android 13 the system itself shows what was copied.
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
     }
 }
 

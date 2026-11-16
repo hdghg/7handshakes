@@ -55,6 +55,7 @@ import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.ui.ShareActions
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.ui.rateStarColor
+import io.github.hdghg.sevenhandshakes.ui.copyLinkAsRichText
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.ui.shareAsFile
 import io.github.hdghg.sevenhandshakes.ui.shareLinkAsText
@@ -84,6 +85,8 @@ fun ContactDetailScreen(
     }
     val context = LocalContext.current
     val shareLink = uiState.shareLink
+    // What a link sent as formatted text reads: the contact as it is shown everywhere.
+    val shareLabel = uiState.contact?.let { contactLabel(it) }.orEmpty()
     var showQr by rememberSaveable { mutableStateOf(false) }
     if (showQr && shareLink != null) {
         LinkQrDialog(
@@ -107,6 +110,7 @@ fun ContactDetailScreen(
             ShareActions(
                 asQr = { showQr = true },
                 asLink = { shareLinkAsText(context, link) },
+                asRichText = { copyLinkAsRichText(context, link, shareLabel) },
                 asFile = ::shareAsFile,
             )
         },
@@ -437,7 +441,7 @@ fun ContactDetailScreenPreview() {
             onHandshakeDepthChange = {},
             onEdit = {},
             onDelete = {},
-            share = ShareActions(asQr = {}, asLink = {}, asFile = {}),
+            share = ShareActions(asQr = {}, asLink = {}, asRichText = {}, asFile = {}),
             onBack = {},
         )
     }

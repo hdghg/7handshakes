@@ -56,6 +56,8 @@
     <string name="review_share">Değerlendirmeyi paylaş</string>
     <string name="review_share_qr">QR kodu olarak paylaş</string>
     <string name="share_as_link">Bağlantı olarak paylaş</string>
+    <string name="copy_as_rich_text">Zengin metin olarak kopyala</string>
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
     <string name="share_as_file">Dosya olarak paylaş</string>
     <string name="review_qr_description">Değerlendirme bağlantısını içeren QR kodu</string>
     <string name="review_link_invalid">Bu bağlantı geçerli bir değerlendirme içermiyor.</string>

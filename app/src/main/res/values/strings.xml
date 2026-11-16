@@ -56,6 +56,8 @@
     <string name="review_share">Share review</string>
     <string name="review_share_qr">Share as QR code</string>
     <string name="share_as_link">Share as link</string>
+    <string name="copy_as_rich_text">Copy as rich text</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="share_as_file">Share as file</string>
     <string name="review_qr_description">QR code of the review link</string>
     <string name="review_link_invalid">This link does not hold a valid review.</string>

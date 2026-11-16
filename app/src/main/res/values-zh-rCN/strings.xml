@@ -56,6 +56,8 @@
     <string name="review_share">分享评价</string>
     <string name="review_share_qr">以二维码分享</string>
     <string name="share_as_link">以链接分享</string>
+    <string name="copy_as_rich_text">复制为富文本</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="share_as_file">以文件分享</string>
     <string name="review_qr_description">评价链接的二维码</string>
     <string name="review_link_invalid">此链接不包含有效的评价。</string>

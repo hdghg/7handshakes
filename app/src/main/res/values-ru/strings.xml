@@ -56,6 +56,8 @@
     <string name="review_share">Поделиться отзывом</string>
     <string name="review_share_qr">Поделиться QR-кодом</string>
     <string name="share_as_link">Поделиться ссылкой</string>
+    <string name="copy_as_rich_text">Скопировать как форматированный текст</string>
+    <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="share_as_file">Поделиться файлом</string>
     <string name="review_qr_description">QR-код со ссылкой на отзыв</string>
     <string name="review_link_invalid">В этой ссылке нет действительного отзыва.</string>

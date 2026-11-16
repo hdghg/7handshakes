@@ -56,6 +56,8 @@
     <string name="review_share">Dela omdöme</string>
     <string name="review_share_qr">Dela som QR-kod</string>
     <string name="share_as_link">Dela som länk</string>
+    <string name="copy_as_rich_text">Kopiera som formaterad text</string>
+    <string name="copied_to_clipboard">Kopierat till urklipp</string>
     <string name="share_as_file">Dela som fil</string>
     <string name="review_qr_description">QR-kod med länk till omdömet</string>
     <string name="review_link_invalid">Länken innehåller inget giltigt omdöme.</string>

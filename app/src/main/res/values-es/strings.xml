@@ -56,6 +56,8 @@
     <string name="review_share">Compartir reseña</string>
     <string name="review_share_qr">Compartir como código QR</string>
     <string name="share_as_link">Compartir como enlace</string>
+    <string name="copy_as_rich_text">Copiar como texto enriquecido</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
     <string name="share_as_file">Compartir como archivo</string>
     <string name="review_qr_description">Código QR con el enlace a la reseña</string>
     <string name="review_link_invalid">Este enlace no contiene una reseña válida.</string>

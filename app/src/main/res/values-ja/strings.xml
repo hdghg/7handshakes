@@ -56,6 +56,8 @@
     <string name="review_share">レビューを共有</string>
     <string name="review_share_qr">QRコードで共有</string>
     <string name="share_as_link">リンクで共有</string>
+    <string name="copy_as_rich_text">リッチテキストとしてコピー</string>
+    <string name="copied_to_clipboard">クリップボードにコピーしました</string>
     <string name="share_as_file">ファイルで共有</string>
     <string name="review_qr_description">レビューへのリンクのQRコード</string>
     <string name="review_link_invalid">このリンクには有効なレビューが含まれていません。</string>

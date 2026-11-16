@@ -35,6 +35,7 @@ import io.github.hdghg.sevenhandshakes.ui.LinkQrDialog
 import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.ui.ShareActions
 import io.github.hdghg.sevenhandshakes.ui.ReviewDetailTopAppBar
+import io.github.hdghg.sevenhandshakes.ui.copyLinkAsRichText
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.ui.shareAsFile
 import io.github.hdghg.sevenhandshakes.ui.shareLinkAsText
@@ -53,6 +54,8 @@ fun ReviewDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val shareLink = uiState.shareLink
+    // What a link copied as formatted text reads: just "Review".
+    val shareLabel = stringResource(id = R.string.review_details)
     var showQr by rememberSaveable { mutableStateOf(false) }
     if (showQr && shareLink != null) {
         LinkQrDialog(
@@ -70,6 +73,7 @@ fun ReviewDetailScreen(
             ShareActions(
                 asQr = { showQr = true },
                 asLink = { shareLinkAsText(context, link) },
+                asRichText = { copyLinkAsRichText(context, link, shareLabel) },
                 asFile = ::shareAsFile,
             )
         },
@@ -195,7 +199,7 @@ fun ReviewDetailScreenPreview() {
             ),
             isLoading = false,
             onBack = {},
-            share = ShareActions(asQr = {}, asLink = {}, asFile = {}),
+            share = ShareActions(asQr = {}, asLink = {}, asRichText = {}, asFile = {}),
         )
     }
 }
