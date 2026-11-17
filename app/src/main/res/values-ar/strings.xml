@@ -102,6 +102,7 @@
     <string name="export_all">تصدير الكل</string>
     <string name="export_failed">تعذّر تصدير البيانات.</string>
     <string name="import_title">استيراد</string>
+    <string name="drawer_other">أخرى</string>
     <string name="import_action">استيراد</string>
     <string name="import_invalid_file">لا يمكن استيراد هذا الملف.</string>
     <string name="import_selection_title">استيراد ملف</string>

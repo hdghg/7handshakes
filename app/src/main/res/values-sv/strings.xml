@@ -98,6 +98,7 @@
     <string name="export_all">Exportera allt</string>
     <string name="export_failed">Det gick inte att exportera data.</string>
     <string name="import_title">Importera</string>
+    <string name="drawer_other">Övrigt</string>
     <string name="import_action">Importera</string>
     <string name="import_invalid_file">Den här filen kan inte importeras.</string>
     <string name="import_selection_title">Importera fil</string>

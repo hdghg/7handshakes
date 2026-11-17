@@ -100,6 +100,7 @@
     <string name="export_all">Експортувати все</string>
     <string name="export_failed">Не вдалося експортувати дані.</string>
     <string name="import_title">Імпорт</string>
+    <string name="drawer_other">Інше</string>
     <string name="import_action">Імпортувати</string>
     <string name="import_invalid_file">Цей файл не можна імпортувати.</string>
     <string name="import_selection_title">Імпорт файлу</string>

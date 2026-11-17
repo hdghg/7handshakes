@@ -98,6 +98,7 @@
     <string name="export_all">Export all</string>
     <string name="export_failed">Could not export the data.</string>
     <string name="import_title">Import</string>
+    <string name="drawer_other">Other</string>
     <string name="import_action">Import</string>
     <string name="import_invalid_file">This file cannot be imported.</string>
     <string name="import_selection_title">Import file</string>

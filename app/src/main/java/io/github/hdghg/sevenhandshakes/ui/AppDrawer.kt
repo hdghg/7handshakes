@@ -1,5 +1,6 @@
 package io.github.hdghg.sevenhandshakes.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,10 +25,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -99,22 +107,34 @@ private fun AppDrawer(
                     closeDrawer()
                 },
             )
+            val otherRoutes = setOf(MyAppDestinations.EXPORT_ROUTE, MyAppDestinations.IMPORT_ROUTE)
+            var otherExpanded by rememberSaveable { mutableStateOf(currentRoute in otherRoutes) }
             DrawerButton(
-                label = stringResource(id = R.string.export_title),
-                isSelected = currentRoute == MyAppDestinations.EXPORT_ROUTE,
-                action = {
-                    navigateToExport()
-                    closeDrawer()
-                },
+                label = stringResource(id = R.string.drawer_other),
+                isSelected = !otherExpanded && currentRoute in otherRoutes,
+                icon = if (otherExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                action = { otherExpanded = !otherExpanded },
             )
-            DrawerButton(
-                label = stringResource(id = R.string.import_title),
-                isSelected = currentRoute == MyAppDestinations.IMPORT_ROUTE,
-                action = {
-                    navigateToImport()
-                    closeDrawer()
-                },
-            )
+            AnimatedVisibility(visible = otherExpanded) {
+                Column(modifier = Modifier.padding(start = dimensionResource(id = R.dimen.horizontal_margin))) {
+                    DrawerButton(
+                        label = stringResource(id = R.string.export_title),
+                        isSelected = currentRoute == MyAppDestinations.EXPORT_ROUTE,
+                        action = {
+                            navigateToExport()
+                            closeDrawer()
+                        },
+                    )
+                    DrawerButton(
+                        label = stringResource(id = R.string.import_title),
+                        isSelected = currentRoute == MyAppDestinations.IMPORT_ROUTE,
+                        action = {
+                            navigateToImport()
+                            closeDrawer()
+                        },
+                    )
+                }
+            }
         }
     }
 }
@@ -144,7 +164,13 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DrawerButton(label: String, isSelected: Boolean, action: () -> Unit, modifier: Modifier = Modifier) {
+private fun DrawerButton(
+    label: String,
+    isSelected: Boolean,
+    action: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector = Icons.Filled.Add,
+) {
     val tintColor = if (isSelected) {
         MaterialTheme.colorScheme.secondary
     } else {
@@ -163,7 +189,7 @@ private fun DrawerButton(label: String, isSelected: Boolean, action: () -> Unit,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Icon(
-                imageVector = Icons.Filled.Add,
+                imageVector = icon,
                 contentDescription = null, // decorative
                 tint = tintColor,
             )

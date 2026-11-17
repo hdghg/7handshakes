@@ -98,6 +98,7 @@
     <string name="export_all">Tümünü dışa aktar</string>
     <string name="export_failed">Veriler dışa aktarılamadı.</string>
     <string name="import_title">İçe aktar</string>
+    <string name="drawer_other">Diğer</string>
     <string name="import_action">İçe aktar</string>
     <string name="import_invalid_file">Bu dosya içe aktarılamıyor.</string>
     <string name="import_selection_title">Dosyayı içe aktar</string>

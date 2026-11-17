@@ -97,6 +97,7 @@
     <string name="export_all">すべてエクスポート</string>
     <string name="export_failed">データをエクスポートできませんでした。</string>
     <string name="import_title">インポート</string>
+    <string name="drawer_other">その他</string>
     <string name="import_action">インポート</string>
     <string name="import_invalid_file">このファイルはインポートできません。</string>
     <string name="import_selection_title">ファイルをインポート</string>

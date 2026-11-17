@@ -98,6 +98,7 @@
     <string name="export_all">Alle exportieren</string>
     <string name="export_failed">Die Daten konnten nicht exportiert werden.</string>
     <string name="import_title">Import</string>
+    <string name="drawer_other">Sonstiges</string>
     <string name="import_action">Importieren</string>
     <string name="import_invalid_file">Diese Datei kann nicht importiert werden.</string>
     <string name="import_selection_title">Datei importieren</string>

@@ -97,6 +97,7 @@
     <string name="export_all">导出全部</string>
     <string name="export_failed">无法导出数据。</string>
     <string name="import_title">导入</string>
+    <string name="drawer_other">其他</string>
     <string name="import_action">导入</string>
     <string name="import_invalid_file">无法导入此文件。</string>
     <string name="import_selection_title">导入文件</string>
