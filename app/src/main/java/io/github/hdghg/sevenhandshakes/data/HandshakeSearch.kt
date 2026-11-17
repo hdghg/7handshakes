@@ -52,21 +52,24 @@ class HandshakeGraph(edges: List<ReviewEdge>) {
      * A better review also counts for the levels below it: an edge weighs its reviews of the level
      * plus those of every higher level. One edge of each path is the exception and weighs its
      * reviews of the level alone, so a path of only better reviews does not count for it.
+     *
+     * [checkCancelled] is called now and then during the search; it may throw to stop it early.
      */
     fun exchange(
         contactId: Int,
         myContactId: Int,
         handshakes: Int,
         ignored: Set<Int>,
+        checkCancelled: () -> Unit = {},
     ): ReviewExchange {
         val excluded = ignored + contactId + myContactId
         val received = mutableMapOf<Byte, HandshakePath>()
         val given = mutableMapOf<Byte, HandshakePath>()
         for ((level, own) in byLevel) {
             val out = cumulative.getValue(level)
-            widestPath(out, from = contactId, to = myContactId, edges = handshakes, excluded = excluded, pure = own)
+            widestPath(out, contactId, myContactId, handshakes, excluded, own, checkCancelled)
                 ?.let { received[level] = it.withLevels(level) }
-            widestPath(out, from = myContactId, to = contactId, edges = handshakes, excluded = excluded, pure = own)
+            widestPath(out, myContactId, contactId, handshakes, excluded, own, checkCancelled)
                 ?.let { given[level] = it.withLevels(level) }
         }
         return ReviewExchange(receivedPaths = received, givenPaths = given)
@@ -99,6 +102,8 @@ class HandshakeGraph(edges: List<ReviewEdge>) {
  * Edges weigh as in [out], except for one edge of the path that weighs as in [pure] instead and
  * so has to exist there. The search picks that edge so that the path comes out heaviest; in the
  * returned path it carries its [pure] weight. By default [pure] is [out] and changes nothing.
+ *
+ * [checkCancelled] is called every [CANCEL_CHECK_INTERVAL] search steps; it may throw to stop the search.
  */
 internal fun widestPath(
     out: Map<Int, Map<Int, Int>>,
@@ -107,6 +112,7 @@ internal fun widestPath(
     edges: Int,
     excluded: Set<Int>,
     pure: Map<Int, Map<Int, Int>> = out,
+    checkCancelled: () -> Unit = {},
 ): HandshakePath? {
     if (edges < 1 || from == to) return null
 
@@ -152,8 +158,10 @@ internal fun widestPath(
     val visited = HashSet<Int>().apply { add(from) }
     val stack = arrayListOf(from)
     val stackWeights = ArrayList<Int>(edges)
+    var steps = 0
 
     fun search(v: Int, remaining: Int, weight: Int, pureDone: Boolean) {
+        if (++steps % CANCEL_CHECK_INTERVAL == 0) checkCancelled()
         val targets = out[v] ?: return
         val remainingAfter = remaining - 1
 
@@ -191,3 +199,6 @@ internal fun widestPath(
     search(from, edges, Int.MAX_VALUE, pureDone = false)
     return bestPath
 }
+
+/** How many search steps pass between two [widestPath] cancellation checks: often enough to stop quickly, rare enough to cost nothing. */
+private const val CANCEL_CHECK_INTERVAL = 1024

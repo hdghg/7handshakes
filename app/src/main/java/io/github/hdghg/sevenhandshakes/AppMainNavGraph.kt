@@ -61,56 +61,49 @@ fun AppMainNavGraph(
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
     LaunchedEffect(currentRoute) { Timber.d("Screen: %s", currentRoute) }
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier,
-    ) {
-        composable(MyAppDestinations.FEED_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+    // One drawer for the whole app, so its close animation survives the screen change it started.
+    AppModalDrawer(drawerState, currentRoute, navActions, coroutineScope) {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = modifier,
+        ) {
+            composable(MyAppDestinations.FEED_ROUTE) {
                 FeedScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newGratitude = { navActions.navigateToAddGratitude() },
                     openReview = { review -> navActions.navigateToReviewDetail(review.id) },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.REVIEW_DETAIL_ROUTE,
-            arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_ID_ARG) { type = NavType.IntType }),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.REVIEW_DETAIL_ROUTE,
+                arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_ID_ARG) { type = NavType.IntType }),
+            ) {
                 ReviewDetailScreen(
                     onBack = { navController.popBackStack() },
                     openContact = { contactId -> navActions.navigateToContactDetail(contactId) },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.REVIEW_LINK_ROUTE,
-            arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_LINK_ARG) { type = NavType.StringType }),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.REVIEW_LINK_ROUTE,
+                arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_LINK_ARG) { type = NavType.StringType }),
+            ) {
                 ReviewLinkScreen(
                     onBack = { navController.popBackStack() },
                     openReview = { reviewId -> navActions.navigateFromReviewLinkToDetail(reviewId) },
                 )
             }
-        }
-        composable(MyAppDestinations.CONTACTS_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.CONTACTS_ROUTE) {
                 ContactsScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newContact = { navActions.navigateToAddContact() },
                     openContact = { contact -> navActions.navigateToContactDetail(contact.id) },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.CONTACT_DETAIL_ROUTE,
-            arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) { type = NavType.IntType }),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.CONTACT_DETAIL_ROUTE,
+                arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) { type = NavType.IntType }),
+            ) {
                 ContactDetailScreen(
                     onBack = { navController.popBackStack() },
                     onEdit = { contactId -> navActions.navigateToEditContact(contactId) },
@@ -118,54 +111,44 @@ fun AppMainNavGraph(
                     onDeleted = { navController.popBackStack() },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.CONTACT_LINK_ROUTE,
-            arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_LINK_ARG) { type = NavType.StringType }),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.CONTACT_LINK_ROUTE,
+                arguments = listOf(navArgument(MyAppDestinationsArgs.CONTACT_LINK_ARG) { type = NavType.StringType }),
+            ) {
                 ContactLinkScreen(
                     onBack = { navController.popBackStack() },
                     openContact = { contactId -> navActions.navigateFromContactLinkToDetail(contactId) },
                 )
             }
-        }
-        composable(MyAppDestinations.IDENTITIES_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.IDENTITIES_ROUTE) {
                 IdentitiesScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     addIdentity = { navActions.navigateToAddEditIdentity() },
                 )
             }
-        }
-        composable(MyAppDestinations.EXPORT_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.EXPORT_ROUTE) {
                 ExportScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                 )
             }
-        }
-        composable(MyAppDestinations.IMPORT_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.IMPORT_ROUTE) {
                 ImportScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     openImportSelection = { fileUri -> navActions.navigateToImportSelection(fileUri) },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.GRAPH_INSPECTION_ROUTE,
-            arguments = listOf(
-                navArgument(MyAppDestinationsArgs.END_KEY_ARG) {
-                    type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
-                },
-            ),
-        ) { backStackEntry ->
-            // Opened from a contact it sits on top of that screen and goes back to it; from the drawer it is top level.
-            val fromContact = backStackEntry.arguments?.getString(MyAppDestinationsArgs.END_KEY_ARG) != null
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.GRAPH_INSPECTION_ROUTE,
+                arguments = listOf(
+                    navArgument(MyAppDestinationsArgs.END_KEY_ARG) {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    },
+                ),
+            ) { backStackEntry ->
+                // Opened from a contact it sits on top of that screen and goes back to it; from the drawer it is top level.
+                val fromContact = backStackEntry.arguments?.getString(MyAppDestinationsArgs.END_KEY_ARG) != null
                 GraphInspectionScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     onBack = if (fromContact) {
@@ -175,41 +158,33 @@ fun AppMainNavGraph(
                     },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.IMPORT_SELECTION_ROUTE,
-            arguments = listOf(navArgument(MyAppDestinationsArgs.FILE_URI_ARG) { type = NavType.StringType }),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.IMPORT_SELECTION_ROUTE,
+                arguments = listOf(navArgument(MyAppDestinationsArgs.FILE_URI_ARG) { type = NavType.StringType }),
+            ) {
                 ImportSelectionScreen(onBack = { navController.popBackStack() })
             }
-        }
-        composable(MyAppDestinations.ADD_EDIT_IDENTITY_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.ADD_EDIT_IDENTITY_ROUTE) {
                 AddEditIdentityScreen(
                     onBack = { navController.popBackStack() },
                     onComplete = { navController.popBackStack() },
                 )
             }
-        }
-        composable(
-            MyAppDestinations.ADD_EDIT_CONTACT_ROUTE,
-            arguments = listOf(
-                navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) {
-                    type = NavType.IntType
-                    defaultValue = NO_CONTACT_ID
-                },
-            ),
-        ) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(
+                MyAppDestinations.ADD_EDIT_CONTACT_ROUTE,
+                arguments = listOf(
+                    navArgument(MyAppDestinationsArgs.CONTACT_ID_ARG) {
+                        type = NavType.IntType
+                        defaultValue = NO_CONTACT_ID
+                    },
+                ),
+            ) {
                 NewContactScreen(
                     onBack = { navController.popBackStack() },
                     onComplete = { navController.popBackStack() },
                 )
             }
-        }
-        composable(MyAppDestinations.ADD_GRATITUDE_ROUTE) {
-            AppModalDrawer(drawerState, currentRoute, navActions) {
+            composable(MyAppDestinations.ADD_GRATITUDE_ROUTE) {
                 NewGratitudeScreen(
                     onBack = { navController.popBackStack() },
                     onComplete = {

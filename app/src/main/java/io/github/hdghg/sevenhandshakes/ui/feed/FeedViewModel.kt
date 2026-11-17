@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.flowOn
 
 data class FeedUiState(
     val items: List<Review> = emptyList(),
@@ -32,6 +35,7 @@ class FeedViewModel
         contactRepository: ContactRepository,
         identityRepository: IdentityRepository,
         selectedIdentityRepository: SelectedIdentityRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher,
     ) : ViewModel() {
         private val showAll = MutableStateFlow(false)
 
@@ -65,7 +69,10 @@ class FeedViewModel
                             )
                         },
                 )
-            }.stateIn(
+            }
+                // Filtering, sorting and mapping every review is too much for the main thread.
+                .flowOn(dispatcher)
+                .stateIn(
                     scope = viewModelScope,
                     started = SharingStarted.WhileSubscribed(5_000),
                     initialValue = FeedUiState(isLoading = true),

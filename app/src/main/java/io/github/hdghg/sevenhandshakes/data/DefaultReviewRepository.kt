@@ -14,8 +14,11 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import io.github.hdghg.sevenhandshakes.data.source.gratitude.EdgeCount
 import kotlinx.coroutines.flow.transformLatest
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,25 +44,30 @@ class DefaultReviewRepository
             myContactId: Int,
             depth: Int,
         ): Flow<List<ReviewExchange>> =
-            combine(reviewDao.observeEdgeCounts(), contactDao.observeIgnoredIds()) { edges, ignored ->
-                HandshakeGraph(
-                    edges.map {
-                        ReviewEdge(
-                            it.sourceContactId,
-                            it.targetContactId,
-                            rateLevelOf(it.gratitude),
-                            it.count,
-                        )
-                    },
-                ) to ignored.toSet()
-            }.transformLatest { (graph, ignored) ->
-                val finished = ArrayList<ReviewExchange>(depth)
-                for (level in 1..depth) {
-                    currentCoroutineContext().ensureActive()
-                    finished += graph.exchange(contactId, myContactId, handshakes = level, ignored = ignored)
-                    emit(finished.toList())
-                }
-            }.flowOn(dispatcher)
+            // Room re-emits a query whenever its table is written, even with the same result; skip those,
+            // so editing a contact's name or adding a review elsewhere does not start the search over.
+            combine(
+                reviewDao.observeEdgeCounts().distinctUntilChanged(),
+                contactDao.observeIgnoredIds().map { it.toSet() }.distinctUntilChanged(),
+            ) { edges, ignored -> GraphInput(edges, ignored) }
+                .distinctUntilChanged()
+                .transformLatest { input ->
+                    val context = currentCoroutineContext()
+                    val graph by lazy { input.toGraph() }
+                    val finished = ArrayList<ReviewExchange>(depth)
+                    for (level in 1..depth) {
+                        context.ensureActive()
+                        finished += exchangeCache.getOrPut(input, ExchangeKey(contactId, myContactId, level)) {
+                            graph.exchange(contactId, myContactId, handshakes = level, ignored = input.ignored) {
+                                context.ensureActive()
+                            }
+                        }
+                        emit(finished.toList())
+                    }
+                }.flowOn(dispatcher)
+
+        /** Keeps found ratings, so going back to a contact or raising the depth does not search again. */
+        private val exchangeCache = ExchangeCache()
 
         override suspend fun placeNewReview(
             reviewText: String,
@@ -108,3 +116,46 @@ class DefaultReviewRepository
             Timber.d("Review %s saved, signature %d bytes", r.uuid, signature.size)
         }
     }
+
+/** Everything a handshake search depends on besides its two contacts and depth. */
+private data class GraphInput(val edges: List<EdgeCount>, val ignored: Set<Int>) {
+    fun toGraph() = HandshakeGraph(
+        edges.map { ReviewEdge(it.sourceContactId, it.targetContactId, rateLevelOf(it.gratitude), it.count) },
+    )
+}
+
+private data class ExchangeKey(val contactId: Int, val myContactId: Int, val handshakes: Int)
+
+/**
+ * The most recent ratings found for one [GraphInput]. When the reviews or ignored contacts change,
+ * everything kept is dropped, since any rating may then be different. Safe to use from several threads.
+ */
+private class ExchangeCache {
+    private var input: GraphInput? = null
+    private val entries = object : LinkedHashMap<ExchangeKey, ReviewExchange>(16, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<ExchangeKey, ReviewExchange>?) =
+            size > MAX_ENTRIES
+    }
+
+    /** The kept rating for [key], or the result of [compute] (run without holding the lock), which is then kept. */
+    fun getOrPut(input: GraphInput, key: ExchangeKey, compute: () -> ReviewExchange): ReviewExchange {
+        synchronized(this) {
+            if (input != this.input) {
+                this.input = input
+                entries.clear()
+            }
+            entries[key]?.let { return it }
+        }
+        val result = compute()
+        synchronized(this) {
+            // The data may have changed while computing; a result for old data is not kept.
+            if (input == this.input) entries[key] = result
+        }
+        return result
+    }
+
+    private companion object {
+        /** Enough for every level of a few dozen contacts. */
+        const val MAX_ENTRIES = 256
+    }
+}
