@@ -12,12 +12,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.DropdownMenu
@@ -85,7 +85,7 @@ fun ContactDetailTopAppBar(
     onBack: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onHandshakeDepthClick: () -> Unit,
+    onInspectConnection: () -> Unit,
     share: ShareActions? = null,
 ) {
     TopAppBar(
@@ -104,8 +104,8 @@ fun ContactDetailTopAppBar(
             IconButton(onClick = onDelete) {
                 Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_contact))
             }
-            IconButton(onClick = onHandshakeDepthClick) {
-                Icon(Icons.Filled.Tune, stringResource(id = R.string.handshake_depth_title))
+            IconButton(onClick = onInspectConnection) {
+                Icon(Icons.Filled.Hub, stringResource(id = R.string.graph_inspection_title))
             }
         },
         modifier = Modifier.fillMaxWidth(),
@@ -215,6 +215,25 @@ fun ImportTopAppBar(openDrawer: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = openDrawer) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
+fun GraphInspectionTopAppBar(openDrawer: () -> Unit, onBack: (() -> Unit)? = null) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.graph_inspection_title)) },
+        navigationIcon = {
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
+                }
+            } else {
+                IconButton(onClick = openDrawer) {
+                    Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
+                }
             }
         },
         modifier = Modifier.fillMaxWidth(),

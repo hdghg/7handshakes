@@ -23,6 +23,7 @@ import io.github.hdghg.sevenhandshakes.ui.contactlink.ContactLinkScreen
 import io.github.hdghg.sevenhandshakes.ui.contacts.ContactsScreen
 import io.github.hdghg.sevenhandshakes.ui.export.ExportScreen
 import io.github.hdghg.sevenhandshakes.ui.feed.FeedScreen
+import io.github.hdghg.sevenhandshakes.ui.graphinspection.GraphInspectionScreen
 import io.github.hdghg.sevenhandshakes.ui.identities.IdentitiesScreen
 import io.github.hdghg.sevenhandshakes.ui.importdata.ImportScreen
 import io.github.hdghg.sevenhandshakes.ui.importselection.ImportSelectionScreen
@@ -110,6 +111,7 @@ fun AppMainNavGraph(
                 ContactDetailScreen(
                     onBack = { navController.popBackStack() },
                     onEdit = { contactId -> navActions.navigateToEditContact(contactId) },
+                    onInspectConnection = { publicKey -> navActions.navigateToGraphInspection(publicKey) },
                     onDeleted = { navController.popBackStack() },
                 )
             }
@@ -145,6 +147,29 @@ fun AppMainNavGraph(
                 ImportScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     openImportSelection = { fileUri -> navActions.navigateToImportSelection(fileUri) },
+                )
+            }
+        }
+        composable(
+            MyAppDestinations.GRAPH_INSPECTION_ROUTE,
+            arguments = listOf(
+                navArgument(MyAppDestinationsArgs.END_KEY_ARG) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+            ),
+        ) { backStackEntry ->
+            // Opened from a contact it sits on top of that screen and goes back to it; from the drawer it is top level.
+            val fromContact = backStackEntry.arguments?.getString(MyAppDestinationsArgs.END_KEY_ARG) != null
+            AppModalDrawer(drawerState, currentRoute, navActions) {
+                GraphInspectionScreen(
+                    openDrawer = { coroutineScope.launch { drawerState.open() } },
+                    onBack = if (fromContact) {
+                        { navController.popBackStack() }
+                    } else {
+                        null
+                    },
                 )
             }
         }

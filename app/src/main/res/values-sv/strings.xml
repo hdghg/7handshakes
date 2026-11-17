@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Väntar på föregående betyg</string>
     <string name="contact_reviews_received_count">Mottagna: %1$d</string>
     <string name="contact_reviews_given_count">Givna: %1$d</string>
-    <string name="contact_reviews_show_details">Tryck för att visa mottagna, givna och vägar</string>
-    <string name="contact_reviews_hide_details">Tryck för att dölja mottagna, givna och vägar</string>
-    <string name="handshake_path_me">Du</string>
-    <string name="handshake_ratings">Handslagsbetyg</string>
-    <string name="handshake_ratings_off">Avstängt. Använd knappen i det övre fältet för att välja hur många handslag som ska beräknas.</string>
     <string name="handshake_depth_title">Handslagsdjup</string>
     <string name="handshake_depth_off">Handslagsbetyg av</string>
     <plurals name="handshake_depth_value">
@@ -93,12 +88,17 @@
         <item quantity="other">Upp till %1$d handslag</item>
     </plurals>
     <string name="handshake_depth_hint">Gäller alla kontakter. Djupare nivåer tar längre tid att beräkna.</string>
-    <string name="contact_reviews_no_identity">Lägg till en identitet för att se omdömen som utbytts med den här kontakten.</string>
     <string name="export_title">Exportera</string>
     <string name="export_all">Exportera allt</string>
     <string name="export_failed">Det gick inte att exportera data.</string>
     <string name="import_title">Importera</string>
     <string name="drawer_other">Övrigt</string>
+    <string name="graph_inspection_title">Anslutningsgranskare</string>
+    <string name="graph_inspection_middle">I mitten</string>
+    <string name="graph_inspection_ends">I ändarna</string>
+    <string name="graph_inspection_unknown_key">Ingen kontakt med den här publika nyckeln</string>
+    <string name="graph_inspection_pick_contact">Välj kontakt</string>
+    <string name="graph_inspection_choose_both">Välj kontakter för båda fälten för att se deras handslagsbetyg.</string>
     <string name="import_action">Importera</string>
     <string name="import_invalid_file">Den här filen kan inte importeras.</string>
     <string name="import_selection_title">Importera fil</string>

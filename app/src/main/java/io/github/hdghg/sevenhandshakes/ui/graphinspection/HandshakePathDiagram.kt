@@ -1,4 +1,4 @@
-package io.github.hdghg.sevenhandshakes.ui.contactdetail
+package io.github.hdghg.sevenhandshakes.ui.graphinspection
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -18,13 +18,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
 import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 
@@ -37,15 +35,16 @@ private val MissingLineStroke = 0.5.dp
 
 /**
  * Vertical chain of contacts for one rate level, read top to bottom in review direction:
- * the contact at the top, the [received] path down to you in the middle, then the [given] path
- * down to the contact again at the bottom. Each edge shows how many reviews it stands for;
+ * the end contact at the top, the [received] path down to the middle contact, then the [given] path
+ * down to the end contact again at the bottom. Each edge shows how many reviews it stands for;
  * the weakest edge, which sets the path's total, is highlighted. A missing half is drawn as
  * one thin line of weight 0.
  *
  * Each edge is drawn in the star color of the best rate level counted in its weight.
  *
  * @param lineColor color of the lines, where a path does not say its levels or is missing: the star color of the rate level.
- * @param handshakes edges per path, so a missing half keeps you in the middle.
+ * @param handshakes edges per path, so a missing half keeps the middle contact in the middle.
+ * @param middleLabel name shown for the middle contact.
  * @param labelOf name shown for a contact id on the path.
  */
 @Composable
@@ -54,6 +53,7 @@ internal fun HandshakePathDiagram(
     given: HandshakePath?,
     handshakes: Int,
     lineColor: Color,
+    middleLabel: String,
     labelOf: @Composable (Int) -> String,
     modifier: Modifier = Modifier,
 ) {
@@ -76,8 +76,8 @@ internal fun HandshakePathDiagram(
             }
         }
         Vertex(
-            label = stringResource(id = R.string.handshake_path_me),
-            kind = VertexKind.Me,
+            label = middleLabel,
+            kind = VertexKind.Center,
             colorAbove = received?.run { edgeColor(weights.lastIndex) } ?: lineColor,
             colorBelow = given?.edgeColor(0) ?: lineColor,
             strokeAbove = if (received != null) LineStroke else MissingLineStroke,
@@ -102,7 +102,7 @@ internal fun HandshakePathDiagram(
     }
 }
 
-private enum class VertexKind { Me, End, Middle }
+private enum class VertexKind { Center, End, Middle }
 
 /** @param strokeAbove width of the line entering the dot from above, null for none; same for [strokeBelow]. */
 @Composable
@@ -115,7 +115,7 @@ private fun Vertex(
     strokeBelow: Dp?,
 ) {
     val dotColor = when (kind) {
-        VertexKind.Me -> MaterialTheme.colorScheme.primary
+        VertexKind.Center -> MaterialTheme.colorScheme.primary
         VertexKind.End -> MaterialTheme.colorScheme.onSurface
         VertexKind.Middle -> MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -126,12 +126,12 @@ private fun Vertex(
             val y = size.height / 2
             strokeAbove?.let { drawLine(colorAbove, Offset(x, 0f), Offset(x, y), it.toPx()) }
             strokeBelow?.let { drawLine(colorBelow, Offset(x, y), Offset(x, size.height), it.toPx()) }
-            drawCircle(dotColor, radius = (if (kind == VertexKind.Me) 5 else 4).dp.toPx(), center = Offset(x, y))
+            drawCircle(dotColor, radius = (if (kind == VertexKind.Center) 5 else 4).dp.toPx(), center = Offset(x, y))
         }
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            fontWeight = if (kind == VertexKind.Me) FontWeight.Bold else FontWeight.Normal,
+            fontWeight = if (kind == VertexKind.Center) FontWeight.Bold else FontWeight.Normal,
             color = if (kind == VertexKind.Middle) {
                 MaterialTheme.colorScheme.onSurfaceVariant
             } else {
@@ -178,7 +178,7 @@ private fun DrawScope.drawArrowHead(x: Float, tipY: Float, half: Float, color: C
 
 /**
  * A half with no path: one thin line of weight 0. Takes the space of a whole half path,
- * so you stay in the middle of the column.
+ * so the middle contact stays in the middle of the column.
  */
 @Composable
 private fun MissingHalf(handshakes: Int, lineColor: Color) {

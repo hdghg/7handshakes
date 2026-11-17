@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Wartet auf die vorherige Bewertung</string>
     <string name="contact_reviews_received_count">Erhalten: %1$d</string>
     <string name="contact_reviews_given_count">Gegeben: %1$d</string>
-    <string name="contact_reviews_show_details">Tippen, um Erhaltene, Gegebene und Pfade anzuzeigen</string>
-    <string name="contact_reviews_hide_details">Tippen, um Erhaltene, Gegebene und Pfade auszublenden</string>
-    <string name="handshake_path_me">Du</string>
-    <string name="handshake_ratings">Händedruck-Bewertungen</string>
-    <string name="handshake_ratings_off">Ausgeschaltet. Wähle über die Schaltfläche oben, wie viele Händedrücke berechnet werden sollen.</string>
     <string name="handshake_depth_title">Händedruck-Tiefe</string>
     <string name="handshake_depth_off">Händedruck-Bewertungen aus</string>
     <plurals name="handshake_depth_value">
@@ -93,12 +88,17 @@
         <item quantity="other">Bis zu %1$d Händedrücke</item>
     </plurals>
     <string name="handshake_depth_hint">Gilt für alle Kontakte. Tiefere Stufen brauchen länger zur Berechnung.</string>
-    <string name="contact_reviews_no_identity">Füge eine Identität hinzu, um die mit diesem Kontakt ausgetauschten Bewertungen zu sehen.</string>
     <string name="export_title">Export</string>
     <string name="export_all">Alle exportieren</string>
     <string name="export_failed">Die Daten konnten nicht exportiert werden.</string>
     <string name="import_title">Import</string>
     <string name="drawer_other">Sonstiges</string>
+    <string name="graph_inspection_title">Verbindungsprüfer</string>
+    <string name="graph_inspection_middle">In der Mitte</string>
+    <string name="graph_inspection_ends">An den Enden</string>
+    <string name="graph_inspection_unknown_key">Kein Kontakt mit diesem öffentlichen Schlüssel</string>
+    <string name="graph_inspection_pick_contact">Kontakt wählen</string>
+    <string name="graph_inspection_choose_both">Wähle Kontakte für beide Felder, um ihre Händedruck-Bewertungen zu sehen.</string>
     <string name="import_action">Importieren</string>
     <string name="import_invalid_file">Diese Datei kann nicht importiert werden.</string>
     <string name="import_selection_title">Datei importieren</string>

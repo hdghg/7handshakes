@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">في انتظار التقييم السابق</string>
     <string name="contact_reviews_received_count">المستلمة: %1$d</string>
     <string name="contact_reviews_given_count">المقدَّمة: %1$d</string>
-    <string name="contact_reviews_show_details">انقر لعرض المستلمة والمقدَّمة والمسارات</string>
-    <string name="contact_reviews_hide_details">انقر لإخفاء المستلمة والمقدَّمة والمسارات</string>
-    <string name="handshake_path_me">أنت</string>
-    <string name="handshake_ratings">تقييمات المصافحة</string>
-    <string name="handshake_ratings_off">متوقف. استخدم الزر في الشريط العلوي لاختيار عدد المصافحات المراد حسابها.</string>
     <string name="handshake_depth_title">عمق المصافحة</string>
     <string name="handshake_depth_off">تقييمات المصافحة متوقفة</string>
     <plurals name="handshake_depth_value">
@@ -97,12 +92,17 @@
         <item quantity="other">حتى %1$d مصافحة</item>
     </plurals>
     <string name="handshake_depth_hint">ينطبق على جميع جهات الاتصال. تستغرق المستويات الأعمق وقتًا أطول في الحساب.</string>
-    <string name="contact_reviews_no_identity">أضف هوية لعرض التقييمات المتبادلة مع جهة الاتصال هذه.</string>
     <string name="export_title">تصدير</string>
     <string name="export_all">تصدير الكل</string>
     <string name="export_failed">تعذّر تصدير البيانات.</string>
     <string name="import_title">استيراد</string>
     <string name="drawer_other">أخرى</string>
+    <string name="graph_inspection_title">مفتش الاتصالات</string>
+    <string name="graph_inspection_middle">في المنتصف</string>
+    <string name="graph_inspection_ends">على الطرفين</string>
+    <string name="graph_inspection_unknown_key">لا توجد جهة اتصال بهذا المفتاح العام</string>
+    <string name="graph_inspection_pick_contact">اختر جهة اتصال</string>
+    <string name="graph_inspection_choose_both">اختر جهات اتصال لكلا الحقلين لعرض تقييمات المصافحة بينهما.</string>
     <string name="import_action">استيراد</string>
     <string name="import_invalid_file">لا يمكن استيراد هذا الملف.</string>
     <string name="import_selection_title">استيراد ملف</string>

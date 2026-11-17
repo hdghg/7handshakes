@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Esperando la valoración anterior</string>
     <string name="contact_reviews_received_count">Recibidas: %1$d</string>
     <string name="contact_reviews_given_count">Dadas: %1$d</string>
-    <string name="contact_reviews_show_details">Toca para mostrar recibidas, dadas y rutas</string>
-    <string name="contact_reviews_hide_details">Toca para ocultar recibidas, dadas y rutas</string>
-    <string name="handshake_path_me">Tú</string>
-    <string name="handshake_ratings">Valoraciones por apretones de manos</string>
-    <string name="handshake_ratings_off">Desactivado. Usa el botón de la barra superior para elegir cuántos apretones de manos calcular.</string>
     <string name="handshake_depth_title">Profundidad de apretones de manos</string>
     <string name="handshake_depth_off">Valoraciones desactivadas</string>
     <plurals name="handshake_depth_value">
@@ -94,12 +89,17 @@
         <item quantity="other">Hasta %1$d apretones de manos</item>
     </plurals>
     <string name="handshake_depth_hint">Se aplica a todos los contactos. Los niveles más profundos tardan más en calcularse.</string>
-    <string name="contact_reviews_no_identity">Añade una identidad para ver las reseñas intercambiadas con este contacto.</string>
     <string name="export_title">Exportar</string>
     <string name="export_all">Exportar todo</string>
     <string name="export_failed">No se pudieron exportar los datos.</string>
     <string name="import_title">Importar</string>
     <string name="drawer_other">Otros</string>
+    <string name="graph_inspection_title">Inspector de conexiones</string>
+    <string name="graph_inspection_middle">En el medio</string>
+    <string name="graph_inspection_ends">En los extremos</string>
+    <string name="graph_inspection_unknown_key">Ningún contacto con esta clave pública</string>
+    <string name="graph_inspection_pick_contact">Elegir contacto</string>
+    <string name="graph_inspection_choose_both">Elige contactos para ambos campos para ver sus valoraciones.</string>
     <string name="import_action">Importar</string>
     <string name="import_invalid_file">Este archivo no se puede importar.</string>
     <string name="import_selection_title">Importar archivo</string>

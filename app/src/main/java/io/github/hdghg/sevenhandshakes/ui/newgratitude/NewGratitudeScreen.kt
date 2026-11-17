@@ -3,7 +3,6 @@ package io.github.hdghg.sevenhandshakes.ui.newgratitude
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,18 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Contacts
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCodeScanner
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -30,7 +22,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.ImeAction
@@ -49,16 +40,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
-import io.github.hdghg.sevenhandshakes.ui.contactLabel
+import io.github.hdghg.sevenhandshakes.ui.ContactPickerDialog
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
-import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.NewGratitudeTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
 import io.github.hdghg.sevenhandshakes.util.QrScanner
@@ -154,6 +143,7 @@ fun NewGratitudeScreen(
             }
             if (showContactPicker) {
                 ContactPickerDialog(
+                    title = stringResource(id = R.string.new_gratitude_pick_contact),
                     contacts = contacts,
                     onSelect = { contact ->
                         viewModel.updateReceiver(contact.publicKey)
@@ -176,60 +166,6 @@ fun NewGratitudeScreen(
             }
         }
     }
-}
-
-@Composable
-private fun ContactPickerDialog(
-    contacts: List<ContactRecord>,
-    onSelect: (ContactRecord) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(id = R.string.new_gratitude_pick_contact)) },
-        text = {
-            if (contacts.isEmpty()) {
-                Text(stringResource(id = R.string.new_gratitude_no_contacts))
-            } else {
-                LazyColumn {
-                    items(contacts, key = { it.id }) { contact ->
-                        ListItem(
-                            headlineContent = {
-                                Text(contactLabel(contact))
-                            },
-                            supportingContent = {
-                                Text(
-                                    text = contact.publicKey,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            },
-                            leadingContent = { Icon(Icons.Filled.Person, contentDescription = null) },
-                            trailingContent =
-                                if (contact.isFavorite) {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Filled.Star,
-                                            contentDescription = stringResource(id = R.string.contact_favorite),
-                                        )
-                                    }
-                                } else {
-                                    null
-                                },
-                            modifier = Modifier.clickable { onSelect(contact) },
-                        )
-                    }
-                }
-            }
-        },
-        confirmButton = {},
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(id = R.string.cancel))
-            }
-        },
-    )
 }
 
 /** Rate picker laid out like the contact screen's review table: diamond, gold, silver. */

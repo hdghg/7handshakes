@@ -61,6 +61,7 @@ fun AppModalDrawer(
                 navigateToIdentities = { navigationActions.navigateToIdentities() },
                 navigateToExport = { navigationActions.navigateToExport() },
                 navigateToImport = { navigationActions.navigateToImport() },
+                navigateToGraphInspection = { navigationActions.navigateToGraphInspection() },
                 closeDrawer = { coroutineScope.launch { drawerState.close() } },
             )
         },
@@ -77,6 +78,7 @@ private fun AppDrawer(
     navigateToIdentities: () -> Unit,
     navigateToExport: () -> Unit,
     navigateToImport: () -> Unit,
+    navigateToGraphInspection: () -> Unit,
     closeDrawer: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -107,7 +109,11 @@ private fun AppDrawer(
                     closeDrawer()
                 },
             )
-            val otherRoutes = setOf(MyAppDestinations.EXPORT_ROUTE, MyAppDestinations.IMPORT_ROUTE)
+            val otherRoutes = setOf(
+                MyAppDestinations.EXPORT_ROUTE,
+                MyAppDestinations.IMPORT_ROUTE,
+                MyAppDestinations.GRAPH_INSPECTION_ROUTE,
+            )
             var otherExpanded by rememberSaveable { mutableStateOf(currentRoute in otherRoutes) }
             DrawerButton(
                 label = stringResource(id = R.string.drawer_other),
@@ -117,6 +123,14 @@ private fun AppDrawer(
             )
             AnimatedVisibility(visible = otherExpanded) {
                 Column(modifier = Modifier.padding(start = dimensionResource(id = R.dimen.horizontal_margin))) {
+                    DrawerButton(
+                        label = stringResource(id = R.string.graph_inspection_title),
+                        isSelected = currentRoute == MyAppDestinations.GRAPH_INSPECTION_ROUTE,
+                        action = {
+                            navigateToGraphInspection()
+                            closeDrawer()
+                        },
+                    )
                     DrawerButton(
                         label = stringResource(id = R.string.export_title),
                         isSelected = currentRoute == MyAppDestinations.EXPORT_ROUTE,

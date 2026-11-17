@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Waiting for the previous rating</string>
     <string name="contact_reviews_received_count">Received: %1$d</string>
     <string name="contact_reviews_given_count">Given: %1$d</string>
-    <string name="contact_reviews_show_details">Tap to show received, given and paths</string>
-    <string name="contact_reviews_hide_details">Tap to hide received, given and paths</string>
-    <string name="handshake_path_me">You</string>
-    <string name="handshake_ratings">Handshake ratings</string>
-    <string name="handshake_ratings_off">Turned off. Use the button in the top bar to choose how many handshakes to calculate.</string>
     <string name="handshake_depth_title">Handshake depth</string>
     <string name="handshake_depth_off">Handshake ratings off</string>
     <plurals name="handshake_depth_value">
@@ -93,12 +88,17 @@
         <item quantity="other">Up to %1$d handshakes</item>
     </plurals>
     <string name="handshake_depth_hint">Applies to all contacts. Deeper levels take longer to calculate.</string>
-    <string name="contact_reviews_no_identity">Add an identity to see reviews exchanged with this contact.</string>
     <string name="export_title">Export</string>
     <string name="export_all">Export all</string>
     <string name="export_failed">Could not export the data.</string>
     <string name="import_title">Import</string>
     <string name="drawer_other">Other</string>
+    <string name="graph_inspection_title">Connection inspector</string>
+    <string name="graph_inspection_middle">In the middle</string>
+    <string name="graph_inspection_ends">On the ends</string>
+    <string name="graph_inspection_unknown_key">No contact with this public key</string>
+    <string name="graph_inspection_pick_contact">Choose a contact</string>
+    <string name="graph_inspection_choose_both">Choose contacts for both fields to see their handshake ratings.</string>
     <string name="import_action">Import</string>
     <string name="import_invalid_file">This file cannot be imported.</string>
     <string name="import_selection_title">Import file</string>

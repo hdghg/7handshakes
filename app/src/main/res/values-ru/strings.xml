@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Ожидание предыдущего рейтинга</string>
     <string name="contact_reviews_received_count">Получено: %1$d</string>
     <string name="contact_reviews_given_count">Отдано: %1$d</string>
-    <string name="contact_reviews_show_details">Нажмите, чтобы показать полученные, отданные и пути</string>
-    <string name="contact_reviews_hide_details">Нажмите, чтобы скрыть полученные, отданные и пути</string>
-    <string name="handshake_path_me">Вы</string>
-    <string name="handshake_ratings">Рейтинги рукопожатий</string>
-    <string name="handshake_ratings_off">Отключено. Нажмите кнопку на верхней панели, чтобы выбрать, сколько рукопожатий вычислять.</string>
     <string name="handshake_depth_title">Глубина рукопожатий</string>
     <string name="handshake_depth_off">Рейтинги рукопожатий отключены</string>
     <plurals name="handshake_depth_value">
@@ -95,12 +90,17 @@
         <item quantity="other">До %1$d рукопожатия</item>
     </plurals>
     <string name="handshake_depth_hint">Применяется ко всем контактам. Чем больше глубина, тем дольше вычисление.</string>
-    <string name="contact_reviews_no_identity">Добавьте профиль, чтобы видеть отзывы, которыми вы обменялись с этим контактом.</string>
     <string name="export_title">Экспорт</string>
     <string name="export_all">Экспортировать всё</string>
     <string name="export_failed">Не удалось экспортировать данные.</string>
     <string name="import_title">Импорт</string>
     <string name="drawer_other">Прочее</string>
+    <string name="graph_inspection_title">Инспектор связей</string>
+    <string name="graph_inspection_middle">В середине</string>
+    <string name="graph_inspection_ends">На концах</string>
+    <string name="graph_inspection_unknown_key">Нет контакта с этим открытым ключом</string>
+    <string name="graph_inspection_pick_contact">Выберите контакт</string>
+    <string name="graph_inspection_choose_both">Выберите контакты для обоих полей, чтобы увидеть рейтинги рукопожатий.</string>
     <string name="import_action">Импортировать</string>
     <string name="import_invalid_file">Этот файл нельзя импортировать.</string>
     <string name="import_selection_title">Импорт файла</string>

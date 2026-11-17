@@ -5,6 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.CONTACT_LINK_ARG
+import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.END_KEY_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.FILE_URI_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.REVIEW_ID_ARG
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs.REVIEW_LINK_ARG
@@ -31,6 +32,7 @@ private object MyScreens {
     const val EXPORT_SCREEN = "export"
     const val IMPORT_SCREEN = "import"
     const val IMPORT_SELECTION_SCREEN = "importSelection"
+    const val GRAPH_INSPECTION_SCREEN = "graphInspection"
 }
 
 /**
@@ -48,6 +50,9 @@ object MyAppDestinationsArgs {
 
     /** A contact link another app asked to open; see ContactLink. */
     const val CONTACT_LINK_ARG = "contactLink"
+
+    /** Public key of the contact the connection inspector opens with at the ends of the paths. */
+    const val END_KEY_ARG = "endKey"
 
     /** Content uri of the file picked for import. */
     const val FILE_URI_ARG = "fileUri"
@@ -71,6 +76,9 @@ object MyAppDestinations {
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
     const val IMPORT_ROUTE = MyScreens.IMPORT_SCREEN
+
+    /** The connection inspector; opened from a contact, the optional [END_KEY_ARG] fills its ends. */
+    const val GRAPH_INSPECTION_ROUTE = "${MyScreens.GRAPH_INSPECTION_SCREEN}?$END_KEY_ARG={$END_KEY_ARG}"
     const val IMPORT_SELECTION_ROUTE = "${MyScreens.IMPORT_SELECTION_SCREEN}?$FILE_URI_ARG={$FILE_URI_ARG}"
 }
 
@@ -122,6 +130,24 @@ class MyAppNavigationActions(private val navController: NavHostController) {
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    fun navigateToGraphInspection() {
+        navController.navigate(MyScreens.GRAPH_INSPECTION_SCREEN) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    /**
+     * Opens the connection inspector on top of the current screen, so Back returns to it,
+     * with the selected identity in the middle and the contact with [endKey] at the ends.
+     */
+    fun navigateToGraphInspection(endKey: String) {
+        navController.navigate("${MyScreens.GRAPH_INSPECTION_SCREEN}?$END_KEY_ARG=${Uri.encode(endKey)}")
     }
 
     fun navigateToImportSelection(fileUri: Uri) {

@@ -81,11 +81,6 @@
     <string name="handshake_rating_waiting">Önceki puan bekleniyor</string>
     <string name="contact_reviews_received_count">Alınan: %1$d</string>
     <string name="contact_reviews_given_count">Verilen: %1$d</string>
-    <string name="contact_reviews_show_details">Alınanları, verilenleri ve yolları göstermek için dokunun</string>
-    <string name="contact_reviews_hide_details">Alınanları, verilenleri ve yolları gizlemek için dokunun</string>
-    <string name="handshake_path_me">Siz</string>
-    <string name="handshake_ratings">Tokalaşma puanları</string>
-    <string name="handshake_ratings_off">Kapalı. Kaç tokalaşmanın hesaplanacağını seçmek için üst çubuktaki düğmeyi kullanın.</string>
     <string name="handshake_depth_title">Tokalaşma derinliği</string>
     <string name="handshake_depth_off">Tokalaşma puanları kapalı</string>
     <plurals name="handshake_depth_value">
@@ -93,12 +88,17 @@
         <item quantity="other">En fazla %1$d tokalaşma</item>
     </plurals>
     <string name="handshake_depth_hint">Tüm kişiler için geçerlidir. Daha derin seviyelerin hesaplanması daha uzun sürer.</string>
-    <string name="contact_reviews_no_identity">Bu kişiyle paylaşılan değerlendirmeleri görmek için bir kimlik ekleyin.</string>
     <string name="export_title">Dışa aktar</string>
     <string name="export_all">Tümünü dışa aktar</string>
     <string name="export_failed">Veriler dışa aktarılamadı.</string>
     <string name="import_title">İçe aktar</string>
     <string name="drawer_other">Diğer</string>
+    <string name="graph_inspection_title">Bağlantı denetçisi</string>
+    <string name="graph_inspection_middle">Ortada</string>
+    <string name="graph_inspection_ends">Uçlarda</string>
+    <string name="graph_inspection_unknown_key">Bu açık anahtara sahip kişi yok</string>
+    <string name="graph_inspection_pick_contact">Kişi seç</string>
+    <string name="graph_inspection_choose_both">Tokalaşma puanlarını görmek için her iki alana da kişi seçin.</string>
     <string name="import_action">İçe aktar</string>
     <string name="import_invalid_file">Bu dosya içe aktarılamıyor.</string>
     <string name="import_selection_title">Dosyayı içe aktar</string>
