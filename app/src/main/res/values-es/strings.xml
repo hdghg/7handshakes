@@ -52,6 +52,7 @@
     <string name="review_date_time">Fecha y hora</string>
     <string name="review_giver">De</string>
     <string name="review_receiver">Para</string>
+    <string name="review_open_contact">Abrir contacto</string>
     <string name="review_text">Texto</string>
     <string name="review_share">Compartir reseña</string>
     <string name="review_share_qr">Compartir como código QR</string>

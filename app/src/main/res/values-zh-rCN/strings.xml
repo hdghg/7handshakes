@@ -52,6 +52,7 @@
     <string name="review_date_time">日期和时间</string>
     <string name="review_giver">评价人</string>
     <string name="review_receiver">被评价人</string>
+    <string name="review_open_contact">打开联系人</string>
     <string name="review_text">内容</string>
     <string name="review_share">分享评价</string>
     <string name="review_share_qr">以二维码分享</string>

@@ -80,7 +80,10 @@ fun AppMainNavGraph(
             arguments = listOf(navArgument(MyAppDestinationsArgs.REVIEW_ID_ARG) { type = NavType.IntType }),
         ) {
             AppModalDrawer(drawerState, currentRoute, navActions) {
-                ReviewDetailScreen(onBack = { navController.popBackStack() })
+                ReviewDetailScreen(
+                    onBack = { navController.popBackStack() },
+                    openContact = { contactId -> navActions.navigateToContactDetail(contactId) },
+                )
             }
         }
         composable(

@@ -128,7 +128,6 @@ private fun ContactDetailContent(
                 onBack = onBack,
                 onEdit = onEdit,
                 onDelete = onDelete,
-                onInspectConnection = onInspectConnection,
                 share = share,
             )
         },

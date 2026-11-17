@@ -52,6 +52,7 @@
     <string name="review_date_time">Datum och tid</string>
     <string name="review_giver">Från</string>
     <string name="review_receiver">Till</string>
+    <string name="review_open_contact">Öppna kontakt</string>
     <string name="review_text">Text</string>
     <string name="review_share">Dela omdöme</string>
     <string name="review_share_qr">Dela som QR-kod</string>

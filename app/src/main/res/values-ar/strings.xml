@@ -52,6 +52,7 @@
     <string name="review_date_time">التاريخ والوقت</string>
     <string name="review_giver">من</string>
     <string name="review_receiver">إلى</string>
+    <string name="review_open_contact">فتح جهة الاتصال</string>
     <string name="review_text">النص</string>
     <string name="review_share">مشاركة التقييم</string>
     <string name="review_share_qr">مشاركة كرمز QR</string>

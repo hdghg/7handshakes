@@ -21,6 +21,10 @@ data class ReviewDetailUiState(
     /** Null while loading, and when there is no such review. */
     val review: Review? = null,
     val isLoading: Boolean = false,
+    /** Contact id of the review's author, or null when unknown. */
+    val giverContactId: Int? = null,
+    /** Contact id of the review's receiver, or null when unknown. */
+    val receiverContactId: Int? = null,
     /** A [ReviewLink] to the review, or null when it has none; see [ReviewLink.encode]. */
     val shareLink: String? = null,
 )
@@ -44,6 +48,8 @@ class ReviewDetailViewModel
                 val author = contacts.firstOrNull { it.id == record?.sourceContactId }
                 val receiver = contacts.firstOrNull { it.id == record?.targetContactId }
                 ReviewDetailUiState(
+                    giverContactId = author?.id,
+                    receiverContactId = receiver?.id,
                     shareLink = if (record != null && author != null && receiver != null) {
                         ReviewLink.encode(
                             SharedReview(

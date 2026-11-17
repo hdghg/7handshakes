@@ -52,6 +52,7 @@
     <string name="review_date_time">Дата і час</string>
     <string name="review_giver">Від кого</string>
     <string name="review_receiver">Кому</string>
+    <string name="review_open_contact">Відкрити контакт</string>
     <string name="review_text">Текст</string>
     <string name="review_share">Поділитися відгуком</string>
     <string name="review_share_qr">Поділитися QR-кодом</string>

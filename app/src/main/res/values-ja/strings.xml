@@ -52,6 +52,7 @@
     <string name="review_date_time">日時</string>
     <string name="review_giver">送り主</string>
     <string name="review_receiver">受け取り手</string>
+    <string name="review_open_contact">連絡先を開く</string>
     <string name="review_text">本文</string>
     <string name="review_share">レビューを共有</string>
     <string name="review_share_qr">QRコードで共有</string>

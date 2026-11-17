@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
@@ -85,7 +84,6 @@ fun ContactDetailTopAppBar(
     onBack: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onInspectConnection: () -> Unit,
     share: ShareActions? = null,
 ) {
     TopAppBar(
@@ -103,9 +101,6 @@ fun ContactDetailTopAppBar(
             }
             IconButton(onClick = onDelete) {
                 Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_contact))
-            }
-            IconButton(onClick = onInspectConnection) {
-                Icon(Icons.Filled.Hub, stringResource(id = R.string.graph_inspection_title))
             }
         },
         modifier = Modifier.fillMaxWidth(),

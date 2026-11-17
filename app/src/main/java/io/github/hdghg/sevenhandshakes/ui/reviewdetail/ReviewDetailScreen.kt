@@ -1,6 +1,7 @@
 package io.github.hdghg.sevenhandshakes.ui.reviewdetail
 
 import android.text.format.DateUtils
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -21,11 +25,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
@@ -48,6 +54,7 @@ private const val STAR_RECEIVED = "+1"
 @Composable
 fun ReviewDetailScreen(
     onBack: () -> Unit,
+    openContact: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ReviewDetailViewModel = hiltViewModel(),
 ) {
@@ -69,6 +76,8 @@ fun ReviewDetailScreen(
         review = uiState.review,
         isLoading = uiState.isLoading,
         onBack = onBack,
+        onGiverClick = uiState.giverContactId?.let { id -> { openContact(id) } },
+        onReceiverClick = uiState.receiverContactId?.let { id -> { openContact(id) } },
         share = shareLink?.let { link ->
             ShareActions(
                 asQr = { showQr = true },
@@ -86,6 +95,8 @@ private fun ReviewDetailContent(
     review: Review?,
     isLoading: Boolean,
     onBack: () -> Unit,
+    onGiverClick: (() -> Unit)?,
+    onReceiverClick: (() -> Unit)?,
     share: ShareActions?,
     modifier: Modifier = Modifier,
 ) {
@@ -105,15 +116,25 @@ private fun ReviewDetailContent(
             }
             return@Scaffold
         }
-        ReviewDetailBody(review = review, modifier = Modifier.padding(paddingValues))
+        ReviewDetailBody(
+            review = review,
+            onGiverClick = onGiverClick,
+            onReceiverClick = onReceiverClick,
+            modifier = Modifier.padding(paddingValues),
+        )
     }
 }
 
-/** The fields of [review] in a scrolling column, with [footer] below them. */
+/**
+ * The fields of [review] in a scrolling column, with [footer] below them.
+ * [onGiverClick] and [onReceiverClick], when set, make that contact's row tappable.
+ */
 @Composable
 internal fun ReviewDetailBody(
     review: Review,
     modifier: Modifier = Modifier,
+    onGiverClick: (() -> Unit)? = null,
+    onReceiverClick: (() -> Unit)? = null,
     footer: @Composable ColumnScope.() -> Unit = {},
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
@@ -131,6 +152,7 @@ internal fun ReviewDetailBody(
                 starChange = STAR_GIVEN,
                 starChangeColor = MaterialTheme.colorScheme.error,
                 rate = review.rate,
+                onClick = onGiverClick,
             )
         }
         Field(label = stringResource(id = R.string.review_receiver)) {
@@ -139,6 +161,7 @@ internal fun ReviewDetailBody(
                 starChange = STAR_RECEIVED,
                 starChangeColor = MaterialTheme.colorScheme.secondary,
                 rate = review.rate,
+                onClick = onReceiverClick,
             )
         }
         Field(label = stringResource(id = R.string.review_text)) {
@@ -162,14 +185,32 @@ private fun dateTimeLabel(createdAt: Long?): String {
     )
 }
 
-/** A contact's name, followed by the star it gave away ("−1") or received ("+1"). */
+/**
+ * A contact's name, followed by the star it gave away ("−1") or received ("+1").
+ * With [onClick] the row is tappable and the name is drawn as a link, with a chevron after the star.
+ */
 @Composable
-private fun Participant(name: String, starChange: String, starChangeColor: Color, rate: Byte) {
+private fun Participant(
+    name: String,
+    starChange: String,
+    starChangeColor: Color,
+    rate: Byte,
+    onClick: (() -> Unit)? = null,
+) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+    val clickLabel = stringResource(id = R.string.review_open_contact)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .then(if (onClick != null) Modifier.clickable(onClickLabel = clickLabel, onClick = onClick) else Modifier)
+            .padding(vertical = 4.dp),
+    ) {
         Text(
             text = name,
             style = MaterialTheme.typography.titleLarge,
+            color = if (onClick != null) MaterialTheme.colorScheme.primary else Color.Unspecified,
             modifier = Modifier.weight(1f),
         )
         Text(
@@ -179,6 +220,13 @@ private fun Participant(name: String, starChange: String, starChangeColor: Color
             modifier = Modifier.padding(start = margin),
         )
         RateStar(rate = rate)
+        if (onClick != null) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
@@ -199,6 +247,8 @@ fun ReviewDetailScreenPreview() {
             ),
             isLoading = false,
             onBack = {},
+            onGiverClick = {},
+            onReceiverClick = {},
             share = ShareActions(asQr = {}, asLink = {}, asRichText = {}, asFile = {}),
         )
     }

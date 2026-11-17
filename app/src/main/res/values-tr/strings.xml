@@ -52,6 +52,7 @@
     <string name="review_date_time">Tarih ve saat</string>
     <string name="review_giver">Gönderen</string>
     <string name="review_receiver">Alan</string>
+    <string name="review_open_contact">Kişiyi aç</string>
     <string name="review_text">Metin</string>
     <string name="review_share">Değerlendirmeyi paylaş</string>
     <string name="review_share_qr">QR kodu olarak paylaş</string>
