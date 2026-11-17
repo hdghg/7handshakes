@@ -98,6 +98,11 @@
     <string name="graph_inspection_unknown_key">この公開鍵の連絡先はありません</string>
     <string name="graph_inspection_pick_contact">連絡先を選択</string>
     <string name="graph_inspection_choose_both">両方の欄に連絡先を選ぶと握手の評価が表示されます。</string>
+    <string name="summary_rating_title">総合評価</string>
+    <string name="summary_rating_gives_more">中央の連絡先は受け取るより多くの星を贈っています</string>
+    <string name="summary_rating_receives_more">中央の連絡先は贈るより多くの星を受け取っています</string>
+    <string name="summary_rating_balanced">贈った数と受け取った数は同じです</string>
+    <string name="summary_rating_details">詳細を表示</string>
     <string name="import_action">インポート</string>
     <string name="import_invalid_file">このファイルはインポートできません。</string>
     <string name="import_selection_title">ファイルをインポート</string>

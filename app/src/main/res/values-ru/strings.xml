@@ -101,6 +101,11 @@
     <string name="graph_inspection_unknown_key">Нет контакта с этим открытым ключом</string>
     <string name="graph_inspection_pick_contact">Выберите контакт</string>
     <string name="graph_inspection_choose_both">Выберите контакты для обоих полей, чтобы увидеть рейтинги рукопожатий.</string>
+    <string name="summary_rating_title">Итоговый рейтинг</string>
+    <string name="summary_rating_gives_more">Контакт в середине дарит больше звёзд, чем получает</string>
+    <string name="summary_rating_receives_more">Контакт в середине получает больше звёзд, чем дарит</string>
+    <string name="summary_rating_balanced">Дарит и получает поровну</string>
+    <string name="summary_rating_details">Подробнее</string>
     <string name="import_action">Импортировать</string>
     <string name="import_invalid_file">Этот файл нельзя импортировать.</string>
     <string name="import_selection_title">Импорт файла</string>

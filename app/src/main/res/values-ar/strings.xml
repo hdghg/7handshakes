@@ -103,6 +103,11 @@
     <string name="graph_inspection_unknown_key">لا توجد جهة اتصال بهذا المفتاح العام</string>
     <string name="graph_inspection_pick_contact">اختر جهة اتصال</string>
     <string name="graph_inspection_choose_both">اختر جهات اتصال لكلا الحقلين لعرض تقييمات المصافحة بينهما.</string>
+    <string name="summary_rating_title">التقييم الإجمالي</string>
+    <string name="summary_rating_gives_more">جهة الاتصال في المنتصف تمنح نجومًا أكثر مما تتلقى</string>
+    <string name="summary_rating_receives_more">جهة الاتصال في المنتصف تتلقى نجومًا أكثر مما تمنح</string>
+    <string name="summary_rating_balanced">تمنح وتتلقى بالتساوي</string>
+    <string name="summary_rating_details">عرض التفاصيل</string>
     <string name="import_action">استيراد</string>
     <string name="import_invalid_file">لا يمكن استيراد هذا الملف.</string>
     <string name="import_selection_title">استيراد ملف</string>

@@ -99,6 +99,11 @@
     <string name="graph_inspection_unknown_key">Kein Kontakt mit diesem öffentlichen Schlüssel</string>
     <string name="graph_inspection_pick_contact">Kontakt wählen</string>
     <string name="graph_inspection_choose_both">Wähle Kontakte für beide Felder, um ihre Händedruck-Bewertungen zu sehen.</string>
+    <string name="summary_rating_title">Gesamtbewertung</string>
+    <string name="summary_rating_gives_more">Der Kontakt in der Mitte gibt mehr Sterne, als er erhält</string>
+    <string name="summary_rating_receives_more">Der Kontakt in der Mitte erhält mehr Sterne, als er gibt</string>
+    <string name="summary_rating_balanced">Gleich viel gegeben und erhalten</string>
+    <string name="summary_rating_details">Details anzeigen</string>
     <string name="import_action">Importieren</string>
     <string name="import_invalid_file">Diese Datei kann nicht importiert werden.</string>
     <string name="import_selection_title">Datei importieren</string>

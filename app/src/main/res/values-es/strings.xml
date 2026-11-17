@@ -100,6 +100,11 @@
     <string name="graph_inspection_unknown_key">Ningún contacto con esta clave pública</string>
     <string name="graph_inspection_pick_contact">Elegir contacto</string>
     <string name="graph_inspection_choose_both">Elige contactos para ambos campos para ver sus valoraciones.</string>
+    <string name="summary_rating_title">Valoración total</string>
+    <string name="summary_rating_gives_more">El contacto del medio da más estrellas de las que recibe</string>
+    <string name="summary_rating_receives_more">El contacto del medio recibe más estrellas de las que da</string>
+    <string name="summary_rating_balanced">Da y recibe por igual</string>
+    <string name="summary_rating_details">Ver detalles</string>
     <string name="import_action">Importar</string>
     <string name="import_invalid_file">Este archivo no se puede importar.</string>
     <string name="import_selection_title">Importar archivo</string>

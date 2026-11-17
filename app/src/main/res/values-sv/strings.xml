@@ -99,6 +99,11 @@
     <string name="graph_inspection_unknown_key">Ingen kontakt med den här publika nyckeln</string>
     <string name="graph_inspection_pick_contact">Välj kontakt</string>
     <string name="graph_inspection_choose_both">Välj kontakter för båda fälten för att se deras handslagsbetyg.</string>
+    <string name="summary_rating_title">Sammanlagt betyg</string>
+    <string name="summary_rating_gives_more">Kontakten i mitten ger fler stjärnor än den får</string>
+    <string name="summary_rating_receives_more">Kontakten i mitten får fler stjärnor än den ger</string>
+    <string name="summary_rating_balanced">Ger och får lika mycket</string>
+    <string name="summary_rating_details">Visa detaljer</string>
     <string name="import_action">Importera</string>
     <string name="import_invalid_file">Den här filen kan inte importeras.</string>
     <string name="import_selection_title">Importera fil</string>

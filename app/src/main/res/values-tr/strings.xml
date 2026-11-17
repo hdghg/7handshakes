@@ -99,6 +99,11 @@
     <string name="graph_inspection_unknown_key">Bu açık anahtara sahip kişi yok</string>
     <string name="graph_inspection_pick_contact">Kişi seç</string>
     <string name="graph_inspection_choose_both">Tokalaşma puanlarını görmek için her iki alana da kişi seçin.</string>
+    <string name="summary_rating_title">Toplam puan</string>
+    <string name="summary_rating_gives_more">Ortadaki kişi aldığından fazla yıldız veriyor</string>
+    <string name="summary_rating_receives_more">Ortadaki kişi verdiğinden fazla yıldız alıyor</string>
+    <string name="summary_rating_balanced">Eşit veriyor ve alıyor</string>
+    <string name="summary_rating_details">Ayrıntıları göster</string>
     <string name="import_action">İçe aktar</string>
     <string name="import_invalid_file">Bu dosya içe aktarılamıyor.</string>
     <string name="import_selection_title">Dosyayı içe aktar</string>

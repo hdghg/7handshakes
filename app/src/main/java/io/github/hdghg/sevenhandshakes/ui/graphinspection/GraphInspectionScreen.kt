@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -48,6 +49,7 @@ import io.github.hdghg.sevenhandshakes.ui.Field
 import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.GraphInspectionTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.SummaryRating
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.ui.rateStarColor
@@ -123,6 +125,16 @@ private fun GraphInspectionContent(
                 )
             } else {
                 val middleLabel = contactLabel(middle)
+                if (uiState.handshakeDepth > 0) {
+                    Field(label = stringResource(id = R.string.summary_rating_title)) {
+                        SummaryRating(
+                            ratings = ratings,
+                            showCaptions = true,
+                            isCalculating = ratings.size < uiState.handshakeDepth,
+                        )
+                    }
+                    HorizontalDivider(modifier = Modifier.padding(bottom = margin))
+                }
                 for (level in 1..uiState.handshakeDepth) {
                     key(level) {
                         Field(label = handshakeTitle(level)) {
@@ -330,12 +342,18 @@ private fun PendingRating(calculating: Boolean) {
     }
 }
 
-/** "One handshake rating", "Two handshakes rating", ...; digits past the named levels. */
+/**
+ * "One handshake rating", "Two handshakes rating", ...; digits past the named levels.
+ * Followed by one handshake emoji per handshake.
+ */
 @Composable
 private fun handshakeTitle(level: Int): String {
     val named = stringArrayResource(id = R.array.handshake_rating_titles)
-    return named.getOrNull(level - 1) ?: stringResource(id = R.string.handshake_rating_title_n, level)
+    val title = named.getOrNull(level - 1) ?: stringResource(id = R.string.handshake_rating_title_n, level)
+    return "$title ${HANDSHAKE_EMOJI.repeat(level)}"
 }
+
+private const val HANDSHAKE_EMOJI = "🤝"
 
 private fun formatDifference(value: Int): String = when {
     value > 0 -> "+$value"

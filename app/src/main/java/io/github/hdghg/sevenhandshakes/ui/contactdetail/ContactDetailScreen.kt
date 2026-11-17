@@ -1,6 +1,8 @@
 package io.github.hdghg.sevenhandshakes.ui.contactdetail
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,6 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
+import io.github.hdghg.sevenhandshakes.data.HandshakePath
+import io.github.hdghg.sevenhandshakes.data.ReviewExchange
+import io.github.hdghg.sevenhandshakes.ui.SummaryRating
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.Field
@@ -84,6 +89,8 @@ fun ContactDetailScreen(
     ContactDetailContent(
         contact = uiState.contact,
         isLoading = uiState.isLoading,
+        handshakeRatings = uiState.handshakeRatings,
+        handshakeDepth = uiState.handshakeDepth,
         onEdit = { uiState.contact?.let { onEdit(it.id) } },
         onInspectConnection = { uiState.contact?.let { onInspectConnection(it.publicKey) } },
         onDelete = { if (uiState.contact != null) showDeleteDialog = true },
@@ -104,6 +111,8 @@ fun ContactDetailScreen(
 private fun ContactDetailContent(
     contact: ContactRecord?,
     isLoading: Boolean,
+    handshakeRatings: List<ReviewExchange>?,
+    handshakeDepth: Int,
     onEdit: () -> Unit,
     onInspectConnection: () -> Unit,
     onDelete: () -> Unit,
@@ -165,6 +174,21 @@ private fun ContactDetailContent(
             if (contact.isIgnored) {
                 Flag(Icons.Filled.Block, stringResource(id = R.string.contact_ignored), MaterialTheme.colorScheme.error)
             }
+            // Brief: the sums only. The connection inspector explains them and shows every handshake level.
+            if (handshakeRatings != null && handshakeDepth > 0) {
+                Field(label = stringResource(id = R.string.summary_rating_title)) {
+                    SummaryRating(
+                        ratings = handshakeRatings,
+                        showCaptions = false,
+                        isCalculating = handshakeRatings.size < handshakeDepth,
+                    )
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+                        TextButton(onClick = onInspectConnection) {
+                            Text(text = stringResource(id = R.string.summary_rating_details))
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -224,6 +248,13 @@ fun ContactDetailScreenPreview() {
                 isIgnored = true,
             ),
             isLoading = false,
+            handshakeRatings = listOf(
+                ReviewExchange(
+                    receivedPaths = mapOf(3.toByte() to HandshakePath(listOf(1, 9), listOf(2))),
+                    givenPaths = mapOf(2.toByte() to HandshakePath(listOf(9, 1), listOf(3))),
+                ),
+            ),
+            handshakeDepth = 3,
             onEdit = {},
             onInspectConnection = {},
             onDelete = {},

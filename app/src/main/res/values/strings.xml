@@ -99,6 +99,11 @@
     <string name="graph_inspection_unknown_key">No contact with this public key</string>
     <string name="graph_inspection_pick_contact">Choose a contact</string>
     <string name="graph_inspection_choose_both">Choose contacts for both fields to see their handshake ratings.</string>
+    <string name="summary_rating_title">Summary rating</string>
+    <string name="summary_rating_gives_more">The contact in the middle gives more stars than receives</string>
+    <string name="summary_rating_receives_more">The contact in the middle receives more stars than gives</string>
+    <string name="summary_rating_balanced">Given and received equally</string>
+    <string name="summary_rating_details">Show details</string>
     <string name="import_action">Import</string>
     <string name="import_invalid_file">This file cannot be imported.</string>
     <string name="import_selection_title">Import file</string>
