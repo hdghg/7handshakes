@@ -1,9 +1,8 @@
 package io.github.hdghg.sevenhandshakes.ui.newgratitude
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +14,9 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -34,12 +36,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +52,8 @@ import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.ContactPickerDialog
 import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.ui.NewGratitudeTopAppBar
-import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.GoldStar
+import io.github.hdghg.sevenhandshakes.ui.rateDescriptionOf
 import io.github.hdghg.sevenhandshakes.util.QrScanner
 import kotlinx.coroutines.launch
 
@@ -168,7 +172,7 @@ fun NewGratitudeScreen(
     }
 }
 
-/** Rate picker laid out like the contact screen's review table: diamond, gold, silver. */
+/** Rate picker: 1 to 3 golden stars in a row. Tapping a star selects that many stars. */
 @Composable
 private fun StarPicker(selected: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
@@ -181,21 +185,20 @@ private fun StarPicker(selected: Int, onSelect: (Int) -> Unit, modifier: Modifie
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(top = 8.dp)
                 .selectableGroup(),
         ) {
-            RATE_LEVELS.sortedDescending().forEach { level ->
+            RATE_LEVELS.forEach { stars ->
                 StarOption(
-                    level = level,
-                    selected = selected == level.toInt(),
-                    onClick = { onSelect(level.toInt()) },
-                    modifier = Modifier.weight(1f),
+                    stars = stars,
+                    filled = stars <= selected,
+                    selected = stars.toInt() == selected,
+                    onClick = { onSelect(stars.toInt()) },
                 )
             }
         }
         Text(
-            text = stringResource(id = rateDescriptionOf(selected)),
+            text = stringResource(id = rateDescriptionOf(selected.toByte())),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp),
@@ -203,41 +206,31 @@ private fun StarPicker(selected: Int, onSelect: (Int) -> Unit, modifier: Modifie
     }
 }
 
+/** One star of the picker: golden up to the selected number, grey after it. */
 @Composable
-private fun StarOption(level: Byte, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val background by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
-        label = "starOptionBackground",
-    )
-    val contentAlpha by animateFloatAsState(targetValue = if (selected) 1f else 0.4f, label = "starOptionAlpha")
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .clip(MaterialTheme.shapes.medium)
-            .background(background)
+private fun StarOption(stars: Byte, filled: Boolean, selected: Boolean, onClick: () -> Unit) {
+    val scale by animateFloatAsState(targetValue = if (filled) 1f else 0.85f, label = "starOptionScale")
+    val description = stringResource(id = rateDescriptionOf(stars))
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(56.dp)
+            .clip(CircleShape)
             .selectable(selected = selected, role = Role.RadioButton, onClick = onClick)
-            .padding(vertical = 8.dp)
-            .alpha(contentAlpha),
+            .semantics { contentDescription = description },
     ) {
-        RateStar(rate = level, modifier = Modifier.size(32.dp))
-        Text(
-            text = stringResource(id = rateNameOf(level.toInt())),
-            style = MaterialTheme.typography.titleMedium,
-            color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurface,
-        )
+        val starModifier = Modifier.size(44.dp).scale(scale)
+        if (filled) {
+            GoldStar(modifier = starModifier)
+        } else {
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outlineVariant,
+                modifier = starModifier,
+            )
+        }
     }
-}
-
-private fun rateNameOf(level: Int): Int = when (level) {
-    3 -> R.string.rate_diamond
-    2 -> R.string.rate_gold
-    else -> R.string.rate_silver
-}
-
-private fun rateDescriptionOf(level: Int): Int = when (level) {
-    3 -> R.string.feed_rate_diamond
-    2 -> R.string.feed_rate_gold
-    else -> R.string.feed_rate_silver
 }
 
 @Preview

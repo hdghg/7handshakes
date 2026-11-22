@@ -34,13 +34,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
-import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.RateStars
 import io.github.hdghg.sevenhandshakes.util.UuidV7
 import java.util.Calendar
 import java.util.Date
@@ -173,7 +174,7 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
-        RateStar(rate = review.rate, modifier = Modifier.padding(end = margin))
+        RateStars(rate = review.rate, starSize = 16.dp, reserveSpace = true, modifier = Modifier.padding(end = margin))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = review.text,

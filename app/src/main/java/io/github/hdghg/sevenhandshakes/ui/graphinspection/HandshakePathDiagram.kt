@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
-import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 
 private val VertexHeight = 20.dp
 private val EdgeHeight = 22.dp
@@ -34,15 +33,13 @@ private val LineStroke = 2.dp
 private val MissingLineStroke = 0.5.dp
 
 /**
- * Vertical chain of contacts for one rate level, read top to bottom in review direction:
+ * Vertical chain of contacts, read top to bottom in review direction:
  * the end contact at the top, the [received] path down to the middle contact, then the [given] path
- * down to the end contact again at the bottom. Each edge shows how many reviews it stands for;
+ * down to the end contact again at the bottom. Each edge shows how many stars it stands for;
  * the weakest edge, which sets the path's total, is highlighted. A missing half is drawn as
  * one thin line of weight 0.
  *
- * Each edge is drawn in the star color of the best rate level counted in its weight.
- *
- * @param lineColor color of the lines, where a path does not say its levels or is missing: the star color of the rate level.
+ * @param lineColor color of the lines.
  * @param handshakes edges per path, so a missing half keeps the middle contact in the middle.
  * @param middleLabel name shown for the middle contact.
  * @param labelOf name shown for a contact id on the path.
@@ -57,7 +54,6 @@ internal fun HandshakePathDiagram(
     labelOf: @Composable (Int) -> String,
     modifier: Modifier = Modifier,
 ) {
-    fun HandshakePath.edgeColor(edge: Int): Color = levels.getOrNull(edge)?.let(::rateStarColor) ?: lineColor
     Column(modifier = modifier.fillMaxWidth()) {
         if (received == null) {
             MissingHalf(handshakes, lineColor)
@@ -67,19 +63,17 @@ internal fun HandshakePathDiagram(
                 Vertex(
                     label = labelOf(id),
                     kind = if (i == 0) VertexKind.End else VertexKind.Middle,
-                    colorAbove = received.edgeColor(maxOf(i - 1, 0)),
-                    colorBelow = received.edgeColor(i),
+                    lineColor = lineColor,
                     strokeAbove = if (i > 0) LineStroke else null,
                     strokeBelow = LineStroke,
                 )
-                Edge(weight = weight, weakest = weight == received.weight, lineColor = received.edgeColor(i))
+                Edge(weight = weight, weakest = weight == received.weight, lineColor = lineColor)
             }
         }
         Vertex(
             label = middleLabel,
             kind = VertexKind.Center,
-            colorAbove = received?.run { edgeColor(weights.lastIndex) } ?: lineColor,
-            colorBelow = given?.edgeColor(0) ?: lineColor,
+            lineColor = lineColor,
             strokeAbove = if (received != null) LineStroke else MissingLineStroke,
             strokeBelow = if (given != null) LineStroke else MissingLineStroke,
         )
@@ -88,12 +82,11 @@ internal fun HandshakePathDiagram(
         } else {
             given.weights.forEachIndexed { i, weight ->
                 val id = given.contactIds[i + 1]
-                Edge(weight = weight, weakest = weight == given.weight, lineColor = given.edgeColor(i))
+                Edge(weight = weight, weakest = weight == given.weight, lineColor = lineColor)
                 Vertex(
                     label = labelOf(id),
                     kind = if (i == given.weights.lastIndex) VertexKind.End else VertexKind.Middle,
-                    colorAbove = given.edgeColor(i),
-                    colorBelow = given.edgeColor(minOf(i + 1, given.weights.lastIndex)),
+                    lineColor = lineColor,
                     strokeAbove = LineStroke,
                     strokeBelow = if (i < given.weights.lastIndex) LineStroke else null,
                 )
@@ -109,8 +102,7 @@ private enum class VertexKind { Center, End, Middle }
 private fun Vertex(
     label: String,
     kind: VertexKind,
-    colorAbove: Color,
-    colorBelow: Color,
+    lineColor: Color,
     strokeAbove: Dp?,
     strokeBelow: Dp?,
 ) {
@@ -124,8 +116,8 @@ private fun Vertex(
         Canvas(modifier = Modifier.width(RailWidth).fillMaxHeight()) {
             val x = size.width / 2
             val y = size.height / 2
-            strokeAbove?.let { drawLine(colorAbove, Offset(x, 0f), Offset(x, y), it.toPx()) }
-            strokeBelow?.let { drawLine(colorBelow, Offset(x, y), Offset(x, size.height), it.toPx()) }
+            strokeAbove?.let { drawLine(lineColor, Offset(x, 0f), Offset(x, y), it.toPx()) }
+            strokeBelow?.let { drawLine(lineColor, Offset(x, y), Offset(x, size.height), it.toPx()) }
             drawCircle(dotColor, radius = (if (kind == VertexKind.Center) 5 else 4).dp.toPx(), center = Offset(x, y))
         }
         Text(

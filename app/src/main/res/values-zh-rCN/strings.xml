@@ -20,12 +20,9 @@
     <string name="cancel">取消</string>
     <string name="feed_show_all">显示所有评价</string>
     <string name="new_gratitude_stars">星级</string>
-    <string name="rate_diamond">钻石</string>
-    <string name="rate_gold">金</string>
-    <string name="rate_silver">银</string>
-    <string name="feed_rate_silver">银星：小小的感谢</string>
-    <string name="feed_rate_gold">金星：普通的感谢</string>
-    <string name="feed_rate_diamond">钻石星：非凡的感谢</string>
+    <string name="rate_stars_1">1 颗星：小小的感谢</string>
+    <string name="rate_stars_2">2 颗星：普通的感谢</string>
+    <string name="rate_stars_3">3 颗星：非凡的感谢</string>
     <string name="feed_today">今天</string>
     <string name="feed_yesterday">昨天</string>
     <string name="feed_unknown_date">日期未知</string>

@@ -20,12 +20,9 @@
     <string name="cancel">Avbryt</string>
     <string name="feed_show_all">Visa alla omdömen</string>
     <string name="new_gratitude_stars">Stjärnor</string>
-    <string name="rate_diamond">Diamant</string>
-    <string name="rate_gold">Guld</string>
-    <string name="rate_silver">Silver</string>
-    <string name="feed_rate_silver">Silverstjärna: ett litet tack</string>
-    <string name="feed_rate_gold">Guldstjärna: ett vanligt tack</string>
-    <string name="feed_rate_diamond">Diamantstjärna: ett enastående tack</string>
+    <string name="rate_stars_1">1 stjärna: ett litet tack</string>
+    <string name="rate_stars_2">2 stjärnor: ett vanligt tack</string>
+    <string name="rate_stars_3">3 stjärnor: ett enastående tack</string>
     <string name="feed_today">Idag</string>
     <string name="feed_yesterday">Igår</string>
     <string name="feed_unknown_date">Okänt datum</string>

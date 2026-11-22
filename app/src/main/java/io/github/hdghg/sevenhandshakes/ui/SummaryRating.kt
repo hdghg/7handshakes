@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.hdghg.sevenhandshakes.R
-import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import kotlin.math.absoluteValue
 
@@ -26,13 +25,13 @@ private val OrangeOnLight = Color(0xFFE65100)
 private val OrangeOnDark = Color(0xFFFFA726)
 
 /**
- * Received minus given for each rate level, summed over all handshake [ratings] calculated so far:
- * one big star per level, diamond first, with the size of the difference below it.
+ * Stars received minus given, summed over all handshake [ratings] calculated so far:
+ * one big golden star with the size of the difference below it.
  *
  * The number is shown without its sign. Its color says the direction: [MaterialTheme] secondary when
  * the middle contact receives more, orange when it gives more, so giving more does not read as an error.
  *
- * @param showCaptions also explains the direction in words under each star.
+ * @param showCaptions also explains the direction in words under the star.
  * @param isCalculating more levels are still on their way, so the sums can still grow.
  */
 @Composable
@@ -44,16 +43,11 @@ fun SummaryRating(
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     Column(modifier = modifier.fillMaxWidth().padding(vertical = margin / 2)) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            RATE_LEVELS.sortedDescending().forEach { level ->
-                SummaryColumn(
-                    difference = ratings.sumOf { it.differenceOf(level) },
-                    level = level,
-                    showCaption = showCaptions,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
+        SummaryColumn(
+            difference = ratings.sumOf { it.difference },
+            showCaption = showCaptions,
+            modifier = Modifier.fillMaxWidth(),
+        )
         if (isCalculating) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -72,10 +66,10 @@ fun SummaryRating(
 }
 
 @Composable
-private fun SummaryColumn(difference: Int, level: Byte, showCaption: Boolean, modifier: Modifier = Modifier) {
+private fun SummaryColumn(difference: Int, showCaption: Boolean, modifier: Modifier = Modifier) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.padding(horizontal = 4.dp)) {
         // Twice the size of the per-handshake stars.
-        RateStar(rate = level, modifier = Modifier.size(64.dp))
+        GoldStar(modifier = Modifier.size(64.dp))
         Text(
             text = difference.absoluteValue.toString(),
             style = MaterialTheme.typography.headlineSmall,

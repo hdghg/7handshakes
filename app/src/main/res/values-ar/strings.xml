@@ -20,12 +20,9 @@
     <string name="cancel">إلغاء</string>
     <string name="feed_show_all">عرض كل التقييمات</string>
     <string name="new_gratitude_stars">النجوم</string>
-    <string name="rate_diamond">ماسية</string>
-    <string name="rate_gold">ذهبية</string>
-    <string name="rate_silver">فضية</string>
-    <string name="feed_rate_silver">نجمة فضية: شكر بسيط</string>
-    <string name="feed_rate_gold">نجمة ذهبية: شكر معتاد</string>
-    <string name="feed_rate_diamond">نجمة ماسية: شكر استثنائي</string>
+    <string name="rate_stars_1">نجمة واحدة: شكر بسيط</string>
+    <string name="rate_stars_2">نجمتان: شكر معتاد</string>
+    <string name="rate_stars_3">ثلاث نجوم: شكر استثنائي</string>
     <string name="feed_today">اليوم</string>
     <string name="feed_yesterday">أمس</string>
     <string name="feed_unknown_date">التاريخ غير معروف</string>

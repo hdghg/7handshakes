@@ -120,7 +120,7 @@ class DefaultReviewRepository
 /** Everything a handshake search depends on besides its two contacts and depth. */
 private data class GraphInput(val edges: List<EdgeCount>, val ignored: Set<Int>) {
     fun toGraph() = HandshakeGraph(
-        edges.map { ReviewEdge(it.sourceContactId, it.targetContactId, rateLevelOf(it.gratitude), it.count) },
+        edges.map { ReviewEdge(it.sourceContactId, it.targetContactId, stars = it.count * rateLevelOf(it.gratitude)) },
     )
 }
 

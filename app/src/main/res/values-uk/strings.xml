@@ -20,12 +20,9 @@
     <string name="cancel">Скасувати</string>
     <string name="feed_show_all">Показати всі відгуки</string>
     <string name="new_gratitude_stars">Зірки</string>
-    <string name="rate_diamond">Діамант</string>
-    <string name="rate_gold">Золото</string>
-    <string name="rate_silver">Срібло</string>
-    <string name="feed_rate_silver">Срібна зірка: невелика подяка</string>
-    <string name="feed_rate_gold">Золота зірка: звичайна подяка</string>
-    <string name="feed_rate_diamond">Діамантова зірка: особлива подяка</string>
+    <string name="rate_stars_1">1 зірка: невелика подяка</string>
+    <string name="rate_stars_2">2 зірки: звичайна подяка</string>
+    <string name="rate_stars_3">3 зірки: особлива подяка</string>
     <string name="feed_today">Сьогодні</string>
     <string name="feed_yesterday">Учора</string>
     <string name="feed_unknown_date">Дата невідома</string>

@@ -20,12 +20,9 @@
     <string name="cancel">Abbrechen</string>
     <string name="feed_show_all">Alle Bewertungen anzeigen</string>
     <string name="new_gratitude_stars">Sterne</string>
-    <string name="rate_diamond">Diamant</string>
-    <string name="rate_gold">Gold</string>
-    <string name="rate_silver">Silber</string>
-    <string name="feed_rate_silver">Silberstern: kleiner Dank</string>
-    <string name="feed_rate_gold">Goldstern: üblicher Dank</string>
-    <string name="feed_rate_diamond">Diamantstern: außergewöhnlicher Dank</string>
+    <string name="rate_stars_1">1 Stern: kleiner Dank</string>
+    <string name="rate_stars_2">2 Sterne: üblicher Dank</string>
+    <string name="rate_stars_3">3 Sterne: außergewöhnlicher Dank</string>
     <string name="feed_today">Heute</string>
     <string name="feed_yesterday">Gestern</string>
     <string name="feed_unknown_date">Datum unbekannt</string>

@@ -38,7 +38,7 @@ import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.ui.Field
 import io.github.hdghg.sevenhandshakes.ui.LinkQrDialog
-import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.RateStars
 import io.github.hdghg.sevenhandshakes.ui.ShareActions
 import io.github.hdghg.sevenhandshakes.ui.ReviewDetailTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.copyLinkAsRichText
@@ -219,7 +219,7 @@ private fun Participant(
             color = starChangeColor,
             modifier = Modifier.padding(start = margin),
         )
-        RateStar(rate = rate)
+        RateStars(rate = rate)
         if (onClick != null) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

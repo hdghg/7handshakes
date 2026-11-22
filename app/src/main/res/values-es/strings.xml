@@ -20,12 +20,9 @@
     <string name="cancel">Cancelar</string>
     <string name="feed_show_all">Mostrar todas las reseñas</string>
     <string name="new_gratitude_stars">Estrellas</string>
-    <string name="rate_diamond">Diamante</string>
-    <string name="rate_gold">Oro</string>
-    <string name="rate_silver">Plata</string>
-    <string name="feed_rate_silver">Estrella de plata: pequeño agradecimiento</string>
-    <string name="feed_rate_gold">Estrella de oro: agradecimiento habitual</string>
-    <string name="feed_rate_diamond">Estrella de diamante: agradecimiento excepcional</string>
+    <string name="rate_stars_1">1 estrella: pequeño agradecimiento</string>
+    <string name="rate_stars_2">2 estrellas: agradecimiento habitual</string>
+    <string name="rate_stars_3">3 estrellas: agradecimiento excepcional</string>
     <string name="feed_today">Hoy</string>
     <string name="feed_yesterday">Ayer</string>
     <string name="feed_unknown_date">Fecha desconocida</string>

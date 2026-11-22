@@ -20,12 +20,9 @@
     <string name="cancel">İptal</string>
     <string name="feed_show_all">Tüm değerlendirmeleri göster</string>
     <string name="new_gratitude_stars">Yıldızlar</string>
-    <string name="rate_diamond">Elmas</string>
-    <string name="rate_gold">Altın</string>
-    <string name="rate_silver">Gümüş</string>
-    <string name="feed_rate_silver">Gümüş yıldız: küçük bir teşekkür</string>
-    <string name="feed_rate_gold">Altın yıldız: olağan bir teşekkür</string>
-    <string name="feed_rate_diamond">Elmas yıldız: olağanüstü bir teşekkür</string>
+    <string name="rate_stars_1">1 yıldız: küçük bir teşekkür</string>
+    <string name="rate_stars_2">2 yıldız: olağan bir teşekkür</string>
+    <string name="rate_stars_3">3 yıldız: olağanüstü bir teşekkür</string>
     <string name="feed_today">Bugün</string>
     <string name="feed_yesterday">Dün</string>
     <string name="feed_unknown_date">Tarih bilinmiyor</string>

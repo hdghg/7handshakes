@@ -20,12 +20,9 @@
     <string name="cancel">Отмена</string>
     <string name="feed_show_all">Показать все отзывы</string>
     <string name="new_gratitude_stars">Звёзды</string>
-    <string name="rate_diamond">Бриллиант</string>
-    <string name="rate_gold">Золото</string>
-    <string name="rate_silver">Серебро</string>
-    <string name="feed_rate_silver">Серебряная звезда: небольшая благодарность</string>
-    <string name="feed_rate_gold">Золотая звезда: обычная благодарность</string>
-    <string name="feed_rate_diamond">Бриллиантовая звезда: особая благодарность</string>
+    <string name="rate_stars_1">1 звезда: небольшая благодарность</string>
+    <string name="rate_stars_2">2 звезды: обычная благодарность</string>
+    <string name="rate_stars_3">3 звезды: особая благодарность</string>
     <string name="feed_today">Сегодня</string>
     <string name="feed_yesterday">Вчера</string>
     <string name="feed_unknown_date">Дата неизвестна</string>

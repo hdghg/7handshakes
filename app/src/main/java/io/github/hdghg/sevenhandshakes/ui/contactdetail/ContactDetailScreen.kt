@@ -249,8 +249,8 @@ fun ContactDetailScreenPreview() {
             isLoading = false,
             handshakeRatings = listOf(
                 ReviewExchange(
-                    receivedPaths = mapOf(3.toByte() to HandshakePath(listOf(1, 9), listOf(2))),
-                    givenPaths = mapOf(2.toByte() to HandshakePath(listOf(9, 1), listOf(3))),
+                    receivedPath = HandshakePath(listOf(1, 9), listOf(6)),
+                    givenPath = HandshakePath(listOf(9, 1), listOf(3)),
                 ),
             ),
             handshakeDepth = 3,

@@ -41,18 +41,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
 import io.github.hdghg.sevenhandshakes.data.MAX_HANDSHAKE_DEPTH
-import io.github.hdghg.sevenhandshakes.data.RATE_LEVELS
 import io.github.hdghg.sevenhandshakes.data.ReviewExchange
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactPickerDialog
 import io.github.hdghg.sevenhandshakes.ui.Field
 import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.GraphInspectionTopAppBar
-import io.github.hdghg.sevenhandshakes.ui.RateStar
+import io.github.hdghg.sevenhandshakes.ui.GoldStar
+import io.github.hdghg.sevenhandshakes.ui.GoldStarColor
 import io.github.hdghg.sevenhandshakes.ui.SummaryRating
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
-import io.github.hdghg.sevenhandshakes.ui.rateStarColor
 import kotlin.math.roundToInt
 
 /**
@@ -244,8 +243,8 @@ private fun HandshakeDepthSlider(depth: Int, onDepthChange: (Int) -> Unit) {
 }
 
 /**
- * One column per rate level, diamond first. Each shows its star, received minus given below it,
- * the received and given counts, and the paths behind them.
+ * The stars received minus given at one handshake level, the received and given stars,
+ * and the paths behind them.
  */
 @Composable
 private fun ReviewExchangeTable(
@@ -255,48 +254,31 @@ private fun ReviewExchangeTable(
     contactNames: Map<Int, String?>,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    Row(modifier = Modifier.fillMaxWidth().padding(vertical = margin / 2)) {
-        RATE_LEVELS.sortedDescending().forEach { level ->
-            RateColumn(
-                level = level,
-                exchange = exchange,
-                handshakes = handshakes,
-                middleLabel = middleLabel,
-                contactNames = contactNames,
-                modifier = Modifier.weight(1f),
+    val difference = exchange.difference
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth().padding(vertical = margin / 2),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            GoldStar(modifier = Modifier.size(32.dp))
+            Text(
+                text = formatDifference(difference),
+                style = MaterialTheme.typography.titleMedium,
+                color = when {
+                    difference > 0 -> MaterialTheme.colorScheme.secondary
+                    difference < 0 -> MaterialTheme.colorScheme.error
+                    else -> MaterialTheme.colorScheme.onSurface
+                },
+                modifier = Modifier.padding(start = 4.dp),
             )
         }
-    }
-}
-
-@Composable
-private fun RateColumn(
-    level: Byte,
-    exchange: ReviewExchange,
-    handshakes: Int,
-    middleLabel: String,
-    contactNames: Map<Int, String?>,
-    modifier: Modifier = Modifier,
-) {
-    val difference = exchange.differenceOf(level)
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
-        RateStar(rate = level, modifier = Modifier.size(32.dp))
-        Text(
-            text = formatDifference(difference),
-            style = MaterialTheme.typography.titleMedium,
-            color = when {
-                difference > 0 -> MaterialTheme.colorScheme.secondary
-                difference < 0 -> MaterialTheme.colorScheme.error
-                else -> MaterialTheme.colorScheme.onSurface
-            },
-        )
-        DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.receivedOf(level)))
-        DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.givenOf(level)))
+        DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.received))
+        DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.given))
         HandshakePathDiagram(
-            received = exchange.receivedPaths[level],
-            given = exchange.givenPaths[level],
+            received = exchange.receivedPath,
+            given = exchange.givenPath,
             handshakes = handshakes,
-            lineColor = rateStarColor(level),
+            lineColor = GoldStarColor,
             middleLabel = middleLabel,
             labelOf = { id -> displayNameOrUnknown(contactNames[id]) },
             modifier = Modifier.padding(top = 8.dp),
@@ -377,15 +359,12 @@ private fun GraphInspectionScreenPreview() {
                 contacts = contacts,
                 handshakeRatings = listOf(
                     ReviewExchange(
-                        receivedPaths = mapOf(3.toByte() to HandshakePath(listOf(1, 9), listOf(2))),
-                        givenPaths = mapOf(2.toByte() to HandshakePath(listOf(9, 1), listOf(3))),
+                        receivedPath = HandshakePath(listOf(1, 9), listOf(6)),
+                        givenPath = HandshakePath(listOf(9, 1), listOf(3)),
                     ),
                     ReviewExchange(
-                        receivedPaths = mapOf(
-                            3.toByte() to HandshakePath(listOf(1, 2, 9), listOf(4, 1)),
-                            1.toByte() to HandshakePath(listOf(1, 3, 9), listOf(2, 5), levels = listOf(1, 3)),
-                        ),
-                        givenPaths = mapOf(3.toByte() to HandshakePath(listOf(9, 3, 1), listOf(2, 2))),
+                        receivedPath = HandshakePath(listOf(1, 2, 9), listOf(4, 2)),
+                        givenPath = HandshakePath(listOf(9, 3, 1), listOf(2, 5)),
                     ),
                 ),
                 handshakeDepth = 3,

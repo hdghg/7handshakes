@@ -20,12 +20,9 @@
     <string name="cancel">Cancel</string>
     <string name="feed_show_all">Show all reviews</string>
     <string name="new_gratitude_stars">Stars</string>
-    <string name="rate_diamond">Diamond</string>
-    <string name="rate_gold">Gold</string>
-    <string name="rate_silver">Silver</string>
-    <string name="feed_rate_silver">Silver star: small gratitude</string>
-    <string name="feed_rate_gold">Gold star: usual gratitude</string>
-    <string name="feed_rate_diamond">Diamond star: outstanding gratitude</string>
+    <string name="rate_stars_1">1 star: small gratitude</string>
+    <string name="rate_stars_2">2 stars: usual gratitude</string>
+    <string name="rate_stars_3">3 stars: outstanding gratitude</string>
     <string name="feed_today">Today</string>
     <string name="feed_yesterday">Yesterday</string>
     <string name="feed_unknown_date">Date unknown</string>

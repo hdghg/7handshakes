@@ -2,37 +2,31 @@ package io.github.hdghg.sevenhandshakes.data
 
 /**
  * A chain of contacts found by the handshake search, in review direction: each contact reviewed the next.
- * [weights] has one entry per edge: how many reviews of the rate level the edge stands for.
- * [levels] has the best rate level counted in each edge's weight, or is empty when that is not known.
+ * [weights] has one entry per edge: how many stars the edge stands for.
  */
 data class HandshakePath(
     val contactIds: List<Int>,
     val weights: List<Int>,
-    val levels: List<Byte> = emptyList(),
 ) {
     init {
         require(weights.isNotEmpty() && contactIds.size == weights.size + 1)
-        require(levels.isEmpty() || levels.size == weights.size)
     }
 
     /** A path is worth its weakest edge. */
     val weight: Int get() = weights.min()
 }
 
-/**
- * Ratings between a contact and the selected identity, keyed by rate level (see [rateLevelOf]).
- * Each level holds the heaviest path found; levels without a path are absent.
- */
+/** Ratings between a contact and the selected identity: the heaviest path each way, null when there is none. */
 data class ReviewExchange(
-    /** Paths from the contact to the selected identity. */
-    val receivedPaths: Map<Byte, HandshakePath> = emptyMap(),
-    /** Paths from the selected identity to the contact. */
-    val givenPaths: Map<Byte, HandshakePath> = emptyMap(),
+    /** Path from the contact to the selected identity. */
+    val receivedPath: HandshakePath? = null,
+    /** Path from the selected identity to the contact. */
+    val givenPath: HandshakePath? = null,
 ) {
-    fun receivedOf(level: Byte): Int = receivedPaths[level]?.weight ?: 0
+    val received: Int get() = receivedPath?.weight ?: 0
 
-    fun givenOf(level: Byte): Int = givenPaths[level]?.weight ?: 0
+    val given: Int get() = givenPath?.weight ?: 0
 
-    /** Received minus given: positive means the contact thanked you more often than you thanked them. */
-    fun differenceOf(level: Byte): Int = receivedOf(level) - givenOf(level)
+    /** Received minus given: positive means the contact thanked you more than you thanked them. */
+    val difference: Int get() = received - given
 }
