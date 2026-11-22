@@ -11,4 +11,14 @@ class Review(
     val targetName: String? = null,
     /** Creation time in Unix milliseconds, read from [uuid]; null if [uuid] is not a UUIDv7. */
     val createdAt: Long? = null,
+    /** How the review relates to the selected identity; null when neither wrote nor received it, or unknown. */
+    val direction: ReviewDirection? = null,
 )
+
+enum class ReviewDirection {
+    /** Written by the selected identity. */
+    Outgoing,
+
+    /** Written to the selected identity. */
+    Incoming,
+}

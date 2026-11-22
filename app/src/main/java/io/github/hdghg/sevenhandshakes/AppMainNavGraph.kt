@@ -124,6 +124,8 @@ fun AppMainNavGraph(
                 IdentitiesScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     addIdentity = { navActions.navigateToAddEditIdentity() },
+                    // Identities is a drawer destination, so the feed is reached as from the drawer.
+                    openFeed = { navActions.navigateToFeed(fromDrawer = true) },
                 )
             }
             composable(MyAppDestinations.EXPORT_ROUTE) {

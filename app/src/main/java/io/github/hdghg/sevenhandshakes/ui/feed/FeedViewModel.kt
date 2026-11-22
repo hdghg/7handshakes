@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.Review
+import io.github.hdghg.sevenhandshakes.data.ReviewDirection
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
@@ -66,6 +67,12 @@ class FeedViewModel
                                 sourceName = namesById[it.sourceContactId],
                                 targetName = namesById[it.targetContactId],
                                 createdAt = UuidV7.timestampOf(it.uuid),
+                                direction = when (myContactId) {
+                                    null -> null
+                                    it.sourceContactId -> ReviewDirection.Outgoing
+                                    it.targetContactId -> ReviewDirection.Incoming
+                                    else -> null
+                                },
                             )
                         },
                 )

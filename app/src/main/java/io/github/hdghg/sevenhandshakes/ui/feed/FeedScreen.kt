@@ -30,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 import io.github.hdghg.sevenhandshakes.data.Review
+import io.github.hdghg.sevenhandshakes.data.ReviewDirection
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStars
 import io.github.hdghg.sevenhandshakes.util.UuidV7
@@ -171,6 +174,7 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .background(directionColor(review.direction))
             .clickable(onClick = onClick)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
@@ -204,6 +208,25 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Background of a feed item: orange for a review the selected identity wrote,
+ * green for one it received, none for the others. Soft enough for the stars and text to stay readable.
+ */
+@Composable
+private fun directionColor(direction: ReviewDirection?): Color {
+    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    return when (direction) {
+        ReviewDirection.Outgoing -> if (dark) OutgoingOnDark else OutgoingOnLight
+        ReviewDirection.Incoming -> if (dark) IncomingOnDark else IncomingOnLight
+        null -> Color.Transparent
+    }
+}
+
+private val OutgoingOnLight = Color(0xFFFFE8CC)
+private val OutgoingOnDark = Color(0xFF4A3216)
+private val IncomingOnLight = Color(0xFFDCEFDC)
+private val IncomingOnDark = Color(0xFF1F3B22)
+
 @Preview
 @Composable
 fun FeedScreenPreview() {
@@ -211,9 +234,9 @@ fun FeedScreenPreview() {
         FeedContent(
             reviews =
                 listOf(
-                    previewReview(1, "Bra jobbat", 3, "Alice", hoursAgo = 1),
-                    previewReview(2, "Other text", 2, "Bob", hoursAgo = 26),
-                    previewReview(3, "kul", 1, null, hoursAgo = 80),
+                    previewReview(1, "Bra jobbat", 3, "Me", "Alice", ReviewDirection.Outgoing, hoursAgo = 1),
+                    previewReview(2, "Other text", 2, "Bob", "Me", ReviewDirection.Incoming, hoursAgo = 26),
+                    previewReview(3, "kul", 1, "Bob", null, direction = null, hoursAgo = 80),
                 ),
             showAll = false,
             onShowAllChange = {},
@@ -224,15 +247,24 @@ fun FeedScreenPreview() {
     }
 }
 
-private fun previewReview(id: Int, text: String, rate: Byte, targetName: String?, hoursAgo: Int): Review {
+private fun previewReview(
+    id: Int,
+    text: String,
+    rate: Byte,
+    sourceName: String?,
+    targetName: String?,
+    direction: ReviewDirection?,
+    hoursAgo: Int,
+): Review {
     val createdAt = System.currentTimeMillis() - hoursAgo * DateUtils.HOUR_IN_MILLIS
     return Review(
         id = id,
         uuid = UuidV7.generate(createdAt).toString(),
         text = text,
         rate = rate,
-        sourceName = "Me",
+        sourceName = sourceName,
         targetName = targetName,
         createdAt = createdAt,
+        direction = direction,
     )
 }

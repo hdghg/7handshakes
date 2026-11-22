@@ -51,6 +51,8 @@ import kotlinx.coroutines.launch
 fun IdentitiesScreen(
     openDrawer: () -> Unit,
     addIdentity: () -> Unit,
+    /** Called after another identity is selected, to show the feed of the new identity. */
+    openFeed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: IdentitiesViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -69,7 +71,7 @@ fun IdentitiesScreen(
         isLoading = uiState.isLoading,
         openDrawer = openDrawer,
         addIdentity = addIdentity,
-        selectIdentity = viewModel::selectIdentity,
+        selectIdentity = { id -> viewModel.selectIdentity(id, onSelected = openFeed) },
         sharePrivateKey = { identity ->
             DeviceUnlock.confirm(
                 context = context,

@@ -43,7 +43,11 @@ class IdentitiesViewModel
                 initialValue = IdentitiesUiState(isLoading = true),
             )
 
-        fun selectIdentity(id: Int) {
-            viewModelScope.launch { selectedIdentityRepository.selectIdentity(id) }
+        /** Selects the identity, then calls [onSelected] once the choice is saved. */
+        fun selectIdentity(id: Int, onSelected: () -> Unit = {}) {
+            viewModelScope.launch {
+                selectedIdentityRepository.selectIdentity(id)
+                onSelected()
+            }
         }
     }

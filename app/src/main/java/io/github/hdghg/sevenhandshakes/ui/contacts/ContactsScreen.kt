@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.ui.ContactsTopAppBar
-import io.github.hdghg.sevenhandshakes.ui.contactLabel
+import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
 
 @Composable
 fun ContactsScreen(
@@ -127,13 +127,15 @@ private fun ContactItem(contact: ContactRecord, onClick: () -> Unit) {
             modifier = Modifier.padding(end = margin),
         )
         Column(modifier = Modifier.weight(1f)) {
+            // The name alone: the email has its own line below, so it is not used in place of the name.
             Text(
-                text = contactLabel(contact),
+                text = displayNameOrUnknown(contact.name?.takeIf { it.isNotBlank() }),
                 style = MaterialTheme.typography.titleMedium,
                 color = textColor,
             )
+            // An empty line when there is no email, so that every row has the same height.
             Text(
-                text = contact.publicKey,
+                text = contact.email?.trim().orEmpty(),
                 style = MaterialTheme.typography.bodySmall,
                 color = textColor,
                 maxLines = 1,
