@@ -33,6 +33,7 @@ private object MyScreens {
     const val IMPORT_SCREEN = "import"
     const val IMPORT_SELECTION_SCREEN = "importSelection"
     const val GRAPH_INSPECTION_SCREEN = "graphInspection"
+    const val REVIEW_REQUEST_SCREEN = "reviewRequest"
 }
 
 /**
@@ -76,6 +77,7 @@ object MyAppDestinations {
     const val ADD_EDIT_IDENTITY_ROUTE = MyScreens.ADD_EDIT_IDENTITY_SCREEN
     const val EXPORT_ROUTE = MyScreens.EXPORT_SCREEN
     const val IMPORT_ROUTE = MyScreens.IMPORT_SCREEN
+    const val REVIEW_REQUEST_ROUTE = MyScreens.REVIEW_REQUEST_SCREEN
 
     /** The connection inspector; opened from a contact, the optional [END_KEY_ARG] fills its ends. */
     const val GRAPH_INSPECTION_ROUTE = "${MyScreens.GRAPH_INSPECTION_SCREEN}?$END_KEY_ARG={$END_KEY_ARG}"
@@ -217,6 +219,10 @@ class MyAppNavigationActions(private val navController: NavHostController) {
                 if (taskId != null) "$it?$TASK_ID_ARG=$taskId" else it
             },
         )
+    }
+
+    fun navigateToReviewRequest() {
+        navController.navigate(MyAppDestinations.REVIEW_REQUEST_ROUTE)
     }
 
     fun navigateToAddGratitude() {

@@ -3,7 +3,6 @@ package io.github.hdghg.sevenhandshakes.ui.feed
 import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,25 +26,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
-import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
-import io.github.hdghg.sevenhandshakes.ui.meLabel
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.ReviewDirection
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStars
+import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
+import io.github.hdghg.sevenhandshakes.ui.meLabel
 import io.github.hdghg.sevenhandshakes.ui.reviewDirectionColor
 import io.github.hdghg.sevenhandshakes.util.UuidV7
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
 
@@ -54,6 +53,7 @@ fun FeedScreen(
     openDrawer: () -> Unit,
     newGratitude: () -> Unit,
     openReview: (Review) -> Unit,
+    requestReview: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FeedViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -66,6 +66,7 @@ fun FeedScreen(
         openDrawer = openDrawer,
         newGratitude = newGratitude,
         openReview = openReview,
+        requestReview = requestReview,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -107,7 +108,6 @@ private fun dayLabel(context: Context, dayStart: Long?): String {
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FeedContent(
     reviews: List<Review>,
@@ -116,13 +116,14 @@ private fun FeedContent(
     openDrawer: () -> Unit,
     newGratitude: () -> Unit,
     openReview: (Review) -> Unit,
+    requestReview: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { FeedTopAppBar(openDrawer, showAll, onShowAllChange) },
+        topBar = { FeedTopAppBar(openDrawer, showAll, onShowAllChange, requestReview) },
         floatingActionButton = {
             SmallFloatingActionButton(onClick = { newGratitude() }) {
                 Icon(Icons.Filled.Add, stringResource(id = R.string.new_gratitude))
@@ -235,6 +236,7 @@ fun FeedScreenPreview() {
             openDrawer = {},
             newGratitude = {},
             openReview = {},
+            requestReview = {},
         )
     }
 }

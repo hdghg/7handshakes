@@ -32,6 +32,7 @@ import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactScreen
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeScreen
 import io.github.hdghg.sevenhandshakes.ui.reviewdetail.ReviewDetailScreen
 import io.github.hdghg.sevenhandshakes.ui.reviewlink.ReviewLinkScreen
+import io.github.hdghg.sevenhandshakes.ui.reviewrequest.ReviewRequestScreen
 import io.github.hdghg.sevenhandshakes.ui.AppModalDrawer
 import io.github.hdghg.sevenhandshakes.ui.addeditidentity.AddEditIdentityScreen
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +74,11 @@ fun AppMainNavGraph(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     newGratitude = { navActions.navigateToAddGratitude() },
                     openReview = { review -> navActions.navigateToReviewDetail(review.id) },
+                    requestReview = { navActions.navigateToReviewRequest() },
                 )
+            }
+            composable(MyAppDestinations.REVIEW_REQUEST_ROUTE) {
+                ReviewRequestScreen(onBack = { navController.popBackStack() })
             }
             composable(
                 MyAppDestinations.REVIEW_DETAIL_ROUTE,

@@ -14,6 +14,7 @@ import io.github.hdghg.sevenhandshakes.ui.newcontact.NewContactViewModel
 import io.github.hdghg.sevenhandshakes.ui.newgratitude.NewGratitudeViewModel
 import io.github.hdghg.sevenhandshakes.ui.reviewdetail.ReviewDetailViewModel
 import io.github.hdghg.sevenhandshakes.ui.reviewlink.ReviewLinkViewModel
+import io.github.hdghg.sevenhandshakes.ui.reviewrequest.ReviewRequestViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -30,6 +31,7 @@ val viewModelModule = module {
     viewModelOf(::NewContactViewModel)
     viewModelOf(::NewGratitudeViewModel)
     viewModelOf(::ReviewDetailViewModel)
+    viewModelOf(::ReviewRequestViewModel)
 
     // These take a named dispatcher, so their parameters are listed.
     viewModel {

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -41,7 +42,12 @@ import io.github.hdghg.sevenhandshakes.MainTheme
 import io.github.hdghg.sevenhandshakes.R
 
 @Composable
-fun FeedTopAppBar(openDrawer: () -> Unit, showAll: Boolean, onShowAllChange: (Boolean) -> Unit) {
+fun FeedTopAppBar(
+    openDrawer: () -> Unit,
+    showAll: Boolean,
+    onShowAllChange: (Boolean) -> Unit,
+    requestReview: () -> Unit,
+) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.feed_title)) },
         navigationIcon = {
@@ -52,6 +58,9 @@ fun FeedTopAppBar(openDrawer: () -> Unit, showAll: Boolean, onShowAllChange: (Bo
         actions = {
             IconToggleButton(checked = showAll, onCheckedChange = onShowAllChange) {
                 Icon(Icons.Filled.Public, stringResource(id = R.string.feed_show_all))
+            }
+            IconButton(onClick = requestReview) {
+                Icon(Icons.Filled.RateReview, stringResource(id = R.string.review_request_title))
             }
         },
         modifier = Modifier.fillMaxWidth(),
@@ -312,7 +321,7 @@ fun NewGratitudeTopAppBar(onBack: () -> Unit, onComplete: () -> Unit) {
 private fun FeedTopAppBarPreview() {
     MainTheme {
         Surface {
-            FeedTopAppBar(openDrawer = {}, showAll = false, onShowAllChange = {})
+            FeedTopAppBar(openDrawer = {}, showAll = false, onShowAllChange = {}, requestReview = {})
         }
     }
 }
