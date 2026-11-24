@@ -37,7 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
@@ -56,7 +56,7 @@ fun FeedScreen(
     newGratitude: () -> Unit,
     openReview: (Review) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FeedViewModel = hiltViewModel(),
+    viewModel: FeedViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

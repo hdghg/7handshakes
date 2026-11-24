@@ -8,12 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class DefaultHandshakeDepthRepository
-    @Inject
     constructor(
         private val dataStore: DataStore<Preferences>,
     ) : HandshakeDepthRepository {

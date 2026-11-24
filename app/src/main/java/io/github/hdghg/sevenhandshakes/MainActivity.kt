@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.IntentCompat
 import androidx.fragment.app.FragmentActivity
-import dagger.hilt.android.AndroidEntryPoint
 import io.github.hdghg.sevenhandshakes.data.share.Hs7Link
 import timber.log.Timber
 
@@ -20,7 +19,6 @@ import timber.log.Timber
  * Another app can open a YAML file with it, or share one to it (see the manifest);
  * the import screen is then shown for that file. It also opens review and contact links; see [Hs7Link].
  */
-@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     /** A file another app asked to open or shared, until the import screen has been opened for it. */
     private var fileToImport by mutableStateOf<Uri?>(null)

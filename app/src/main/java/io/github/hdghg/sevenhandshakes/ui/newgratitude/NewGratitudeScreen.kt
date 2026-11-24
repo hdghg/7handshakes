@@ -39,13 +39,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
@@ -62,7 +63,7 @@ fun NewGratitudeScreen(
     onBack: () -> Unit,
     onComplete: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewGratitudeViewModel = hiltViewModel(),
+    viewModel: NewGratitudeViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
@@ -74,13 +75,14 @@ fun NewGratitudeScreen(
         val contacts by viewModel.contacts.collectAsStateWithLifecycle()
         var showContactPicker by rememberSaveable { mutableStateOf(false) }
         val context = LocalContext.current
+        val resources = LocalResources.current
         val scope = rememberCoroutineScope()
         val scanQr: () -> Unit = {
             QrScanner.scanQr(
                 context = context,
                 onSuccess = viewModel::receiverScanned,
                 onFail = { e ->
-                    val message = context.getString(R.string.qr_scan_failed, e.message.orEmpty())
+                    val message = resources.getString(R.string.qr_scan_failed, e.message.orEmpty())
                     scope.launch { snackbarHostState.showSnackbar(message) }
                 },
             )

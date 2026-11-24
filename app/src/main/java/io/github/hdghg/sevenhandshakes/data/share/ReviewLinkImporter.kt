@@ -6,11 +6,9 @@ import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
-import javax.inject.Inject
 
 /** Saves a review that came in a [ReviewLink]. The review must have been checked; [ReviewLink.decode] does. */
 class ReviewLinkImporter
-    @Inject
     constructor(
         private val database: ReviewDatabase,
         private val contactDao: ContactDao,

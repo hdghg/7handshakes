@@ -6,14 +6,11 @@ import android.provider.OpenableColumns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.share.ShareImportResult
 import io.github.hdghg.sevenhandshakes.data.share.ShareImporter
 import io.github.hdghg.sevenhandshakes.data.share.ShareSection
 import io.github.hdghg.sevenhandshakes.data.share.readShareSummary
-import io.github.hdghg.sevenhandshakes.di.IoDispatcher
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +24,6 @@ import timber.log.Timber
 import java.io.FileNotFoundException
 import java.io.FilterInputStream
 import java.io.InputStream
-import javax.inject.Inject
 
 /** What the screen shows about the picked file. */
 data class ImportFileInfo(
@@ -52,13 +48,11 @@ data class ImportSelectionUiState(
     val isFileInvalid: Boolean get() = !isLoading && file == null
 }
 
-@HiltViewModel
 class ImportSelectionViewModel
-    @Inject
     constructor(
         private val importer: ShareImporter,
-        @param:ApplicationContext private val context: Context,
-        @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+        private val context: Context,
+        private val ioDispatcher: CoroutineDispatcher,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         private val uri: Uri = Uri.parse(checkNotNull(savedStateHandle.get<String>(MyAppDestinationsArgs.FILE_URI_ARG)))

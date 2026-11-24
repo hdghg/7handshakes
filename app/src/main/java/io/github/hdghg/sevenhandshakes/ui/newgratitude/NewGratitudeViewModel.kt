@@ -2,7 +2,6 @@ package io.github.hdghg.sevenhandshakes.ui.newgratitude
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 data class NewGratitudeUiState(
     val text: String = "",
@@ -41,9 +39,7 @@ data class NewGratitudeUiState(
     val editComplete: Boolean = false,
 )
 
-@HiltViewModel
 class NewGratitudeViewModel
-    @Inject
     constructor(
         private val reviewRepository: ReviewRepository,
         private val contactRepository: ContactRepository,

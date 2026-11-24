@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.share.ContactsImportResult
@@ -34,7 +34,7 @@ import io.github.hdghg.sevenhandshakes.ui.ImportSelectionTopAppBar
 fun ImportSelectionScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ImportSelectionViewModel = hiltViewModel(),
+    viewModel: ImportSelectionViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ImportSelectionContent(

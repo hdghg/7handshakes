@@ -5,12 +5,9 @@ import android.net.Uri
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.writeShareYaml
-import io.github.hdghg.sevenhandshakes.di.IoDispatcher
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
 data class ExportUiState(
     val isExporting: Boolean = false,
@@ -38,14 +34,12 @@ sealed interface ExportEvent {
     data object Failed : ExportEvent
 }
 
-@HiltViewModel
 class ExportViewModel
-    @Inject
     constructor(
         private val contactRepository: ContactRepository,
         private val reviewRepository: ReviewRepository,
-        @param:ApplicationContext private val context: Context,
-        @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+        private val context: Context,
+        private val ioDispatcher: CoroutineDispatcher,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(ExportUiState())
         val uiState: StateFlow<ExportUiState> = _uiState.asStateFlow()

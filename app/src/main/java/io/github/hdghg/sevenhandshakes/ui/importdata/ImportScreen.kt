@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.ImportTopAppBar
 
@@ -32,7 +32,7 @@ fun ImportScreen(
     openDrawer: () -> Unit,
     openImportSelection: (Uri) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ImportViewModel = hiltViewModel(),
+    viewModel: ImportViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val pickFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->

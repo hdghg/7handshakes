@@ -11,12 +11,8 @@ import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class DefaultIdentityRepository
-    @Inject
     constructor(
         private val database: ReviewDatabase,
         private val identityDao: IdentityDao,

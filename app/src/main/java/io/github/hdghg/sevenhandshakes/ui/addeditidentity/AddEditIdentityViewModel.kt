@@ -2,7 +2,6 @@ package io.github.hdghg.sevenhandshakes.ui.addeditidentity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.AddIdentityResult
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 data class AddEditIdentityUiState(
     val privateKey: String = "",
@@ -36,9 +34,7 @@ data class AddEditIdentityUiState(
     val isNameError: Boolean get() = name.isBlank() && (nameTouched || publicKey != null)
 }
 
-@HiltViewModel
 class AddEditIdentityViewModel
-    @Inject
     constructor(
         private val contactRepository: ContactRepository,
         private val identityRepository: IdentityRepository,

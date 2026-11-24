@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.Review
@@ -30,7 +30,7 @@ fun ReviewLinkScreen(
     onBack: () -> Unit,
     openReview: (reviewId: Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ReviewLinkViewModel = hiltViewModel(),
+    viewModel: ReviewLinkViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState.savedReviewId) {

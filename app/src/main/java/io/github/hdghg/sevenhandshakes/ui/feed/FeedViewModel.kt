@@ -2,7 +2,6 @@ package io.github.hdghg.sevenhandshakes.ui.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.Review
@@ -16,8 +15,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
-import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 
@@ -28,15 +25,13 @@ data class FeedUiState(
     val showAll: Boolean = false,
 )
 
-@HiltViewModel
 class FeedViewModel
-    @Inject
     constructor(
         reviewRepository: ReviewRepository,
         contactRepository: ContactRepository,
         identityRepository: IdentityRepository,
         selectedIdentityRepository: SelectedIdentityRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher,
+        dispatcher: CoroutineDispatcher,
     ) : ViewModel() {
         private val showAll = MutableStateFlow(false)
 

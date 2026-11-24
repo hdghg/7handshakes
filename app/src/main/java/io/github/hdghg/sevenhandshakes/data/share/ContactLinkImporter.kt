@@ -4,7 +4,6 @@ import androidx.room.withTransaction
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
-import javax.inject.Inject
 
 /**
  * Saves a contact that came in a [ContactLink]. The contact must have been checked; [ContactLink.decode] does.
@@ -13,7 +12,6 @@ import javax.inject.Inject
  * name, email, favorite and ignored marks; the link only fills in a name or email that is missing.
  */
 class ContactLinkImporter
-    @Inject
     constructor(
         private val database: ReviewDatabase,
         private val contactDao: ContactDao,

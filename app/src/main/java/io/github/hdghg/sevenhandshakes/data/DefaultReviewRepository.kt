@@ -3,8 +3,6 @@ package io.github.hdghg.sevenhandshakes.data
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
-import io.github.hdghg.sevenhandshakes.di.ApplicationScope
-import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
 import io.github.hdghg.sevenhandshakes.util.Ed25519Keys
 import io.github.hdghg.sevenhandshakes.util.UuidV7
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,18 +19,14 @@ import kotlinx.coroutines.flow.onEach
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.EdgeCount
 import kotlinx.coroutines.flow.transformLatest
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Singleton
 class DefaultReviewRepository
-    @Inject
     constructor(
         private val reviewDao: ReviewDao,
         private val contactDao: ContactDao,
-        @param:DefaultDispatcher private val dispatcher: CoroutineDispatcher,
-        @param:ApplicationScope private val scope: CoroutineScope,
+        private val dispatcher: CoroutineDispatcher,
+        private val scope: CoroutineScope,
     ) : ReviewRepository {
         override fun getGratitudesStream(): Flow<List<ReviewRecord>> =
             reviewDao.observeAll().onEach { Timber.d("Loaded %d reviews from DB", it.size) }

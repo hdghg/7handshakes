@@ -14,7 +14,6 @@ import org.bouncycastle.util.encoders.Base64
 import timber.log.Timber
 import java.io.Reader
 import java.util.UUID
-import javax.inject.Inject
 
 /** What happened to the contacts of an imported file. */
 data class ContactsImportResult(
@@ -72,7 +71,6 @@ class ShareImporter internal constructor(
     private val store: ShareImportStore,
     private val isEmailAddress: (String) -> Boolean,
 ) {
-    @Inject
     constructor(store: RoomShareImportStore) : this(store, { Patterns.EMAIL_ADDRESS.matcher(it).matches() })
 
     /**

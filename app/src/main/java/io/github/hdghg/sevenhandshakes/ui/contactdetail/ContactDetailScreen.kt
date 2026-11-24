@@ -33,7 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
@@ -56,7 +56,7 @@ fun ContactDetailScreen(
     onInspectConnection: (publicKey: String) -> Unit,
     onDeleted: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ContactDetailViewModel = hiltViewModel(),
+    viewModel: ContactDetailViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState.isDeleted) {

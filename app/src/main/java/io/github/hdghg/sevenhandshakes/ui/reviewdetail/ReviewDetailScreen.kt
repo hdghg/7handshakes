@@ -32,7 +32,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.Review
@@ -56,7 +56,7 @@ fun ReviewDetailScreen(
     onBack: () -> Unit,
     openContact: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ReviewDetailViewModel = hiltViewModel(),
+    viewModel: ReviewDetailViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

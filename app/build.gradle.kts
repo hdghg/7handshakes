@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -21,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "io.github.hdghg.sevenhandshakes.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -94,9 +93,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
 
-    implementation(libs.hilt.android.core)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose.viewmodel)
 
     val composeBom = platform(libs.androidx.compose.bom)
 
@@ -130,8 +129,8 @@ dependencies {
     testImplementation(libs.google.truth)
     testImplementation(libs.androidx.compose.ui.test.junit)
 
-    testImplementation(libs.hilt.android.testing)
-    kspTest(libs.hilt.compiler)
+    testImplementation(platform(libs.koin.bom))
+    testImplementation(libs.koin.test)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.junit4)
@@ -156,6 +155,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.idling.concurrent)
 //    androidTestImplementation(project(":shared-test"))
 
-    androidTestImplementation(libs.hilt.android.testing)
-    kspAndroidTest(libs.hilt.compiler)
 }

@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.ExportTopAppBar
@@ -34,7 +34,7 @@ import io.github.hdghg.sevenhandshakes.ui.ExportTopAppBar
 fun ExportScreen(
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ExportViewModel = hiltViewModel(),
+    viewModel: ExportViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

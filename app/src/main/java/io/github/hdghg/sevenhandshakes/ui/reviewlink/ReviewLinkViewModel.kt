@@ -3,14 +3,12 @@ package io.github.hdghg.sevenhandshakes.ui.reviewlink
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.share.ReviewLink
 import io.github.hdghg.sevenhandshakes.data.share.ReviewLinkImporter
 import io.github.hdghg.sevenhandshakes.data.share.SharedReview
-import io.github.hdghg.sevenhandshakes.di.DefaultDispatcher
 import io.github.hdghg.sevenhandshakes.util.UuidV7
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 data class ReviewLinkUiState(
     /** True while the link is being read. */
@@ -36,13 +33,11 @@ data class ReviewLinkUiState(
 }
 
 /** Shows the review of a [ReviewLink] another app asked to open, and saves it when the user says so. */
-@HiltViewModel
 class ReviewLinkViewModel
-    @Inject
     constructor(
         private val importer: ReviewLinkImporter,
         private val contactRepository: ContactRepository,
-        @param:DefaultDispatcher private val dispatcher: CoroutineDispatcher,
+        private val dispatcher: CoroutineDispatcher,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         private val link: String = checkNotNull(savedStateHandle[MyAppDestinationsArgs.REVIEW_LINK_ARG])

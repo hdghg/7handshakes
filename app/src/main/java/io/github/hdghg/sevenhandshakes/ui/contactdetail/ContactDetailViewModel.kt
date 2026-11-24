@@ -3,7 +3,6 @@ package io.github.hdghg.sevenhandshakes.ui.contactdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DEFAULT_HANDSHAKE_DEPTH
@@ -29,7 +28,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class ContactDetailUiState(
     val contact: ContactRecord? = null,
@@ -50,9 +48,7 @@ data class ContactDetailUiState(
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
 class ContactDetailViewModel
-    @Inject
     constructor(
         private val contactRepository: ContactRepository,
         reviewRepository: ReviewRepository,

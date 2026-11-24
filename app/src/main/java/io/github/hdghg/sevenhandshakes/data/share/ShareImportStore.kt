@@ -6,7 +6,6 @@ import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewRecord
-import javax.inject.Inject
 
 /** The database as [ShareImporter] needs it. */
 interface ShareImportStore {
@@ -26,7 +25,6 @@ interface ShareImportStore {
 }
 
 class RoomShareImportStore
-    @Inject
     constructor(
         private val database: ReviewDatabase,
         private val contactDao: ContactDao,

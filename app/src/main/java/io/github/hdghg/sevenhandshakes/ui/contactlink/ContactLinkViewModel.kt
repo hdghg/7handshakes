@@ -3,7 +3,6 @@ package io.github.hdghg.sevenhandshakes.ui.contactlink
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.share.ContactLink
 import io.github.hdghg.sevenhandshakes.data.share.ContactLinkImporter
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 /** The contact of a link as it will be once saved. */
 data class ContactPreview(val name: String?, val email: String?, val publicKey: String)
@@ -35,9 +33,7 @@ data class ContactLinkUiState(
 }
 
 /** Shows the contact of a [ContactLink] another app asked to open, and saves it when the user says so. */
-@HiltViewModel
 class ContactLinkViewModel
-    @Inject
     constructor(
         private val importer: ContactLinkImporter,
         savedStateHandle: SavedStateHandle,

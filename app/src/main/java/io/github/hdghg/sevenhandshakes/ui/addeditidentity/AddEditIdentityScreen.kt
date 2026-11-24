@@ -25,10 +25,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.AddEditIdentityTopAppBar
@@ -41,11 +42,12 @@ fun AddEditIdentityScreen(
     onBack: () -> Unit,
     onComplete: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AddEditIdentityViewModel = hiltViewModel(),
+    viewModel: AddEditIdentityViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val resources = LocalResources.current
     val scope = rememberCoroutineScope()
     AddEditIdentityContent(
         uiState = uiState,
@@ -58,7 +60,7 @@ fun AddEditIdentityScreen(
                 context = context,
                 onSuccess = viewModel::updatePrivateKey,
                 onFail = { e ->
-                    val message = context.getString(R.string.qr_scan_failed, e.message.orEmpty())
+                    val message = resources.getString(R.string.qr_scan_failed, e.message.orEmpty())
                     scope.launch { snackbarHostState.showSnackbar(message) }
                 },
             )

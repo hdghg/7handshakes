@@ -1,44 +1,26 @@
 package io.github.hdghg.sevenhandshakes.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class IoDispatcher
+/** Names the [CoroutineDispatcher] for blocking IO. */
+val IoDispatcher: Qualifier = named("IoDispatcher")
 
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class DefaultDispatcher
+/** Names the [CoroutineDispatcher] for CPU-bound work. */
+val DefaultDispatcher: Qualifier = named("DefaultDispatcher")
 
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class ApplicationScope
+/** Names the [CoroutineScope] that lives as long as the app. */
+val ApplicationScope: Qualifier = named("ApplicationScope")
 
-@Module
-@InstallIn(SingletonComponent::class)
-object CoroutinesModule {
-
-    @Provides
-    @IoDispatcher
-    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-    @Provides
-    @DefaultDispatcher
-    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
-
-    @Provides
-    @Singleton
-    @ApplicationScope
-    fun providesCoroutineScope(
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
+val coroutinesModule = module {
+    factory<CoroutineDispatcher>(IoDispatcher) { Dispatchers.IO }
+    factory<CoroutineDispatcher>(DefaultDispatcher) { Dispatchers.Default }
+    single<CoroutineScope>(ApplicationScope) {
+        CoroutineScope(SupervisorJob() + get<CoroutineDispatcher>(DefaultDispatcher))
+    }
 }

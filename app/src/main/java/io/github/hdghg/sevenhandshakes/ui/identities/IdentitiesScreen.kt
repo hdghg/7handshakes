@@ -37,7 +37,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
@@ -54,7 +54,7 @@ fun IdentitiesScreen(
     /** Called after another identity is selected, to show the feed of the new identity. */
     openFeed: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: IdentitiesViewModel = hiltViewModel(),
+    viewModel: IdentitiesViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

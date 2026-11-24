@@ -2,7 +2,6 @@ package io.github.hdghg.sevenhandshakes.ui.identities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.selectedIdentityOf
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class IdentitiesUiState(
     val selected: IdentityWithContact? = null,
@@ -20,9 +18,7 @@ data class IdentitiesUiState(
     val isLoading: Boolean = false,
 )
 
-@HiltViewModel
 class IdentitiesViewModel
-    @Inject
     constructor(
         identityRepository: IdentityRepository,
         private val selectedIdentityRepository: SelectedIdentityRepository,

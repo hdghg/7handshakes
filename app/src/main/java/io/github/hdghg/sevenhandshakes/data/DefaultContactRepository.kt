@@ -6,12 +6,8 @@ import io.github.hdghg.sevenhandshakes.data.source.contact.ContactRecord
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class DefaultContactRepository
-    @Inject
     constructor(
         private val contactDao: ContactDao,
     ) : ContactRepository {

@@ -4,11 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.hdghg.sevenhandshakes.data.YamlFormat
 import io.github.hdghg.sevenhandshakes.data.readYamlFormat
-import io.github.hdghg.sevenhandshakes.di.IoDispatcher
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +15,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.yaml.snakeyaml.reader.UnicodeReader
 import timber.log.Timber
-import javax.inject.Inject
 
 sealed interface ImportEvent {
     /** The picked file can be imported; the screen that offers what to import should open. */
@@ -28,12 +24,10 @@ sealed interface ImportEvent {
     data object InvalidFile : ImportEvent
 }
 
-@HiltViewModel
 class ImportViewModel
-    @Inject
     constructor(
-        @param:ApplicationContext private val context: Context,
-        @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+        private val context: Context,
+        private val ioDispatcher: CoroutineDispatcher,
     ) : ViewModel() {
         private val _events = Channel<ImportEvent>(Channel.BUFFERED)
         val events: Flow<ImportEvent> = _events.receiveAsFlow()

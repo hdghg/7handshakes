@@ -3,7 +3,6 @@ package io.github.hdghg.sevenhandshakes.ui.reviewdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.Review
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 data class ReviewDetailUiState(
     /** Null while loading, and when there is no such review. */
@@ -29,9 +27,7 @@ data class ReviewDetailUiState(
     val shareLink: String? = null,
 )
 
-@HiltViewModel
 class ReviewDetailViewModel
-    @Inject
     constructor(
         reviewRepository: ReviewRepository,
         contactRepository: ContactRepository,

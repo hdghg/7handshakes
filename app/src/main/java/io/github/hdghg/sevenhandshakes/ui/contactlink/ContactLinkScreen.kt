@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.BackTopAppBar
@@ -36,7 +36,7 @@ fun ContactLinkScreen(
     onBack: () -> Unit,
     openContact: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ContactLinkViewModel = hiltViewModel(),
+    viewModel: ContactLinkViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState.savedContactId) {

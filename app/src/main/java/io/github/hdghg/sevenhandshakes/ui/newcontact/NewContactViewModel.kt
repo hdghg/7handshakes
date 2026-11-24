@@ -4,7 +4,6 @@ import android.util.Patterns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hdghg.sevenhandshakes.MyAppDestinationsArgs
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.AddContactResult
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Value of the contact id argument when a new contact is being added. */
 const val NO_CONTACT_ID = -1
@@ -45,9 +43,7 @@ data class NewContactUiState(
 /** Empty counts as valid, since the email is optional. */
 private fun isValidEmail(email: String): Boolean = email.isBlank() || Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
 
-@HiltViewModel
 class NewContactViewModel
-    @Inject
     constructor(
         private val contactRepository: ContactRepository,
         savedStateHandle: SavedStateHandle,

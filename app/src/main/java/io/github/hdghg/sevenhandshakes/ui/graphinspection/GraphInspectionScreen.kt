@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.data.HandshakePath
@@ -64,7 +64,7 @@ fun GraphInspectionScreen(
     modifier: Modifier = Modifier,
     /** When set, the top bar shows a back arrow calling it in place of the drawer button. */
     onBack: (() -> Unit)? = null,
-    viewModel: GraphInspectionViewModel = hiltViewModel(),
+    viewModel: GraphInspectionViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     GraphInspectionContent(

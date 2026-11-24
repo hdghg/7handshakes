@@ -1,90 +1,65 @@
 package io.github.hdghg.sevenhandshakes.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
-import dagger.Binds
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import io.github.hdghg.sevenhandshakes.data.ContactRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultContactRepository
+import io.github.hdghg.sevenhandshakes.data.DefaultHandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultReviewRepository
-import io.github.hdghg.sevenhandshakes.data.DefaultHandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.DefaultSelectedIdentityRepository
 import io.github.hdghg.sevenhandshakes.data.HandshakeDepthRepository
 import io.github.hdghg.sevenhandshakes.data.IdentityRepository
 import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.SelectedIdentityRepository
-import io.github.hdghg.sevenhandshakes.data.source.contact.ContactDao
-import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDao
+import io.github.hdghg.sevenhandshakes.data.share.ContactLinkImporter
+import io.github.hdghg.sevenhandshakes.data.share.ReviewLinkImporter
+import io.github.hdghg.sevenhandshakes.data.share.RoomShareImportStore
+import io.github.hdghg.sevenhandshakes.data.share.ShareImporter
 import io.github.hdghg.sevenhandshakes.data.source.gratitude.ReviewDatabase
-import io.github.hdghg.sevenhandshakes.data.source.identity.IdentityDao
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-    @Singleton
-    @Binds
-    abstract fun bindGratitudeRepository(repository: DefaultReviewRepository): ReviewRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindContactRepository(repository: DefaultContactRepository): ContactRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindIdentityRepository(repository: DefaultIdentityRepository): IdentityRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindSelectedIdentityRepository(repository: DefaultSelectedIdentityRepository): SelectedIdentityRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindHandshakeDepthRepository(repository: DefaultHandshakeDepthRepository): HandshakeDepthRepository
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DataStoreModule {
-    // Only one DataStore instance may exist per file, hence the singleton.
-    @Singleton
-    @Provides
-    fun providePreferencesDataStore(
-        @ApplicationContext context: Context,
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create {
-        context.applicationContext.preferencesDataStoreFile("settings")
+val repositoryModule = module {
+    singleOf(::DefaultContactRepository) { bind<ContactRepository>() }
+    singleOf(::DefaultIdentityRepository) { bind<IdentityRepository>() }
+    singleOf(::DefaultSelectedIdentityRepository) { bind<SelectedIdentityRepository>() }
+    singleOf(::DefaultHandshakeDepthRepository) { bind<HandshakeDepthRepository>() }
+    single<ReviewRepository> {
+        DefaultReviewRepository(
+            reviewDao = get(),
+            contactDao = get(),
+            dispatcher = get(DefaultDispatcher),
+            scope = get(ApplicationScope),
+        )
     }
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-    @Singleton
-    @Provides
-    fun provideDataBase(
-        @ApplicationContext context: Context,
-    ): ReviewDatabase = Room
-        .databaseBuilder(
-            context.applicationContext,
-            ReviewDatabase::class.java,
-            "Gratitudes.db",
-        ).build()
+val shareModule = module {
+    factoryOf(::ContactLinkImporter)
+    factoryOf(::ReviewLinkImporter)
+    factoryOf(::RoomShareImportStore)
+    factory { ShareImporter(get<RoomShareImportStore>()) }
+}
 
-    @Provides
-    fun provideGratitudesDao(database: ReviewDatabase): ReviewDao = database.reviewDao()
+val dataStoreModule = module {
+    // Only one DataStore instance may exist per file, hence the singleton.
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.create { androidContext().preferencesDataStoreFile("settings") }
+    }
+}
 
-    @Provides
-    fun provideContactDao(database: ReviewDatabase): ContactDao = database.contactDao()
-
-    @Provides
-    fun provideIdentityDao(database: ReviewDatabase): IdentityDao = database.identityDao()
+val databaseModule = module {
+    single<ReviewDatabase> {
+        Room.databaseBuilder(androidContext(), ReviewDatabase::class.java, "Gratitudes.db").build()
+    }
+    factory { get<ReviewDatabase>().reviewDao() }
+    factory { get<ReviewDatabase>().contactDao() }
+    factory { get<ReviewDatabase>().identityDao() }
 }
