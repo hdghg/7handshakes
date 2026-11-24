@@ -52,6 +52,9 @@
     <string name="review_open_contact">Открыть контакт</string>
     <string name="review_text">Текст</string>
     <string name="review_share">Поделиться отзывом</string>
+    <string name="menu_delete_review">Удалить отзыв</string>
+    <string name="delete_review_title">Удалить отзыв?</string>
+    <string name="delete_review_message">Отзыв будет удалён с этого устройства. Это действие нельзя отменить.</string>
     <string name="review_share_qr">Поделиться QR-кодом</string>
     <string name="share_as_link">Поделиться ссылкой</string>
     <string name="copy_as_rich_text">Скопировать как форматированный текст</string>

@@ -35,4 +35,7 @@ interface ReviewRepository {
         authorPrivateKey: String,
         contactId: Int,
     )
+
+    /** Deletes the review with this id; does nothing when there is none. */
+    suspend fun deleteReview(id: Int)
 }

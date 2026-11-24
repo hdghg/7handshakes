@@ -52,6 +52,9 @@
     <string name="review_open_contact">Open contact</string>
     <string name="review_text">Text</string>
     <string name="review_share">Share review</string>
+    <string name="menu_delete_review">Delete review</string>
+    <string name="delete_review_title">Delete review?</string>
+    <string name="delete_review_message">The review will be deleted from this device. This cannot be undone.</string>
     <string name="review_share_qr">Share as QR code</string>
     <string name="share_as_link">Share as link</string>
     <string name="copy_as_rich_text">Copy as rich text</string>

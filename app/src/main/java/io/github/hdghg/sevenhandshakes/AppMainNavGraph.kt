@@ -82,6 +82,7 @@ fun AppMainNavGraph(
                 ReviewDetailScreen(
                     onBack = { navController.popBackStack() },
                     openContact = { contactId -> navActions.navigateToContactDetail(contactId) },
+                    onDeleted = { navController.popBackStack() },
                 )
             }
             composable(

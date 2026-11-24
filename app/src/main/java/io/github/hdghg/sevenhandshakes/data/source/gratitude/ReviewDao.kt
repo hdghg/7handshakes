@@ -36,4 +36,7 @@ interface ReviewDao {
     /** Returns the new row id, or -1 if the author already has a review with this uuid. Nothing is saved then. */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIfAbsent(record: ReviewRecord): Long
+
+    @Query("DELETE FROM review WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

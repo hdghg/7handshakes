@@ -108,7 +108,7 @@ fun ContactDetailTopAppBar(
 }
 
 @Composable
-fun ReviewDetailTopAppBar(onBack: () -> Unit, share: ShareActions? = null) {
+fun ReviewDetailTopAppBar(onBack: () -> Unit, share: ShareActions? = null, onDelete: (() -> Unit)? = null) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.review_details)) },
         navigationIcon = {
@@ -119,6 +119,11 @@ fun ReviewDetailTopAppBar(onBack: () -> Unit, share: ShareActions? = null) {
         actions = {
             // Absent when the review cannot be shared.
             if (share != null) ShareMenuButton(stringResource(id = R.string.review_share), share)
+            if (onDelete != null) {
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_review))
+                }
+            }
         },
         modifier = Modifier.fillMaxWidth(),
     )

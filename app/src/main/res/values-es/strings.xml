@@ -52,6 +52,9 @@
     <string name="review_open_contact">Abrir contacto</string>
     <string name="review_text">Texto</string>
     <string name="review_share">Compartir reseña</string>
+    <string name="menu_delete_review">Eliminar reseña</string>
+    <string name="delete_review_title">¿Eliminar reseña?</string>
+    <string name="delete_review_message">La reseña se eliminará de este dispositivo. Esta acción no se puede deshacer.</string>
     <string name="review_share_qr">Compartir como código QR</string>
     <string name="share_as_link">Compartir como enlace</string>
     <string name="copy_as_rich_text">Copiar como texto enriquecido</string>

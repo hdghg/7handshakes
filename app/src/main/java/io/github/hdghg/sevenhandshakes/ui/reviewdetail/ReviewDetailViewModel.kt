@@ -10,10 +10,12 @@ import io.github.hdghg.sevenhandshakes.data.ReviewRepository
 import io.github.hdghg.sevenhandshakes.data.share.ReviewLink
 import io.github.hdghg.sevenhandshakes.data.share.SharedReview
 import io.github.hdghg.sevenhandshakes.util.UuidV7
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 data class ReviewDetailUiState(
     /** Null while loading, and when there is no such review. */
@@ -25,25 +27,31 @@ data class ReviewDetailUiState(
     val receiverContactId: Int? = null,
     /** A [ReviewLink] to the review, or null when it has none; see [ReviewLink.encode]. */
     val shareLink: String? = null,
+    /** True once the review was deleted; the screen should close. */
+    val isDeleted: Boolean = false,
 )
 
 class ReviewDetailViewModel
     constructor(
-        reviewRepository: ReviewRepository,
+        private val reviewRepository: ReviewRepository,
         contactRepository: ContactRepository,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         private val reviewId: Int = checkNotNull(savedStateHandle[MyAppDestinationsArgs.REVIEW_ID_ARG])
 
+        private val isDeleted = MutableStateFlow(false)
+
         val uiState: StateFlow<ReviewDetailUiState> =
             combine(
                 reviewRepository.getReviewStream(reviewId),
                 contactRepository.getContactsStream(),
-            ) { record, contacts ->
+                isDeleted,
+            ) { record, contacts, deleted ->
                 val namesById = contacts.associate { it.id to it.displayName }
                 val author = contacts.firstOrNull { it.id == record?.sourceContactId }
                 val receiver = contacts.firstOrNull { it.id == record?.targetContactId }
                 ReviewDetailUiState(
+                    isDeleted = deleted,
                     giverContactId = author?.id,
                     receiverContactId = receiver?.id,
                     shareLink = if (record != null && author != null && receiver != null) {
@@ -77,4 +85,11 @@ class ReviewDetailViewModel
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ReviewDetailUiState(isLoading = true),
             )
+
+        fun deleteReview() {
+            viewModelScope.launch {
+                reviewRepository.deleteReview(reviewId)
+                isDeleted.value = true
+            }
+        }
     }

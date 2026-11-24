@@ -52,6 +52,9 @@
     <string name="review_open_contact">فتح جهة الاتصال</string>
     <string name="review_text">النص</string>
     <string name="review_share">مشاركة التقييم</string>
+    <string name="menu_delete_review">حذف التقييم</string>
+    <string name="delete_review_title">حذف التقييم؟</string>
+    <string name="delete_review_message">سيتم حذف التقييم من هذا الجهاز. لا يمكن التراجع عن ذلك.</string>
     <string name="review_share_qr">مشاركة كرمز QR</string>
     <string name="share_as_link">مشاركة كرابط</string>
     <string name="copy_as_rich_text">نسخ كنص منسّق</string>

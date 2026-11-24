@@ -52,6 +52,9 @@
     <string name="review_open_contact">連絡先を開く</string>
     <string name="review_text">本文</string>
     <string name="review_share">レビューを共有</string>
+    <string name="menu_delete_review">レビューを削除</string>
+    <string name="delete_review_title">レビューを削除しますか？</string>
+    <string name="delete_review_message">このレビューはこの端末から削除されます。元に戻すことはできません。</string>
     <string name="review_share_qr">QRコードで共有</string>
     <string name="share_as_link">リンクで共有</string>
     <string name="copy_as_rich_text">リッチテキストとしてコピー</string>

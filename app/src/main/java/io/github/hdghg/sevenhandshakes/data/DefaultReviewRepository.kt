@@ -109,6 +109,11 @@ class DefaultReviewRepository
             reviewDao.insert(r)
             Timber.d("Review %s saved, signature %d bytes", r.uuid, signature.size)
         }
+
+        override suspend fun deleteReview(id: Int) {
+            reviewDao.deleteById(id)
+            Timber.d("Review %d deleted", id)
+        }
     }
 
 /** Everything a handshake search depends on besides its two contacts and depth. */

@@ -30,8 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,6 +44,7 @@ import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.ReviewDirection
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
 import io.github.hdghg.sevenhandshakes.ui.RateStars
+import io.github.hdghg.sevenhandshakes.ui.reviewDirectionColor
 import io.github.hdghg.sevenhandshakes.util.UuidV7
 import java.util.Calendar
 import java.util.Date
@@ -175,7 +174,7 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .background(directionColor(review.direction))
+            .background(reviewDirectionColor(review.direction))
             .clickable(onClick = onClick)
             .padding(horizontal = margin, vertical = margin / 2),
     ) {
@@ -219,25 +218,6 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
         }
     }
 }
-
-/**
- * Background of a feed item: orange for a review the selected identity wrote,
- * green for one it received, none for the others. Soft enough for the stars and text to stay readable.
- */
-@Composable
-private fun directionColor(direction: ReviewDirection?): Color {
-    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    return when (direction) {
-        ReviewDirection.Outgoing -> if (dark) OutgoingOnDark else OutgoingOnLight
-        ReviewDirection.Incoming -> if (dark) IncomingOnDark else IncomingOnLight
-        null -> Color.Transparent
-    }
-}
-
-private val OutgoingOnLight = Color(0xFFFFE8CC)
-private val OutgoingOnDark = Color(0xFF4A3216)
-private val IncomingOnLight = Color(0xFFDCEFDC)
-private val IncomingOnDark = Color(0xFF1F3B22)
 
 @Preview
 @Composable

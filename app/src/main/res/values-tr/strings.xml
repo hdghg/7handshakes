@@ -52,6 +52,9 @@
     <string name="review_open_contact">Kişiyi aç</string>
     <string name="review_text">Metin</string>
     <string name="review_share">Değerlendirmeyi paylaş</string>
+    <string name="menu_delete_review">Değerlendirmeyi sil</string>
+    <string name="delete_review_title">Değerlendirme silinsin mi?</string>
+    <string name="delete_review_message">Değerlendirme bu cihazdan silinecek. Bu işlem geri alınamaz.</string>
     <string name="review_share_qr">QR kodu olarak paylaş</string>
     <string name="share_as_link">Bağlantı olarak paylaş</string>
     <string name="copy_as_rich_text">Zengin metin olarak kopyala</string>

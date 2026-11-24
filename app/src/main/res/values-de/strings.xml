@@ -52,6 +52,9 @@
     <string name="review_open_contact">Kontakt öffnen</string>
     <string name="review_text">Text</string>
     <string name="review_share">Bewertung teilen</string>
+    <string name="menu_delete_review">Bewertung löschen</string>
+    <string name="delete_review_title">Bewertung löschen?</string>
+    <string name="delete_review_message">Die Bewertung wird von diesem Gerät gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
     <string name="review_share_qr">Als QR-Code teilen</string>
     <string name="share_as_link">Als Link teilen</string>
     <string name="copy_as_rich_text">Als formatierten Text kopieren</string>
