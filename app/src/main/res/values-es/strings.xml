@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">Valoración a %1$d apretones de manos</string>
     <string name="handshake_rating_calculating">Calculando…</string>
     <string name="handshake_rating_waiting">Esperando la valoración anterior</string>
-    <string name="contact_reviews_received_count">Recibidas: %1$d</string>
-    <string name="contact_reviews_given_count">Dadas: %1$d</string>
     <string name="handshake_depth_title">Profundidad de apretones de manos</string>
     <string name="handshake_depth_off">Valoraciones desactivadas</string>
     <plurals name="handshake_depth_value">
@@ -102,6 +100,12 @@
     <string name="summary_rating_gives_more">El contacto del medio da más estrellas de las que recibe</string>
     <string name="summary_rating_receives_more">El contacto del medio recibe más estrellas de las que da</string>
     <string name="summary_rating_balanced">Da y recibe por igual</string>
+    <string name="me">Yo</string>
+    <string name="me_with_name">Yo (%1$s)</string>
+    <string name="summary_rating_received">Recibidas</string>
+    <string name="summary_rating_given">Dadas</string>
+    <string name="summary_rating_me_gives_more">Das más estrellas de las que recibes</string>
+    <string name="summary_rating_me_receives_more">Recibes más estrellas de las que das</string>
     <string name="summary_rating_details">Ver detalles</string>
     <string name="import_action">Importar</string>
     <string name="import_invalid_file">Este archivo no se puede importar.</string>

@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">握手%1$d回の評価</string>
     <string name="handshake_rating_calculating">計算中…</string>
     <string name="handshake_rating_waiting">前の評価を待っています</string>
-    <string name="contact_reviews_received_count">受け取った数：%1$d</string>
-    <string name="contact_reviews_given_count">贈った数：%1$d</string>
     <string name="handshake_depth_title">握手の深さ</string>
     <string name="handshake_depth_off">握手の評価はオフ</string>
     <plurals name="handshake_depth_value">
@@ -100,6 +98,12 @@
     <string name="summary_rating_gives_more">中央の連絡先は受け取るより多くの星を贈っています</string>
     <string name="summary_rating_receives_more">中央の連絡先は贈るより多くの星を受け取っています</string>
     <string name="summary_rating_balanced">贈った数と受け取った数は同じです</string>
+    <string name="me">自分</string>
+    <string name="me_with_name">自分（%1$s）</string>
+    <string name="summary_rating_received">受け取った</string>
+    <string name="summary_rating_given">贈った</string>
+    <string name="summary_rating_me_gives_more">受け取るより多くの星を贈っています</string>
+    <string name="summary_rating_me_receives_more">贈るより多くの星を受け取っています</string>
     <string name="summary_rating_details">詳細を表示</string>
     <string name="import_action">インポート</string>
     <string name="import_invalid_file">このファイルはインポートできません。</string>

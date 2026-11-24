@@ -47,7 +47,12 @@ data class GraphInspectionUiState(
     val handshakeRatings: List<ReviewExchange>? = null,
     /** How many handshake levels are calculated, shared by the whole app. */
     val handshakeDepth: Int = DEFAULT_HANDSHAKE_DEPTH,
+    /** Contact id of the selected identity, shown as "Me"; null when no identity is selected. */
+    val myContactId: Int? = null,
 ) {
+    /** Whether the middle contact is the selected identity. */
+    val middleIsMe: Boolean get() = middleContact != null && middleContact.id == myContactId
+
     /** Display names of all contacts by id, for labelling handshake paths. Null for unknown contacts. */
     val contactNames: Map<Int, String?> get() = contacts.associate { it.id to it.displayName }
 }
@@ -78,6 +83,13 @@ class GraphInspectionViewModel
 
         private val handshakeDepth: Flow<Int> = handshakeDepthRepository.getHandshakeDepthStream()
 
+        private val myContactId: Flow<Int?> =
+            combine(
+                identityRepository.getIdentitiesStream(),
+                selectedIdentityRepository.getSelectedIdentityIdStream(),
+            ) { identities, selectedId -> selectedIdentityOf(identities, selectedId)?.identity?.contactId }
+                .distinctUntilChanged()
+
         private val middleContact: Flow<ContactRecord?> =
             combine(contacts, middleKey) { list, key -> list.byKey(key) }.distinctUntilChanged()
         private val endContact: Flow<ContactRecord?> =
@@ -102,8 +114,8 @@ class GraphInspectionViewModel
                 combine(middleContact, endContact, ::Pair),
                 contacts,
                 handshakeRatings,
-                handshakeDepth,
-            ) { (middle, end), (middleRecord, endRecord), list, ratings, depth ->
+                combine(handshakeDepth, myContactId, ::Pair),
+            ) { (middle, end), (middleRecord, endRecord), list, ratings, (depth, me) ->
                 GraphInspectionUiState(
                     middleKey = middle,
                     endKey = end,
@@ -112,6 +124,7 @@ class GraphInspectionViewModel
                     contacts = list,
                     handshakeRatings = ratings,
                     handshakeDepth = depth,
+                    myContactId = me,
                 )
             }.stateIn(
                 scope = viewModelScope,

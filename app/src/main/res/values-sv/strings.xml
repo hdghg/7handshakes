@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">Betyg via %1$d handslag</string>
     <string name="handshake_rating_calculating">Beräknar…</string>
     <string name="handshake_rating_waiting">Väntar på föregående betyg</string>
-    <string name="contact_reviews_received_count">Mottagna: %1$d</string>
-    <string name="contact_reviews_given_count">Givna: %1$d</string>
     <string name="handshake_depth_title">Handslagsdjup</string>
     <string name="handshake_depth_off">Handslagsbetyg av</string>
     <plurals name="handshake_depth_value">
@@ -101,6 +99,12 @@
     <string name="summary_rating_gives_more">Kontakten i mitten ger fler stjärnor än den får</string>
     <string name="summary_rating_receives_more">Kontakten i mitten får fler stjärnor än den ger</string>
     <string name="summary_rating_balanced">Ger och får lika mycket</string>
+    <string name="me">Jag</string>
+    <string name="me_with_name">Jag (%1$s)</string>
+    <string name="summary_rating_received">Fått</string>
+    <string name="summary_rating_given">Gett</string>
+    <string name="summary_rating_me_gives_more">Du ger fler stjärnor än du får</string>
+    <string name="summary_rating_me_receives_more">Du får fler stjärnor än du ger</string>
     <string name="summary_rating_details">Visa detaljer</string>
     <string name="import_action">Importera</string>
     <string name="import_invalid_file">Den här filen kan inte importeras.</string>

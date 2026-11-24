@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">%1$d 次握手评分</string>
     <string name="handshake_rating_calculating">正在计算…</string>
     <string name="handshake_rating_waiting">正在等待上一个评分</string>
-    <string name="contact_reviews_received_count">收到：%1$d</string>
-    <string name="contact_reviews_given_count">给出：%1$d</string>
     <string name="handshake_depth_title">握手深度</string>
     <string name="handshake_depth_off">握手评分已关闭</string>
     <plurals name="handshake_depth_value">
@@ -100,6 +98,12 @@
     <string name="summary_rating_gives_more">中间的联系人给出的星星多于收到的</string>
     <string name="summary_rating_receives_more">中间的联系人收到的星星多于给出的</string>
     <string name="summary_rating_balanced">给出与收到的一样多</string>
+    <string name="me">我</string>
+    <string name="me_with_name">我（%1$s）</string>
+    <string name="summary_rating_received">收到</string>
+    <string name="summary_rating_given">给出</string>
+    <string name="summary_rating_me_gives_more">你给出的星星比收到的多</string>
+    <string name="summary_rating_me_receives_more">你收到的星星比给出的多</string>
     <string name="summary_rating_details">查看详情</string>
     <string name="import_action">导入</string>
     <string name="import_invalid_file">无法导入此文件。</string>

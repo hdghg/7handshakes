@@ -2,19 +2,17 @@ package io.github.hdghg.sevenhandshakes.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DrawerState
@@ -32,9 +30,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.hdghg.sevenhandshakes.MyAppDestinations
@@ -153,28 +152,21 @@ private fun AppDrawer(
     }
 }
 
+/**
+ * The app's picture, as on its store page: the ring of seven handshakes in a wider network.
+ * Fills the drawer's width and keeps its proportions; the top lies under the status bar.
+ */
 @Composable
 private fun DrawerHeader(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    val header = painterResource(id = R.drawable.drawer_header)
+    Image(
+        painter = header,
+        contentDescription = stringResource(id = R.string.app_name),
+        contentScale = ContentScale.Crop,
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .height(dimensionResource(id = R.dimen.header_height))
-            .padding(dimensionResource(id = R.dimen.header_padding)),
-    ) {
-        Image(
-            imageVector = Icons.Filled.Edit,
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
-            modifier = Modifier.width(dimensionResource(id = R.dimen.header_image_width)),
-        )
-        Text(
-            text = stringResource(id = R.string.app_name),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
+            .aspectRatio(header.intrinsicSize.width / header.intrinsicSize.height),
+    )
 }
 
 @Composable

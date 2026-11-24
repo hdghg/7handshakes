@@ -77,9 +77,7 @@ object DatabaseModule {
             context.applicationContext,
             ReviewDatabase::class.java,
             "Gratitudes.db",
-        ).addMigrations(ReviewDatabase.MIGRATION_4_5, ReviewDatabase.MIGRATION_5_6)
-        .fallbackToDestructiveMigration()
-        .build()
+        ).build()
 
     @Provides
     fun provideGratitudesDao(database: ReviewDatabase): ReviewDao = database.reviewDao()

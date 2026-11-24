@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">%1$d tokalaşma puanı</string>
     <string name="handshake_rating_calculating">Hesaplanıyor…</string>
     <string name="handshake_rating_waiting">Önceki puan bekleniyor</string>
-    <string name="contact_reviews_received_count">Alınan: %1$d</string>
-    <string name="contact_reviews_given_count">Verilen: %1$d</string>
     <string name="handshake_depth_title">Tokalaşma derinliği</string>
     <string name="handshake_depth_off">Tokalaşma puanları kapalı</string>
     <plurals name="handshake_depth_value">
@@ -101,6 +99,12 @@
     <string name="summary_rating_gives_more">Ortadaki kişi aldığından fazla yıldız veriyor</string>
     <string name="summary_rating_receives_more">Ortadaki kişi verdiğinden fazla yıldız alıyor</string>
     <string name="summary_rating_balanced">Eşit veriyor ve alıyor</string>
+    <string name="me">Ben</string>
+    <string name="me_with_name">Ben (%1$s)</string>
+    <string name="summary_rating_received">Alınan</string>
+    <string name="summary_rating_given">Verilen</string>
+    <string name="summary_rating_me_gives_more">Aldığından daha fazla yıldız veriyorsun</string>
+    <string name="summary_rating_me_receives_more">Verdiğinden daha fazla yıldız alıyorsun</string>
     <string name="summary_rating_details">Ayrıntıları göster</string>
     <string name="import_action">İçe aktar</string>
     <string name="import_invalid_file">Bu dosya içe aktarılamıyor.</string>

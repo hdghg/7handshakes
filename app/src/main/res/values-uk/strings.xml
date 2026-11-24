@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">Рейтинг через %1$d рукостискань</string>
     <string name="handshake_rating_calculating">Обчислення…</string>
     <string name="handshake_rating_waiting">Очікування попереднього рейтингу</string>
-    <string name="contact_reviews_received_count">Отримано: %1$d</string>
-    <string name="contact_reviews_given_count">Надано: %1$d</string>
     <string name="handshake_depth_title">Глибина рукостискань</string>
     <string name="handshake_depth_off">Рейтинги рукостискань вимкнено</string>
     <plurals name="handshake_depth_value">
@@ -103,6 +101,12 @@
     <string name="summary_rating_gives_more">Контакт посередині дарує більше зірок, ніж отримує</string>
     <string name="summary_rating_receives_more">Контакт посередині отримує більше зірок, ніж дарує</string>
     <string name="summary_rating_balanced">Дарує й отримує порівну</string>
+    <string name="me">Я</string>
+    <string name="me_with_name">Я (%1$s)</string>
+    <string name="summary_rating_received">Отримано</string>
+    <string name="summary_rating_given">Подаровано</string>
+    <string name="summary_rating_me_gives_more">Ви даруєте більше зірок, ніж отримуєте</string>
+    <string name="summary_rating_me_receives_more">Ви отримуєте більше зірок, ніж даруєте</string>
     <string name="summary_rating_details">Докладніше</string>
     <string name="import_action">Імпортувати</string>
     <string name="import_invalid_file">Цей файл не можна імпортувати.</string>

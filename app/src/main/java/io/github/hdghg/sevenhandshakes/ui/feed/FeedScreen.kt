@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hdghg.sevenhandshakes.R
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
+import io.github.hdghg.sevenhandshakes.ui.meLabel
 import io.github.hdghg.sevenhandshakes.data.Review
 import io.github.hdghg.sevenhandshakes.data.ReviewDirection
 import io.github.hdghg.sevenhandshakes.ui.FeedTopAppBar
@@ -184,12 +185,23 @@ private fun FeedItem(review: Review, onClick: () -> Unit) {
                 text = review.text,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
+                // The full text is on the review's own screen.
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = stringResource(
                     id = R.string.feed_from_to,
-                    displayNameOrUnknown(review.sourceName),
-                    displayNameOrUnknown(review.targetName),
+                    if (review.direction == ReviewDirection.Outgoing) {
+                        meLabel(review.sourceName)
+                    } else {
+                        displayNameOrUnknown(review.sourceName)
+                    },
+                    if (review.direction == ReviewDirection.Incoming) {
+                        meLabel(review.targetName)
+                    } else {
+                        displayNameOrUnknown(review.targetName)
+                    },
                 ),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -234,8 +246,8 @@ fun FeedScreenPreview() {
         FeedContent(
             reviews =
                 listOf(
-                    previewReview(1, "Bra jobbat", 3, "Me", "Alice", ReviewDirection.Outgoing, hoursAgo = 1),
-                    previewReview(2, "Other text", 2, "Bob", "Me", ReviewDirection.Incoming, hoursAgo = 26),
+                    previewReview(1, "Bra jobbat", 3, "Carol", "Alice", ReviewDirection.Outgoing, hoursAgo = 1),
+                    previewReview(2, "Other text", 2, "Bob", "Carol", ReviewDirection.Incoming, hoursAgo = 26),
                     previewReview(3, "kul", 1, "Bob", null, direction = null, hoursAgo = 80),
                 ),
             showAll = false,

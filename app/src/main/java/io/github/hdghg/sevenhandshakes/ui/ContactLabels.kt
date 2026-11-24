@@ -12,3 +12,8 @@ fun contactLabel(contact: ContactRecord): String = displayNameOrUnknown(contact.
 /** [displayName] (see [ContactRecord.displayName]), or "Unknown contact" when it is null. */
 @Composable
 fun displayNameOrUnknown(displayName: String?): String = displayName ?: stringResource(id = R.string.contact_unknown)
+
+/** How the selected identity's own contact is shown: "Me (name)", or just "Me" when it has no name. */
+@Composable
+fun meLabel(displayName: String?): String =
+    displayName?.let { stringResource(id = R.string.me_with_name, it) } ?: stringResource(id = R.string.me)

@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">التقييم بعمق %1$d</string>
     <string name="handshake_rating_calculating">جارٍ الحساب…</string>
     <string name="handshake_rating_waiting">في انتظار التقييم السابق</string>
-    <string name="contact_reviews_received_count">المستلمة: %1$d</string>
-    <string name="contact_reviews_given_count">المقدَّمة: %1$d</string>
     <string name="handshake_depth_title">عمق المصافحة</string>
     <string name="handshake_depth_off">تقييمات المصافحة متوقفة</string>
     <plurals name="handshake_depth_value">
@@ -105,6 +103,12 @@
     <string name="summary_rating_gives_more">جهة الاتصال في المنتصف تمنح نجومًا أكثر مما تتلقى</string>
     <string name="summary_rating_receives_more">جهة الاتصال في المنتصف تتلقى نجومًا أكثر مما تمنح</string>
     <string name="summary_rating_balanced">تمنح وتتلقى بالتساوي</string>
+    <string name="me">أنا</string>
+    <string name="me_with_name">أنا (%1$s)</string>
+    <string name="summary_rating_received">المستلمة</string>
+    <string name="summary_rating_given">الممنوحة</string>
+    <string name="summary_rating_me_gives_more">تمنح نجومًا أكثر مما تتلقى</string>
+    <string name="summary_rating_me_receives_more">تتلقى نجومًا أكثر مما تمنح</string>
     <string name="summary_rating_details">عرض التفاصيل</string>
     <string name="import_action">استيراد</string>
     <string name="import_invalid_file">لا يمكن استيراد هذا الملف.</string>

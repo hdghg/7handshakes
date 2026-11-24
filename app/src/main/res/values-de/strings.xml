@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">Bewertung über %1$d Händedrücke</string>
     <string name="handshake_rating_calculating">Wird berechnet …</string>
     <string name="handshake_rating_waiting">Wartet auf die vorherige Bewertung</string>
-    <string name="contact_reviews_received_count">Erhalten: %1$d</string>
-    <string name="contact_reviews_given_count">Gegeben: %1$d</string>
     <string name="handshake_depth_title">Händedruck-Tiefe</string>
     <string name="handshake_depth_off">Händedruck-Bewertungen aus</string>
     <plurals name="handshake_depth_value">
@@ -101,6 +99,12 @@
     <string name="summary_rating_gives_more">Der Kontakt in der Mitte gibt mehr Sterne, als er erhält</string>
     <string name="summary_rating_receives_more">Der Kontakt in der Mitte erhält mehr Sterne, als er gibt</string>
     <string name="summary_rating_balanced">Gleich viel gegeben und erhalten</string>
+    <string name="me">Ich</string>
+    <string name="me_with_name">Ich (%1$s)</string>
+    <string name="summary_rating_received">Erhalten</string>
+    <string name="summary_rating_given">Gegeben</string>
+    <string name="summary_rating_me_gives_more">Du gibst mehr Sterne, als du erhältst</string>
+    <string name="summary_rating_me_receives_more">Du erhältst mehr Sterne, als du gibst</string>
     <string name="summary_rating_details">Details anzeigen</string>
     <string name="import_action">Importieren</string>
     <string name="import_invalid_file">Diese Datei kann nicht importiert werden.</string>

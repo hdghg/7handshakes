@@ -77,8 +77,6 @@
     <string name="handshake_rating_title_n">%1$d handshakes rating</string>
     <string name="handshake_rating_calculating">Calculating…</string>
     <string name="handshake_rating_waiting">Waiting for the previous rating</string>
-    <string name="contact_reviews_received_count">Received: %1$d</string>
-    <string name="contact_reviews_given_count">Given: %1$d</string>
     <string name="handshake_depth_title">Handshake depth</string>
     <string name="handshake_depth_off">Handshake ratings off</string>
     <plurals name="handshake_depth_value">
@@ -101,6 +99,12 @@
     <string name="summary_rating_gives_more">The contact in the middle gives more stars than receives</string>
     <string name="summary_rating_receives_more">The contact in the middle receives more stars than gives</string>
     <string name="summary_rating_balanced">Given and received equally</string>
+    <string name="me">Me</string>
+    <string name="me_with_name">Me (%1$s)</string>
+    <string name="summary_rating_received">Received</string>
+    <string name="summary_rating_given">Given</string>
+    <string name="summary_rating_me_gives_more">You give more stars than you receive</string>
+    <string name="summary_rating_me_receives_more">You receive more stars than you give</string>
     <string name="summary_rating_details">Show details</string>
     <string name="import_action">Import</string>
     <string name="import_invalid_file">This file cannot be imported.</string>

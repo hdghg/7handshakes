@@ -1,9 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+}
+
+ksp {
+    // Room writes each schema version here as JSON; commit these files to write and test migrations.
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 android {
@@ -57,21 +61,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     packaging {
         excludes += "META-INF/AL2.0"
         excludes += "META-INF/LGPL2.1"
         excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
     }
+}
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-            freeCompilerArgs += "-opt-in=kotlin.Experimental"
-        }
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        optIn.add("kotlin.RequiresOptIn")
     }
 }
 

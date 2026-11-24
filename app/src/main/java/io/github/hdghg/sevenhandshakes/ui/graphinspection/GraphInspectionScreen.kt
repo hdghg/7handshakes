@@ -15,7 +15,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -47,11 +46,12 @@ import io.github.hdghg.sevenhandshakes.ui.ContactPickerDialog
 import io.github.hdghg.sevenhandshakes.ui.Field
 import io.github.hdghg.sevenhandshakes.ui.FieldSourceButton
 import io.github.hdghg.sevenhandshakes.ui.GraphInspectionTopAppBar
-import io.github.hdghg.sevenhandshakes.ui.GoldStar
 import io.github.hdghg.sevenhandshakes.ui.GoldStarColor
+import io.github.hdghg.sevenhandshakes.ui.ReceivedGivenStars
 import io.github.hdghg.sevenhandshakes.ui.SummaryRating
 import io.github.hdghg.sevenhandshakes.ui.contactLabel
 import io.github.hdghg.sevenhandshakes.ui.displayNameOrUnknown
+import io.github.hdghg.sevenhandshakes.ui.meLabel
 import kotlin.math.roundToInt
 
 /**
@@ -100,11 +100,12 @@ private fun GraphInspectionContent(
                 .padding(all = margin),
         ) {
             ContactKeyField(
-                label = stringResource(id = R.string.graph_inspection_middle),
+                label = stringResource(id = if (uiState.middleIsMe) R.string.me else R.string.graph_inspection_middle),
                 value = uiState.middleKey,
                 contact = uiState.middleContact,
                 contacts = uiState.contacts,
                 onValueChange = onMiddleKeyChange,
+                isMe = uiState.middleIsMe,
             )
             ContactKeyField(
                 label = stringResource(id = R.string.graph_inspection_ends),
@@ -123,13 +124,14 @@ private fun GraphInspectionContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
-                val middleLabel = contactLabel(middle)
+                val middleLabel = if (uiState.middleIsMe) meLabel(middle.displayName) else contactLabel(middle)
                 if (uiState.handshakeDepth > 0) {
                     Field(label = stringResource(id = R.string.summary_rating_title)) {
                         SummaryRating(
                             ratings = ratings,
                             showCaptions = true,
                             isCalculating = ratings.size < uiState.handshakeDepth,
+                            middleIsMe = uiState.middleIsMe,
                         )
                     }
                     HorizontalDivider(modifier = Modifier.padding(bottom = margin))
@@ -157,8 +159,10 @@ private fun GraphInspectionContent(
 }
 
 /**
- * A public key field with a button under it that fills it from the contact list.
- * Below the field it names the contact with that key, or says there is none.
+ * The name of the contact chosen for [label], with a button under it that picks one from the contact list.
+ * [value] is the chosen contact's public key; when no contact has it, says so.
+ *
+ * @param isMe the contact is the selected identity, shown as "Me (name)".
  */
 @Composable
 private fun ContactKeyField(
@@ -167,28 +171,32 @@ private fun ContactKeyField(
     contact: ContactRecord?,
     contacts: List<ContactRecord>,
     onValueChange: (String) -> Unit,
+    isMe: Boolean = false,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
     var showPicker by rememberSaveable { mutableStateOf(false) }
-    val isUnknown = value.isNotBlank() && contact == null
     Column(modifier = Modifier.fillMaxWidth().padding(bottom = margin)) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(label) },
-            singleLine = true,
-            isError = isUnknown,
-            supportingText = when {
-                contact != null -> {
-                    { Text(contactLabel(contact)) }
-                }
-                isUnknown -> {
-                    { Text(stringResource(id = R.string.graph_inspection_unknown_key)) }
-                }
-                else -> null
-            },
-            modifier = Modifier.fillMaxWidth(),
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        when {
+            contact != null -> Text(
+                text = if (isMe) meLabel(contact.displayName) else contactLabel(contact),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            value.isNotBlank() -> Text(
+                text = stringResource(id = R.string.graph_inspection_unknown_key),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+            )
+            else -> Text(
+                text = stringResource(id = R.string.graph_inspection_pick_contact),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         FieldSourceButton(
             icon = Icons.Filled.Contacts,
             text = stringResource(id = R.string.new_gratitude_from_contacts),
@@ -243,8 +251,7 @@ private fun HandshakeDepthSlider(depth: Int, onDepthChange: (Int) -> Unit) {
 }
 
 /**
- * The stars received minus given at one handshake level, the received and given stars,
- * and the paths behind them.
+ * The stars received and given at one handshake level, as two stars, and the paths behind them.
  */
 @Composable
 private fun ReviewExchangeTable(
@@ -254,26 +261,16 @@ private fun ReviewExchangeTable(
     contactNames: Map<Int, String?>,
 ) {
     val margin = dimensionResource(id = R.dimen.horizontal_margin)
-    val difference = exchange.difference
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth().padding(vertical = margin / 2),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            GoldStar(modifier = Modifier.size(32.dp))
-            Text(
-                text = formatDifference(difference),
-                style = MaterialTheme.typography.titleMedium,
-                color = when {
-                    difference > 0 -> MaterialTheme.colorScheme.secondary
-                    difference < 0 -> MaterialTheme.colorScheme.error
-                    else -> MaterialTheme.colorScheme.onSurface
-                },
-                modifier = Modifier.padding(start = 4.dp),
-            )
-        }
-        DetailLine(stringResource(id = R.string.contact_reviews_received_count, exchange.received))
-        DetailLine(stringResource(id = R.string.contact_reviews_given_count, exchange.given))
+        ReceivedGivenStars(
+            received = exchange.received,
+            given = exchange.given,
+            starSize = 32.dp,
+            modifier = Modifier.fillMaxWidth(),
+        )
         HandshakePathDiagram(
             received = exchange.receivedPath,
             given = exchange.givenPath,
@@ -284,15 +281,6 @@ private fun ReviewExchangeTable(
             modifier = Modifier.padding(top = 8.dp),
         )
     }
-}
-
-@Composable
-private fun DetailLine(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
 }
 
 /** Placeholder for a rating that is being calculated, or waiting for the previous one. */
@@ -337,12 +325,6 @@ private fun handshakeTitle(level: Int): String {
 
 private const val HANDSHAKE_EMOJI = "🤝"
 
-private fun formatDifference(value: Int): String = when {
-    value > 0 -> "+$value"
-    value < 0 -> "−${-value}"
-    else -> "0"
-}
-
 @Preview
 @Composable
 private fun GraphInspectionScreenPreview() {
@@ -368,6 +350,7 @@ private fun GraphInspectionScreenPreview() {
                     ),
                 ),
                 handshakeDepth = 3,
+                myContactId = 9,
             ),
             openDrawer = {},
             onBack = null,
