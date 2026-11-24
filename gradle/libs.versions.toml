@@ -46,23 +46,22 @@ kotlinxSerializationJson = "1.8.0"
 ksp = "2.3.14"
 lint = "31.7.3"
 # @keep
-minSdk = "21"
+minSdk = "24"
 okhttp = "4.10.0"
 playServicesCodeScanner = "16.1.0"
 protobuf = "3.21.12"
 protobufPlugin = "0.9.4"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
-room = "2.7.2"
-# Classic SnakeYAML, not snakeyaml-engine: the engine needs java.util.Optional (API 24); minSdk is 21
+room = "2.8.5"
+# Classic SnakeYAML; snakeyaml-engine (needs API 24) would mean rewriting the YAML code
 snakeyaml = "2.4"
 spotless = "5.12.5"
 timber = "5.0.1"
 # @keep
 targetSdk = "36"
 truth = "1.4.4"
-# 3.4+ needs API 24; minSdk is 21
-zxing = "3.3.3"
+zxing = "3.5.4"
 turbine = "0.12.1"
 
 [libraries]
